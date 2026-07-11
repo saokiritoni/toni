@@ -1,0 +1,17 @@
+# 개인 자료·내부 문서 (배포 제외)
+docs/
+portfolio-content.md
+DESIGN.md
+OMD-PLAN.md
+
+# 디자인 레퍼런스 캡처 (재생성 가능, 재배포 금지 자료 포함)
+assets/_reference/
+.omd/
+
+# 도구·에이전트 설정
+.agents/
+.claude/
+.codex/
+.cursor/
+.idea/
+.opencode/
