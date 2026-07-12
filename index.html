@@ -399,6 +399,10 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pd-block > h4{font-family:var(--f-display);font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-bottom:16px}
 .pd-p{font-size:15px;line-height:1.72;color:var(--text);margin-bottom:8px}
 .pd-note{font-size:13px;line-height:1.6;color:var(--text-dim);margin-top:10px}
+/* 관련 블로그 글 링크 — 조용한 텍스트 링크, hover는 색 전환만 */
+.pd-link{display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:14px;color:var(--accent);transition:color var(--m-fast) var(--ease)}
+.pd-link:hover{color:var(--hover)}
+.pd-link .ext{font-size:12px}
 /* Why/How/Result: flat surface + 라벨-값 담백하게 (보더·edge 제거) */
 .pd-whr{background:var(--surface-100);border-radius:var(--r-feat);padding:6px 20px;margin-top:6px}
 .pd-whr li{display:flex;gap:18px;font-size:15px;line-height:1.6;padding:13px 0;margin:0;border-bottom:1px solid var(--border)}
@@ -882,6 +886,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
           <li>차단 시스템에 장애가 나도 서비스는 멈추지 않도록 설계. <b>"보안 기능의 장애가 정상 사용자를 막아선 안 된다"</b>는 우선순위를 명시적으로 선택하고 문서화</li>
           <li>운영자가 잘못 차단된 IP를 즉시 풀 수 있는 관리 API 제공. 누가 언제 해제했는지 기록</li>
         </ul>
+        <a class="pd-link" href="https://kiritoni.tistory.com/56" target="_blank" rel="noopener">관련 글: RDBMS vs NoSQL, 동시성을 다루는 두 저장소의 철학 <span class="ext" aria-hidden="true">↗</span></a>
       </div>
       <div class="pd-work-item">
         <h5>3. 권한 체계 (RBAC)</h5>
@@ -1050,11 +1055,12 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
         </div>
       </div>
       <div class="pd-work-item">
-        <h5>2. Slack API rate limit 대응 <em>(관련 블로그 글 예정)</em></h5>
+        <h5>2. Slack API rate limit 대응</h5>
         <div class="pd-ba">
           <div class="ba-col before"><span class="ba-label">Before</span><p>아침 대규모 정리 작업 중 Slack 429 발생 시 전체 스케줄러 중단. 비즈니스 로직(계정 삭제)과 부가 기능(알림)의 강한 동기 결합. 메모리 큐는 장애 시 대기 알림 유실 위험</p></div>
           <div class="ba-col after"><span class="ba-label">After</span><p>알림 발송을 <b>Redis 큐로 분리</b>해 본 작업(계정 삭제)과 독립적으로 처리. 발송 속도를 제한 범위 안으로 조절하고, 서버 장애가 나도 대기 중인 알림이 유실되지 않게 설계</p></div>
         </div>
+        <a class="pd-link" href="https://kiritoni.tistory.com/52" target="_blank" rel="noopener">관련 글: Slack Rate Limit을 Redis 메시지 큐로 해결하기 <span class="ext" aria-hidden="true">↗</span></a>
       </div>
     </div>
 
@@ -1072,6 +1078,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
         <div class="pd-tags"><span>#아키텍처</span><span>#리팩토링</span></div>
         <p>스케줄러 성능을 최적화하며 트랜잭션을 분리하다가, 같은 클래스 안의 메서드 호출(self-invocation)이 스프링 프록시를 거치지 않아 트랜잭션이 걸리지 않는 문제를 만났습니다. 프록시 동작 방식을 확인해 호출 구조를 바꿔 해결했지만, 초기 설계 때 서비스 레이어를 더 세밀하게 분리해뒀다면 겪지 않았을 문제였습니다. 그래서 <b>확장성과 가독성을 고려한 초기 아키텍처 설계의 중요성</b>을 실감했고, 지금도 구조 개선을 고민하고 있습니다.</p>
       </div>
+      <a class="pd-link" href="https://kiritoni.tistory.com/50" target="_blank" rel="noopener">관련 글: 1년간 GPU 서버 관리자로 일하며 배운 것 <span class="ext" aria-hidden="true">↗</span></a>
     </div>
   </div>
 
@@ -1107,12 +1114,13 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
         </div>
       </div>
       <div class="pd-work-item">
-        <h5>2. AWS 리소스 마이그레이션, RDS Double Copy <em>(관련 블로그 글 예정)</em></h5>
+        <h5>2. AWS 리소스 마이그레이션, RDS Double Copy</h5>
         <div class="pd-ba">
           <div class="ba-col before"><span class="ba-label">Before</span><p>교내 SW교육원 요청으로 동아리 홈페이지를 연계 회사 AWS 계정으로 이전</p></div>
           <div class="ba-col problem"><span class="ba-label">문제</span><p>스냅샷 공유만으로 끝날 줄 알았으나, 스냅샷이 AWS 관리형 키로 암호화되어 복원 불가 (계정 소유자도 키 권한 편집 불가)</p></div>
           <div class="ba-col after"><span class="ba-label">After</span><p><b>KMS Double Copy 전략</b>: 직접 관리 가능한 새 암호화 키를 만들어 스냅샷을 두 단계로 재암호화·복사, 키 의존성을 제거하고 새 계정에서 인스턴스 복원 완료</p></div>
         </div>
+        <a class="pd-link" href="https://kiritoni.tistory.com/49" target="_blank" rel="noopener">관련 글: 암호화된 RDS를 다른 계정으로 이전하기, KMS Double Copy <span class="ext" aria-hidden="true">↗</span></a>
       </div>
     </div>
 
