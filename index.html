@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>이소은 Soeun Lee · Software Engineer</title>
-<meta name="description" content="함께하며 빛나는 엔지니어 이소은(Soeun Lee)의 포트폴리오. Java · Kotlin · Spring Boot 백엔드와 AWS 인프라." />
+<meta name="description" content="문제를 이해하고 더 나은 구조를 만드는 개발자 이소은(Soeun Lee)의 포트폴리오. Java · Kotlin · Spring Boot 백엔드, 동시성 제어와 데이터 정합성, AWS 인프라." />
 
 <!--
   이소은 Soeun Lee 포트폴리오, omd prototype
@@ -112,7 +112,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .nav-toggle{display:none}
 
 /* ============================= HERO (archetype B center-text) ============================= */
-.hero{position:relative;padding:150px 0 88px;text-align:center;overflow:hidden}
+.hero{position:relative;padding:150px 0 128px;text-align:center;overflow:hidden}
 /* 은은한 dot-grid, 중앙 마스크로 페이드 (엔지니어 톤 blueprint 뉘앙스, --text 저알파) */
 .hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
   background-image:radial-gradient(rgba(38,37,30,.055) 1px,transparent 1.4px);
@@ -126,8 +126,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .hero-ornament::after{width:440px;height:440px;top:40px;right:8%;
   background:radial-gradient(circle,rgba(207,45,86,.14),transparent 70%)}
 .hero .container-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
-.hero-eyebrow{font-family:var(--f-mono);font-size:13px;color:var(--text-dim);margin-bottom:20px;letter-spacing:.01em}
-.hero-eyebrow .brace{color:var(--accent)}
 .hero-title{
   font-family:var(--f-display);font-weight:500;letter-spacing:-.03em;line-height:1.12;
   font-size:clamp(33px,6.2vw,72px);margin:0 auto;word-break:keep-all;
@@ -161,34 +159,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 }
 .btn-secondary:hover{color:var(--hover);box-shadow:var(--sh-focus)}
 
-/* editor mock (hero-visual), 분리된 element 조합 */
-.hero-visual{position:relative;width:100%;max-width:720px;margin:56px auto 0}
-.editor{background:var(--surface-100);border:1px solid var(--border);border-radius:var(--r-feat);
-  box-shadow:var(--sh-elev);overflow:hidden;text-align:left}
-.editor-chrome{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--surface-300);border-bottom:1px solid var(--border)}
-.dots{display:flex;gap:7px}
-.dots span{width:11px;height:11px;border-radius:50%}
-/* editor-chrome traffic-light dots (decorative macOS window convention, DESIGN.md §8) */
-.dots .r{background:#e06c5b}.dots .y{background:#dcb04a}.dots .g{background:#7bb98c}
-.editor-tab{font-family:var(--f-mono);font-size:12px;color:var(--text-dim)}
-.editor-tab .active{color:var(--text)}
-.editor-body{display:flex;font-family:var(--f-mono);font-size:13px;line-height:1.85;padding:16px 0}
-.gutter{padding:0 14px;color:rgba(38,37,30,.28);text-align:right;user-select:none;border-right:1px solid var(--border)}
-.code{padding:0 18px;overflow-x:auto;white-space:pre}
-.tk-key{color:var(--accent)}
-.tk-type{color:var(--tk-read);filter:brightness(.9)}
-.tk-prop{color:var(--tk-read)}
-.tk-str{color:var(--success)}
-.tk-num{color:var(--tk-think);filter:brightness(.82)}
-.tk-bool{color:var(--tk-edit);filter:brightness(.82)}
-.tk-punc{color:var(--text-dim)}
-.tk-comment{color:rgba(38,37,30,.4);font-style:italic}
-.hero-stat-card{
-  position:absolute;right:-14px;bottom:-22px;background:var(--bg);border:1px solid var(--border);
-  border-radius:var(--r);padding:12px 16px;box-shadow:var(--edge-top),var(--sh-focus);text-align:left;
-}
-.hero-stat-card .n{font-family:var(--f-display);font-size:24px;font-weight:600;letter-spacing:-.02em;line-height:1}
-.hero-stat-card .l{font-size:11px;color:var(--text-dim);font-family:var(--f-mono);margin-top:4px}
 
 /* ============================= SECTION SHELL ============================= */
 .section{padding:80px 0}
@@ -198,18 +168,16 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .section-alt::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,rgba(245,78,0,.4),transparent)}
 .section-head{margin-bottom:44px}
-.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--f-mono);font-size:12px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
-.eyebrow::before{content:"";width:20px;height:1px;background:var(--accent);opacity:.65;flex:0 0 auto}
-.section-title{font-family:var(--f-display);font-weight:500;font-size:clamp(26px,4vw,36px);letter-spacing:-.02em;line-height:1.2;margin-top:10px}
+.section-title{font-family:var(--f-display);font-weight:500;font-size:clamp(26px,4vw,36px);letter-spacing:-.02em;line-height:1.2}
 .section-sub{color:var(--text-dim);margin-top:12px;font-size:16px;max-width:56ch}
 
 /* ============================= ABOUT ============================= */
-.about-lead{max-width:22ch;font-size:clamp(30px,5.2vw,52px)}
 .about-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:4px}
 .about-col{position:relative;padding-top:18px;border-top:1px solid var(--border-med)}
 .about-idx{font-family:var(--f-mono);font-size:12px;color:var(--accent);display:block;margin-bottom:14px;letter-spacing:.04em}
 .about-col::before{content:"";position:absolute;top:-1px;left:0;width:34px;height:2px;background:var(--accent)}
 .about-col p{font-size:15.5px;line-height:1.75;color:var(--text)}
+.about-col p b{font-weight:600;color:var(--accent)}
 
 /* ============================= SKILLS ============================= */
 .skills-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px}
@@ -254,7 +222,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .card-stack{display:flex;flex-wrap:wrap;gap:6px}
 .card-stack span{font-family:var(--f-mono);font-size:11px;color:var(--text-dim);background:var(--surface-100);border:1px solid var(--border);border-radius:var(--r-compact);padding:3px 8px}
 
-/* featured project (NHN AD, 링크 없음, In-house 배지) */
+/* featured project (AdOnChat · NHN AD, 링크 없음) */
 .card-featured{
   display:grid;grid-template-columns:minmax(260px,360px) 1fr;margin-bottom:22px;
   background:var(--surface-400);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
@@ -267,7 +235,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 /* dark 패널 상단 accent glow (§8 on-dark overlay 톤) */
 .feat-panel::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent,rgba(245,78,0,.7),rgba(207,45,86,.5),transparent)}
-.feat-badge{align-self:flex-start;font-family:var(--f-mono);font-size:11px;padding:5px 11px;border-radius:var(--r-pill);
   background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);color:#fff;letter-spacing:.03em}
 .feat-catch{font-family:var(--f-display);font-size:24px;font-weight:500;letter-spacing:-.02em;line-height:1.35;margin-top:auto}
 .feat-role{font-family:var(--f-mono);font-size:12px;color:rgba(255,255,255,.7);line-height:1.6}
@@ -305,19 +272,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .cred-list li:last-child{border-bottom:none}
 .cred-list .yr{font-family:var(--f-mono);font-size:12px;color:var(--accent);flex:0 0 42px}
 .cred-list .name strong{font-weight:600}
-
-/* ============================= WORK PROCESS ============================= */
-.process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.process-card{background:var(--surface-100);border:1px solid var(--border);border-radius:var(--r);padding:28px 24px;position:relative;overflow:hidden;box-shadow:var(--edge-top),var(--sh-soft)}
-/* editorial 대형 ghost 인덱스, 우상단 워터마크 */
-.process-card::before{content:attr(data-idx);position:absolute;top:-8px;right:10px;
-  font-family:var(--f-display);font-weight:700;font-size:78px;line-height:1;letter-spacing:-.04em;
-  color:rgba(245,78,0,.07);pointer-events:none}
-.process-card .idx{font-family:var(--f-mono);font-size:12px;color:var(--accent);position:relative}
-.process-card h3{font-family:var(--f-display);font-size:22px;font-weight:500;letter-spacing:-.02em;margin:12px 0 12px}
-.process-card p{color:var(--text-dim);font-size:14.5px;line-height:1.62}
-.process-quote{font-family:var(--f-serif);font-size:clamp(19px,2.6vw,25px);line-height:1.55;text-align:center;max-width:720px;padding:0 8px;margin:52px auto 0;word-break:keep-all}
-.process-quote strong{color:var(--accent);font-weight:600}
 
 /* ============================= CONTACT + FOOTER ============================= */
 .contact{text-align:center;padding:96px 0}
@@ -393,8 +347,13 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 /* detail content — 장식 최소화, 여백과 타이포 위계로 구조화 (Toss idiom) */
 .pd-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
 .pd-meta span{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);background:var(--surface-300);border-radius:var(--r-pill);padding:5px 12px}
-.pd-badge-live{color:#fff !important;background:linear-gradient(135deg,var(--accent),var(--hover)) !important}
 .pd-catch{font-family:var(--f-serif);font-size:20px;line-height:1.45;color:var(--text);margin-bottom:32px}
+/* 모달 내부 탭 (AdOnChat: Backend / Frontend). underline 탭, 모달 스크롤 시 상단 고정 */
+.pd-tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin:-8px 0 28px;position:sticky;top:-26px;padding-top:8px;background:var(--bg);z-index:1}
+.pd-tab{font:inherit;font-family:var(--f-display);font-size:15px;font-weight:500;color:var(--text-dim);background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:10px 14px;cursor:pointer;-webkit-appearance:none;appearance:none;transition:color var(--m-fast) var(--ease),border-color var(--m-fast) var(--ease)}
+.pd-tab:hover{color:var(--hover)}
+.pd-tab.is-active{color:var(--text);border-bottom-color:var(--accent)}
+.pd-pane .pd-block:last-child{margin-bottom:0}
 .pd-block{margin-bottom:36px}
 .pd-block > h4{font-family:var(--f-display);font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-bottom:16px}
 .pd-p{font-size:15px;line-height:1.72;color:var(--text);margin-bottom:8px}
@@ -442,7 +401,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .card-featured{grid-template-columns:1fr}
   .skills-groups{grid-template-columns:1fr;gap:16px}
   .projects-grid{grid-template-columns:1fr 1fr}
-  .process-grid{grid-template-columns:1fr}
   .creds-grid{grid-template-columns:1fr}
 }
 @media (max-width:768px){
@@ -461,7 +419,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .nav .btn-github{margin-top:12px;justify-content:center}
   .nav-toggle{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;
     border-radius:var(--r);border:1px solid var(--border);color:var(--text)}
-  .hero-stat-card{right:0;bottom:-16px;padding:10px 13px}
   .projects-grid{grid-template-columns:1fr}
   .footer-row{flex-direction:column;align-items:flex-start}
   /* modal → 풀스크린 시트 (하단 슬라이드업) */
@@ -472,10 +429,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .pd-ba{grid-template-columns:1fr}
 }
 @media (max-width:400px){
-  .editor-body{font-size:11.5px}
   .hero-ctas{width:100%}
   .btn-primary,.btn-secondary{flex:1;justify-content:center}
-  .hero-stat-card{display:none}
 }
 
 /* ============================= REDUCED MOTION GUARD ============================= */
@@ -529,7 +484,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero-ornament" aria-hidden="true"></div>
   <div class="container-inner">
-    <h1 class="hero-title" id="hero-title" data-reveal>같은 목표를 향해,<br><em>동료와 함께</em> 달리는 엔지니어입니다</h1>
+    <h1 class="hero-title" id="hero-title" data-reveal>문제를 이해하고<br><em>더 나은 구조</em>를 만드는 개발자</h1>
     <p class="hero-typed" data-reveal aria-live="polite">
       <span class="prompt">$&nbsp;</span><span id="typed"></span><span class="caret blink" aria-hidden="true"></span>
     </p>
@@ -545,26 +500,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
         이메일 보내기
       </a>
     </div>
-
-    <!-- editor mock, Java/cloud 모티프. 분리된 element 조합 (.editor + .hero-stat-card) -->
-    <div class="hero-visual" data-reveal aria-hidden="true">
-      <div class="editor">
-        <div class="editor-chrome">
-          <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
-          <div class="editor-tab"><span class="active">Engineer.java</span> &nbsp;·&nbsp; Team.java</div>
-        </div>
-        <div class="editor-body">
-          <div class="gutter">1<br>2<br>3<br>4<br>5<br>6<br>7</div>
-<div class="code"><span class="tk-key">public class</span> <span class="tk-type">Engineer</span> <span class="tk-punc">{</span>
-  <span class="tk-type">String</span> name  <span class="tk-punc">=</span> <span class="tk-str">"이소은 · Soeun Lee"</span><span class="tk-punc">;</span>
-  <span class="tk-type">String</span> role  <span class="tk-punc">=</span> <span class="tk-str">"Software Engineer"</span><span class="tk-punc">;</span>
-  <span class="tk-type">String</span><span class="tk-punc">[]</span> stack <span class="tk-punc">= {</span> <span class="tk-str">"Java"</span><span class="tk-punc">,</span> <span class="tk-str">"Kotlin"</span><span class="tk-punc">,</span> <span class="tk-str">"Spring Boot"</span> <span class="tk-punc">};</span>
-  <span class="tk-type">String</span><span class="tk-punc">[]</span> team  <span class="tk-punc">= {</span> <span class="tk-str">"기획자"</span><span class="tk-punc">,</span> <span class="tk-str">"디자이너"</span><span class="tk-punc">,</span> <span class="tk-str">"개발자"</span> <span class="tk-punc">};</span>  <span class="tk-comment">// 상대의 언어로</span>
-  <span class="tk-type">boolean</span> shining <span class="tk-punc">=</span> <span class="tk-bool">true</span><span class="tk-punc">;</span>  <span class="tk-comment">// 같은 목표를 향해, 함께</span>
-<span class="tk-punc">}</span></div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -572,21 +507,20 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 <section class="section" id="about" aria-labelledby="about-title">
   <div class="container-inner">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">About</p>
-      <h2 class="section-title about-lead" id="about-title">팀에 필요하다면, 무엇이든.</h2>
+      <h2 class="section-title" id="about-title">About</h2>
     </div>
     <div class="about-cols">
       <div class="about-col" data-reveal>
         <span class="about-idx">01</span>
-        <p>클라우드, 백엔드, 프론트엔드. 저는 영역을 가리지 않습니다. 팀에 필요한 역량이라면 AI를 지렛대 삼아 무엇이든 해내는 소프트웨어 엔지니어입니다.</p>
+        <p>백엔드를 중심으로 프론트엔드와 인프라까지 경험하며, 하나의 기능이 사용자에게 전달되고 안정적으로 운영되는 과정 전체를 고민해왔습니다.</p>
       </div>
       <div class="about-col" data-reveal>
         <span class="about-idx">02</span>
-        <p>가장 자신 있는 것은 소통입니다. 기획자, 디자이너, 동료 개발자와 일하며 다양한 협업을 마주했고, 상대가 쓰는 언어로 이야기하는 법을 배웠습니다. 기획자에게는 정책과 사용자 흐름으로, 디자이너에게는 화면과 상태로, 개발자에게는 코드와 트레이드오프로 말합니다.</p>
+        <p>업무의 규칙을 이해해 데이터와 시스템 구조에 반영하고, 반복되는 문제는 더 나은 방식으로 바꾸는 것을 좋아합니다. 동시성과 데이터 정합성을 고려한 백엔드 개발부터 서버 관리 자동화, AI Agent를 활용한 새로운 서비스 구조까지 직접 고민하고 구현했습니다.</p>
       </div>
       <div class="about-col" data-reveal>
         <span class="about-idx">03</span>
-        <p>기술은 결국 팀의 목적을 이루기 위한 수단이라고 믿습니다. 그래서 어떤 기술을 쓸지보다, 지금의 상황과 도메인에 무엇이 맞는지를 먼저 묻습니다. 저는 팀이 향하는 곳을 보고 거기까지 함께 달리는 사람입니다.</p>
+        <p>새로운 기술을 사용하는 것보다 <b>왜 필요한지, 어떤 문제를 더 잘 해결할 수 있는지</b>를 먼저 생각하는 개발자가 되고자 합니다.</p>
       </div>
     </div>
   </div>
@@ -596,32 +530,37 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 <section class="section section-alt" id="skills" aria-labelledby="skills-title" style="background:var(--surface-100);border-block:1px solid var(--border)">
   <div class="container-inner">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">Skills</p>
-      <h2 class="section-title" id="skills-title">쓰는 도구들</h2>
+      <h2 class="section-title" id="skills-title">Skills</h2>
     </div>
     <div class="skills-groups">
       <div class="skill-group" data-reveal>
         <h3>// language & framework</h3>
         <div class="pills">
-          <span class="pill main">Java</span><span class="pill main">Kotlin</span><span class="pill main">Spring Boot</span><span class="pill">Spring Security</span><span class="pill">JPA</span>
+          <span class="pill main">Java</span><span class="pill main">Kotlin</span><span class="pill main">Spring Boot</span><span class="pill">Spring Security</span><span class="pill">JPA</span><span class="pill">Python</span>
+        </div>
+      </div>
+      <div class="skill-group" data-reveal>
+        <h3>// database & storage</h3>
+        <div class="pills">
+          <span class="pill main">PostgreSQL</span><span class="pill">MySQL</span><span class="pill">Redis</span><span class="pill">DynamoDB</span>
+        </div>
+      </div>
+      <div class="skill-group" data-reveal>
+        <h3>// backend patterns</h3>
+        <div class="pills">
+          <span class="pill">Transaction</span><span class="pill">Pessimistic Lock</span><span class="pill">SKIP LOCKED</span><span class="pill">Partial Unique Index</span><span class="pill">Transactional Outbox</span><span class="pill">Idempotency</span><span class="pill">Producer-Consumer</span><span class="pill">비동기 · 배치</span>
         </div>
       </div>
       <div class="skill-group" data-reveal>
         <h3>// devops & infra</h3>
         <div class="pills">
-          <span class="pill main">AWS</span><span class="pill main">Docker</span><span class="pill">Ubuntu Linux</span><span class="pill">GitHub Actions</span>
+          <span class="pill main">AWS</span><span class="pill main">Docker</span><span class="pill">Kubernetes</span><span class="pill">Ubuntu Linux</span><span class="pill">GitHub Actions</span>
         </div>
       </div>
       <div class="skill-group" data-reveal>
-        <h3>// data & collaboration</h3>
+        <h3>// collaboration & ai</h3>
         <div class="pills">
-          <span class="pill">PostgreSQL</span><span class="pill">Redis</span><span class="pill">DynamoDB</span><span class="pill">Git</span><span class="pill">GitHub</span>
-        </div>
-      </div>
-      <div class="skill-group" data-reveal>
-        <h3>// ai</h3>
-        <div class="pills">
-          <span class="pill main">Claude Code</span>
+          <span class="pill">Git</span><span class="pill">GitHub</span><span class="pill main">Claude Code</span>
         </div>
       </div>
     </div>
@@ -632,25 +571,24 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 <section class="section" id="projects" aria-labelledby="projects-title">
   <div class="container-inner">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">Projects</p>
-      <h2 class="section-title" id="projects-title">문제를 푼 기록</h2>
+      <h2 class="section-title" id="projects-title">Projects</h2>
       <p class="section-sub">카드를 눌러 자세히 확인하세요.</p>
     </div>
 
-    <!-- Featured: NHN AD (릴리즈 전 사내 서비스, 링크·스크린샷 없음). 클릭 시 상세 모달 -->
+    <!-- Featured: AdOnChat (NHN AD 실무 서비스, 링크·스크린샷 없음). 클릭 시 상세 모달 -->
     <button class="card-featured" type="button" data-open="nhnad" data-reveal aria-haspopup="dialog">
       <div class="feat-panel">
-        <span class="feat-badge">In-house · Pre-release</span>
-        <p class="feat-catch">AI 광고 분석 대화 서비스</p>
-        <p class="feat-role">Full-Stack<br>2026.04 – 현재</p>
-        <div class="feat-tech"><span>Kotlin</span><span>Spring Boot</span><span>PostgreSQL</span><span>DynamoDB</span><span>React</span><span>TypeScript</span></div>
+        <p class="feat-catch">AI 기반 광고 운영 솔루션</p>
+        <p class="feat-role">NHN AD · Frontend, Backend<br>2026.04 – 현재</p>
+        <div class="feat-tech"><span>Kotlin</span><span>Spring Boot</span><span>PostgreSQL</span><span>TypeScript</span><span>React</span></div>
       </div>
       <div class="feat-body">
-        <h3 class="feat-title">NHN AD</h3>
-        <p class="feat-overview">마케터가 자연어 대화로 광고 데이터를 분석하는 B2B AI 서비스</p>
+        <h3 class="feat-title">AdOnChat</h3>
+        <p class="feat-overview">광고 매체 계정을 연동해 대량 광고 작업을 처리하고, 자연어 대화로 광고 데이터를 분석하는 B2B 광고 운영 솔루션</p>
         <ul class="feat-points">
-          <li>인증·보안·운영 알림 등 서비스의 <b>신뢰 기반</b>을 백엔드에서 설계·구현</li>
-          <li>화면 데이터 갱신 전략과 로딩 UX를 포함한 <b>프론트엔드 전반</b> 개발</li>
+          <li>여러 서버가 동시에 처리하는 대량 광고 작업의 <b>동시성 제어와 데이터 정합성</b>을 DB 락·제약조건으로 보장</li>
+          <li>약 60종 대량 광고 작업을 <b>BulkTask 추상화</b>로 구조화, 작업 추가 시 기존 코드 변경 최소화</li>
+          <li>인증·권한·운영 알림 등 <b>신뢰 기반</b> 백엔드 설계, 화면 갱신 전략과 로딩 UX 등 프론트엔드 개발</li>
         </ul>
         <span class="card-more"><svg class="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
       </div>
@@ -716,27 +654,32 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 <section class="section section-alt" id="experience" aria-labelledby="exp-title" style="background:var(--surface-100);border-block:1px solid var(--border)">
   <div class="container-inner">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">Experience</p>
-      <h2 class="section-title" id="exp-title">지나온 길</h2>
+      <h2 class="section-title" id="exp-title">Experience</h2>
     </div>
     <ul class="timeline">
       <li class="tl-item" data-reveal>
-        <div class="tl-period">2026.02 – 현재</div>
-        <div class="tl-role">Intern · <span class="co">NHN AD</span></div>
-        <p class="tl-desc">풀스택 개발자</p>
+        <div class="tl-period">2026.08 – 현재</div>
+        <div class="tl-role"><span class="co">NHN AD</span> · Backend 개발 매니저</div>
+        <p class="tl-desc">광고 운영 솔루션 Backend 개발</p>
       </li>
       <li class="tl-item" data-reveal>
-        <div class="tl-period">2025.08 – 2026.07</div>
-        <div class="tl-role">Server/Cloud Core Member · <span class="co">Google Developer Group on Campus Dongguk University</span></div>
+        <div class="tl-period">2026.02 – 2026.08</div>
+        <div class="tl-role"><span class="co">NHN AD</span> · Backend 개발 인턴</div>
+        <p class="tl-desc">광고 운영 솔루션의 인증·인가, 매체 계정 관리, 대량 광고 작업, 운영 기능 개발<br>동시성 제어 · 데이터 정합성 · 트랜잭션 설계 · 감사로그 개선</p>
       </li>
       <li class="tl-item" data-reveal>
-        <div class="tl-period">2025.01 – 2026.02</div>
-        <div class="tl-role">GPU 서버 관리자 (학생연구자) · <span class="co">동국대학교 서버실</span></div>
-        <p class="tl-desc">AI 연구자 대상 인프라 이슈 지원<br>GPU 서버 관리 자동화 시스템 개발</p>
+        <div class="tl-period">2025.09 – 2026.06</div>
+        <div class="tl-role"><span class="co">Google Developer Group on Campus Dongguk University</span> · Server/Cloud Core Member</div>
+      </li>
+      <li class="tl-item" data-reveal>
+        <div class="tl-period">2025.03 – 2026.02</div>
+        <div class="tl-role"><span class="co">동국대학교 서버실</span> · GPU 서버 관리자 (학생연구자)</div>
+        <p class="tl-desc">고성능 서버 15대 · GPU 81개 이상 운영, AI 연구자 대상 인프라 지원<br>SSH 수작업 → Script → Web UI로 관리 업무 단계적 자동화</p>
       </li>
       <li class="tl-item" data-reveal>
         <div class="tl-period">2024.03 – 2026.02</div>
-        <div class="tl-role">보안/웹 트랙장 · <span class="co">Farm System (동국대학교 개발 동아리)</span></div>
+        <div class="tl-role"><span class="co">Farm System (동국대학교 개발 동아리)</span> · 보안/웹 트랙장 · 개발팀 리더</div>
+        <p class="tl-desc">약 20명 개발팀 리딩, 공식 홈페이지·내부 커뮤니티 백엔드 개발 및 AWS 운영</p>
       </li>
     </ul>
   </div>
@@ -746,8 +689,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 <section class="section" id="credentials" aria-labelledby="cred-title">
   <div class="container-inner">
     <div class="section-head" data-reveal>
-      <p class="eyebrow">Awards &amp; Licenses</p>
-      <h2 class="section-title" id="cred-title">기록으로 남은 것</h2>
+      <h2 class="section-title" id="cred-title">Awards &amp; Licenses</h2>
     </div>
     <div class="creds-grid">
       <div class="cred-col" data-reveal>
@@ -770,34 +712,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
         </ul>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ============================= WORK PROCESS (엔딩) ============================= -->
-<section class="section section-alt" id="process" aria-labelledby="proc-title" style="background:var(--surface-100);border-block:1px solid var(--border)">
-  <div class="container-inner">
-    <div class="section-head" data-reveal>
-      <p class="eyebrow">Work Process</p>
-      <h2 class="section-title" id="proc-title">일하는 방식</h2>
-    </div>
-    <div class="process-grid">
-      <div class="process-card" data-reveal data-idx="01">
-        <span class="idx">01</span>
-        <h3>WHY</h3>
-        <p>현실 세계에서 발생하는 문제를 정의하고, 직접 해결하기 위해 움직입니다.</p>
-      </div>
-      <div class="process-card" data-reveal data-idx="02">
-        <span class="idx">02</span>
-        <h3>n개의 Path</h3>
-        <p>해결책은 하나가 아닙니다. 비용·가용성·확장성의 Trade-off를 분석하고 동료들과 치열하게 토론합니다.</p>
-      </div>
-      <div class="process-card" data-reveal data-idx="03">
-        <span class="idx">03</span>
-        <h3>Keep Simple</h3>
-        <p>가장 간단한 해답이 Why에 대한 충실한 답이 되기도 합니다. 목적에 충실하면서도 명료한 방법을 지향합니다.</p>
-      </div>
-    </div>
-    <p class="process-quote" data-reveal>목적 지향적 사고로 문제를 정의하고, 치열한 분석으로 경로를 탐색하며, 단순함의 미학으로 지속 가능한 성장을 추구합니다. 그래서 <strong>동료들과 함께할 때 더욱 빛나는 엔지니어</strong>가 되겠습니다.</p>
   </div>
 </section>
 
@@ -842,91 +756,123 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   </div>
 </div>
 
-<!-- Hidden detail store, 모달 열릴 때 innerHTML을 modalBody로 복제 (콘텐츠 소스: portfolio-content.md v2) -->
+<!-- Hidden detail store, 모달 열릴 때 innerHTML을 modalBody로 복제 (콘텐츠 소스: portfolio-content.md v2 + 기술경험정리.txt 2026-09) -->
 <div id="projectDetails" hidden>
 
   <!-- ===== NHN AD ===== -->
-  <div data-detail="nhnad" data-title="NHN AD">
+  <div data-detail="nhnad" data-title="AdOnChat">
     <div class="pd-meta">
-      <span class="pd-badge-live">In-house · Pre-release</span>
       <span>2026.04 – 현재</span>
       <span>NHN AD</span>
-      <span>Full-Stack</span>
+      <span>Frontend, Backend</span>
     </div>
-    <p class="pd-catch">AI 광고 분석 대화 서비스</p>
+    <p class="pd-catch">AI 기반 광고 운영 솔루션</p>
 
     <div class="pd-block">
       <h4>개요</h4>
-      <p class="pd-p">마케터가 자연어 대화로 광고 데이터를 분석하는 B2B AI 서비스입니다. 실사용자를 받는 프로덕션 서비스인 만큼 인증·보안·운영 관측성 같은 <b>서비스의 신뢰 기반</b>을 백엔드에서 설계·구현했고, 그 위에서 프론트엔드 전반도 함께 개발했습니다.</p>
+      <p class="pd-p">광고 매체 계정을 연동해 대량 광고 작업을 처리하고, 자연어 대화로 광고 데이터를 분석하는 B2B 광고 운영 솔루션입니다. 인증·인가, 매체 계정 관리, 대량 광고 작업, 운영 기능을 백엔드에서 개발했습니다. 여러 서버가 같은 데이터를 동시에 바꾸는 환경이라 <b>동시성 제어, 데이터 정합성, 트랜잭션 설계</b>가 핵심 과제였고, 그 위에서 프론트엔드도 함께 개발했습니다.</p>
+      <p class="pd-note">아래 내용은 실제 코드베이스를 기준으로 직접 구현·개선한 범위만 기술했습니다.</p>
     </div>
 
+    <div class="pd-tabs" role="tablist" aria-label="AdOnChat 상세 영역">
+      <button class="pd-tab is-active" type="button" role="tab" aria-selected="true" data-tab="be">Backend</button>
+      <button class="pd-tab" type="button" role="tab" aria-selected="false" data-tab="fe">Frontend</button>
+    </div>
+
+    <div class="pd-pane" data-pane="be" role="tabpanel">
     <div class="pd-block">
       <h4>Tech</h4>
-      <div class="pd-tech">
-        <span>Kotlin</span><span>Spring Boot</span><span>PostgreSQL</span><span>DynamoDB</span><span>React</span><span>TypeScript</span>
-      </div>
+      <div class="pd-tech"><span>Kotlin</span><span>Spring Boot</span><span>JPA</span><span>PostgreSQL</span><span>DynamoDB</span><span>Redis</span><span>AWS</span></div>
     </div>
 
     <div class="pd-block">
-      <h4>진행한 일 · Backend</h4>
+      <h4>진행한 일 · 동시성과 데이터 정합성</h4>
       <div class="pd-work-item">
-        <h5>1. 인증 시스템 직접 구현</h5>
-        <ul class="pd-sublist">
-          <li>Google/Naver 소셜 로그인부터 JWT 발급까지, 인증 전 과정을 라이브러리에 위임하지 않고 직접 설계·구현</li>
-          <li><b>Shadow Login</b>: 운영자가 사용자의 화면 그대로 들어가 문의를 처리하는 기능. 모든 활동이 "누가(운영자) 누구로(사용자)" 했는지 감사 기록에 남도록 설계</li>
-          <li>동시 로그인 차단, 일정 시간 미사용 시 자동 로그아웃, "다른 기기에서 로그인됨" 안내 등 세션 정책 구현</li>
-          <li>세션 저장소는 <b>DynamoDB</b>로 구현. 요청이 올 때마다 세션 만료 시간을 4시간 뒤로 연장하는 방식이라, 별도 정리 작업 없이 미사용 세션이 자동으로 만료됨</li>
+        <h5>1. 다중 인스턴스 환경의 대량 작업 선점</h5>
+        <div class="pd-ba">
+          <div class="ba-col problem"><span class="ba-label">문제</span><p>대량 광고 작업을 여러 서버가 동시에 조회해 처리하는 구조. 작업을 조회한 뒤 상태를 바꾸는 사이에 두 서버가 같은 작업을 집어 <b>중복 처리</b>될 수 있었습니다</p></div>
+          <div class="ba-col after"><span class="ba-label">해결</span><p>PostgreSQL <code>FOR UPDATE SKIP LOCKED</code>로 작업을 선점. 한 Worker가 잠근 행은 다른 Worker가 기다리지 않고 건너뛰어 다음 작업을 가져갑니다. 별도 분산락 없이 <b>중복 방지와 병렬 처리량을 동시에</b> 확보</p></div>
+        </div>
+      </div>
+      <div class="pd-work-item">
+        <h5>2. 운영자 권한 변경의 직렬화</h5>
+        <div class="pd-ba">
+          <div class="ba-col problem"><span class="ba-label">문제</span><p>"운영자는 최소 한 명 남아야 한다"는 규칙. 운영자 A와 B를 각각 강등하는 요청이 동시에 들어오면 각 트랜잭션은 다른 운영자가 있다고 판단해 둘 다 성공하고, <b>운영자가 0명</b>이 될 수 있었습니다</p></div>
+          <div class="ba-col after"><span class="ba-label">해결</span><p><code>PESSIMISTIC_WRITE</code>로 관련 행을 잠가 직렬화. 여러 행을 잠글 때는 <b>같은 순서로 락을 획득</b>하도록 정렬해 교착을 예방하고, 일괄 강등 시에는 이미 강등 대상인 운영자를 제외해 남는 운영자 수를 계산</p></div>
+        </div>
+        <ul class="pd-whr">
+          <li><span class="k">판단</span><span>같은 "동시성 문제"라도 성격이 다릅니다. 대량 작업은 처리량을 유지하며 선점해야 하므로 <b>SKIP LOCKED</b>, 운영자 변경은 하나의 비즈니스 상태를 보호해야 하므로 <b>PESSIMISTIC_WRITE</b>. 무엇을 보호해야 하는지부터 판단하고 전략을 골랐습니다</span></li>
         </ul>
       </div>
       <div class="pd-work-item">
-        <h5>2. 비정상 접근 자동 차단</h5>
+        <h5>3. DB 제약조건으로 보장하는 유일성</h5>
         <ul class="pd-sublist">
-          <li>로그인 실패나 위조된 토큰을 반복해서 보내는 IP를 자동으로 차단하는 방어 계층 구현</li>
-          <li>실패 횟수는 여러 서버가 동시에 기록해도 수치가 어긋나지 않도록 <b>DynamoDB 원자 카운터</b>로 집계. 차단 만료는 시각 비교로 즉시 판정하고, DynamoDB TTL은 오래된 기록을 지우는 안전망으로만 사용</li>
-          <li>차단 시스템에 장애가 나도 서비스는 멈추지 않도록 설계. <b>"보안 기능의 장애가 정상 사용자를 막아선 안 된다"</b>는 우선순위를 명시적으로 선택하고 문서화</li>
-          <li>운영자가 잘못 차단된 IP를 즉시 풀 수 있는 관리 API 제공. 누가 언제 해제했는지 기록</li>
+          <li>한 사용자가 같은 광고계정을 중복 등록하면 안 됩니다. 애플리케이션의 사전 중복 조회는 동시 요청에서 둘 다 "중복 없음"으로 통과할 수 있어, <b>DB Unique Constraint를 최종 방어선</b>으로 두었습니다</li>
+          <li>Soft Delete된 행까지 유니크에 포함하면 삭제한 계정을 재등록할 수 없는 문제가 생겨, 활성 행에만 적용되는 <b>PostgreSQL Partial Unique Index</b>를 사용</li>
+          <li>인증정보는 암호화 저장되고 매번 다른 암호문이 나와 직접 비교가 불가능합니다. 원본 기반의 <b>결정적 SHA-256 fingerprint</b>를 별도 컬럼에 두고 Unique Constraint로 중복을 판별. 보안과 정합성을 함께 확보</li>
+          <li>원칙: 애플리케이션은 빠르고 명확한 오류를, DB는 동시 요청에서도 깨지지 않는 최종 정합성을 담당</li>
+        </ul>
+      </div>
+      <div class="pd-work-item">
+        <h5>4. 감사로그 누락 원인 분석과 트랜잭션 구조 개선</h5>
+        <div class="pd-ba">
+          <div class="ba-col problem"><span class="ba-label">문제</span><p>기존 감사로그에서 일부 회원 정보 변경 이력이 기록되지 않았습니다. 추적 결과 JPA <code>@PreUpdate</code>는 변경 순간이 아닌 <b>flush 시점</b>에 호출되고, 이후 쿼리가 없는 경로에서는 flush가 commit까지 지연돼 기존 BEFORE_COMMIT 처리보다 이벤트 생성이 늦었습니다</p></div>
+          <div class="ba-col after"><span class="ba-label">해결</span><p>특정 서비스에 <code>flush()</code>를 강제하는 방식은 그 경로만 고칠 뿐이라 배제. <code>TransactionSynchronization</code>으로 <b>커밋 직전 flush 시점을 제어</b>하고, 변경 이벤트를 같은 트랜잭션의 Outbox에 저장한 뒤 별도 작업이 감사 테이블로 이동. 재처리 시 중복 적재는 <code>outbox_id</code> Unique + <code>ON CONFLICT DO NOTHING</code>으로 차단(멱등성)</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pd-block">
+      <h4>진행한 일 · 설계와 구조</h4>
+      <div class="pd-work-item">
+        <h5>5. 약 60종 대량 광고 작업의 객체지향 구조</h5>
+        <div class="pd-ba">
+          <div class="ba-col problem"><span class="ba-label">문제</span><p>캠페인·광고그룹·키워드·소재 등 약 60종의 대량 작업이 CSV 구조, 검증 방식, 호출 API, 처리 방식이 모두 달랐습니다. 하나의 Worker에서 <code>when</code>으로 분기하면 <b>작업이 늘 때마다 기존 코드가 바뀌는</b> 구조</p></div>
+          <div class="ba-col after"><span class="ba-label">해결</span><p>공통 계약을 <b>BulkTask</b>로 추상화하고, 행 단위 작업의 공통 흐름은 <b>RowProcessingTask</b>로 분리(Template Method). Dispatcher는 구현체를 직접 알지 않고 <b>taskType으로 Registry에서 찾아 실행</b>(Strategy). 단건 API 작업은 <code>processRow()</code>만 구현하고, Bulk API 작업은 <code>processChunk()</code>를 재정의</p></div>
+        </div>
+        <p class="pd-note">결과: 새 작업 유형을 추가할 때 Dispatcher의 조건문을 고치는 대신 BulkTask 구현체를 하나 추가하는 방식으로 확장. 매체 연동 영역에는 여전히 매체별 분기가 남아 있어, 전체를 완전히 추상화했다고 주장하지는 않습니다.</p>
+      </div>
+      <div class="pd-work-item">
+        <h5>6. 광고 매체 계정 데이터 모델링</h5>
+        <ul class="pd-sublist">
+          <li>요구사항: 하나의 광고계정은 전역에서 하나지만 여러 사용자가 각자의 인증수단으로 같은 계정을 쓸 수 있고, 한 사용자가 같은 계정을 중복 등록해서는 안 됩니다</li>
+          <li><b>media_account</b>(실제 광고계정) · <b>media_license</b>(사용자별 인증수단) · <b>license_account</b>(둘의 연결 관계) 세 개념으로 분리. 광고계정과 사용자 인증정보는 <b>생명주기가 다르기 때문에</b> 하나의 Entity로 합치지 않고 현실의 관계를 그대로 모델에 표현</li>
+        </ul>
+      </div>
+      <div class="pd-work-item">
+        <h5>7. 비동기 회원 일괄 변경의 상태 설계</h5>
+        <div class="pd-ba">
+          <div class="ba-col problem"><span class="ba-label">문제</span><p>CSV 기반 회원 일괄 변경은 DB 변경과 결과 파일 생성·S3 업로드를 수행합니다. 외부 I/O를 트랜잭션 안에 두면 S3가 끝날 때까지 DB 커넥션을 점유해 둘을 분리했는데, 그러자 <b>DB는 성공했지만 후속 처리가 실패</b>하는 상태가 생겼습니다. 이를 FAILED로 표시하면 이미 바뀐 회원 데이터가 실패한 것처럼 보입니다</p></div>
+          <div class="ba-col after"><span class="ba-label">해결</span><p>DB 변경이 끝난 상태를 <b>APPLIED</b>로 별도 표현. DB 변경 전 실패는 FAILED, 변경 완료는 APPLIED, 후속 결과 처리까지 끝나면 최종 완료. APPLIED 상태에서는 후속 Worker가 결과 생성만 이어서 재시도할 수 있어 <b>실패 범위와 재시도 지점이 명확</b>해졌습니다</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pd-block">
+      <h4>진행한 일 · 인증·보안·운영</h4>
+      <div class="pd-work-item">
+        <h5>8. 인증 시스템 직접 구현</h5>
+        <ul class="pd-sublist">
+          <li>Google/Naver 소셜 로그인부터 JWT 발급까지, 인증 전 과정을 라이브러리에 위임하지 않고 직접 설계·구현</li>
+          <li><b>Shadow Login</b>: 운영자가 사용자의 화면 그대로 들어가 문의를 처리하는 기능. 모든 활동이 "누가(운영자) 누구로(사용자)" 했는지 감사 기록에 남도록 설계</li>
+          <li>세션 저장소는 <b>DynamoDB</b>로 구현. 요청마다 만료 시간을 4시간 뒤로 연장해 별도 정리 작업 없이 미사용 세션이 자동 만료. 동시 로그인 차단, "다른 기기에서 로그인됨" 안내 등 세션 정책 구현</li>
+        </ul>
+      </div>
+      <div class="pd-work-item">
+        <h5>9. 비정상 접근 자동 차단</h5>
+        <ul class="pd-sublist">
+          <li>로그인 실패나 위조된 토큰을 반복해서 보내는 IP를 자동 차단하는 방어 계층 구현. 실패 횟수는 여러 서버가 동시에 기록해도 어긋나지 않도록 <b>DynamoDB 원자 카운터</b>로 집계</li>
+          <li>차단 저장소에 장애가 나도 서비스는 멈추지 않도록 설계. <b>"보안 기능의 장애가 정상 사용자를 막아선 안 된다"</b>는 우선순위를 명시적으로 선택하고 문서화</li>
+          <li>허용 목록에 없는 API는 기본 차단(default-deny). 새 기능을 추가하다 권한 설정을 빠뜨려도 <b>실수로 열리는 사고가 구조적으로 불가능</b>하게 설계</li>
         </ul>
         <a class="pd-link" href="https://kiritoni.tistory.com/56" target="_blank" rel="noopener">관련 글: RDBMS vs NoSQL, 동시성을 다루는 두 저장소의 철학 <span class="ext" aria-hidden="true">↗</span></a>
       </div>
       <div class="pd-work-item">
-        <h5>3. 권한 체계 (RBAC)</h5>
-        <ul class="pd-sublist">
-          <li>허용 목록에 없는 API는 기본 차단. 새 기능을 추가하다 권한 설정을 빠뜨려도 <b>실수로 열리는 사고가 구조적으로 불가능</b>하게 설계</li>
-          <li>운영자 권한자가 동시에 전부 사라지는 엣지 케이스(서로를 동시에 강등)를 DB 락으로 차단</li>
-        </ul>
-      </div>
-      <div class="pd-work-item">
-        <h5>4. 운영 알림 체계 설계 (PostgreSQL 기반)</h5>
+        <h5>10. 운영 알림 체계 설계 (PostgreSQL 기반)</h5>
         <ul class="pd-sublist">
           <li>장애가 나면 협업 메신저로 즉시 알림. <b>같은 에러가 수만 건 터져도 상세 1건 + 요약 1건으로 수렴</b>하는 폭주 방어 설계</li>
-          <li>별도 메시지 브로커 없이 <b>PostgreSQL만으로 구현</b>: 여러 서버가 에러 카운트를 같은 행에 원자적으로 합산하고, 발송 상태를 DB에 두어 재시작·배포에도 유실 없음</li>
-          <li>발송 담당 서버 1대를 <b>PostgreSQL 행 잠금(FOR UPDATE SKIP LOCKED)으로 선출</b>: 중복 발송을 제거하고, 담당 서버가 죽으면 다른 서버가 자동 승계</li>
-          <li>집계·발송·상태 갱신을 <b>하나의 트랜잭션</b>으로 묶어 정합성 보장, 집계 쿼리는 부분 인덱스로 최적화</li>
+          <li>별도 메시지 브로커 없이 PostgreSQL만으로 구현. 발송 담당 서버 1대를 <b>FOR UPDATE SKIP LOCKED로 선출</b>해 중복 발송을 제거하고, 담당 서버가 죽으면 다른 서버가 자동 승계. 발송 상태를 DB에 두어 재시작·배포에도 유실 없음</li>
           <li>"알림 시스템 자체가 조용히 멈추면 누가 아는가"까지 설계. 외부 감시(CloudWatch)가 알림 루프의 생존을 감시하는 이중 구조</li>
-        </ul>
-      </div>
-      <div class="pd-work-item">
-        <h5>5. 감사로그 · 컴플라이언스</h5>
-        <ul class="pd-sublist">
-          <li>누가 무엇을 언제 바꿨는지 자동으로 남는 감사로그 체계 구축. 개인정보는 로그에서 마스킹, 요청 흐름은 전 구간 추적 가능</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="pd-block">
-      <h4>진행한 일 · Frontend</h4>
-      <div class="pd-work-item">
-        <h5>1. 화면 데이터 갱신(캐시) 전략 설계</h5>
-        <ul class="pd-sublist">
-          <li>화면 데이터가 낡는 두 경우, <b>내가 바꾼 것</b>과 <b>서버가 뒤에서 바꾼 것</b>을 구분해 각각 다른 갱신 전략을 세우고 팀 표준으로 문서화</li>
-          <li>목록에 이전 행이 남아 보이는 테이블 버그를 분석한 결과, 행 키(rowKey) 중복 탓에 React가 바뀐 행을 다시 그리지 못한 것이 원인. 1:N 펼침 목록의 행 고유 키 규칙을 세워 해결하고 재발 방지 규칙으로 문서화</li>
-        </ul>
-      </div>
-      <div class="pd-work-item">
-        <h5>2. 로딩 UX 설계</h5>
-        <ul class="pd-sublist">
-          <li>빠른 응답에서 로딩 표시가 한 프레임 깜빡이고 사라지는 문제를 <b>지연 게이트</b>로 제거. 짧으면 바로 콘텐츠, 길면 스켈레톤</li>
-          <li>준비된 영역부터 순차적으로 보여주는 점진 노출 설계로 화면 흔들림(레이아웃 시프트) 제거</li>
         </ul>
       </div>
     </div>
@@ -934,17 +880,61 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
     <div class="pd-block">
       <h4>성장한 점</h4>
       <div class="pd-growth-item">
+        <div class="pd-tags"><span>#동시성</span><span>#정합성</span><span>#판단</span></div>
+        <p>처음에는 "동시성을 다뤄봤다"가 목표였습니다. 하지만 대량 작업 선점, 운영자 강등, 중복 등록, 감사로그 누락을 차례로 겪으며 매번 다른 답이 나왔습니다. SKIP LOCKED, PESSIMISTIC_WRITE, Partial Unique Index, Outbox. <b>여러 실행 주체가 같은 상태를 바꾸는 상황에서 무엇을 보호해야 하는지 먼저 판단하고, 그 성격에 맞는 제어 방식을 고르는 것이 동시성 설계의 본질임을 배웠습니다.</b></p>
+      </div>
+      <div class="pd-growth-item">
+        <div class="pd-tags"><span>#원인_추적</span><span>#구조적_해결</span></div>
+        <p>감사로그 누락은 특정 서비스에 flush()를 한 줄 추가하면 당장 사라지는 문제였습니다. 하지만 그 경로만 고치는 것이라 다른 변경 경로에서 재발할 것이 분명했습니다. JPA flush 시점까지 원인을 추적해 트랜잭션 구조를 바꾸는 데 시간을 더 썼고, <b>증상을 없애는 것과 원인을 없애는 것은 다른 일이며 후자만이 다음 문제를 줄인다는 것을 배웠습니다.</b></p>
+      </div>
+      <div class="pd-growth-item">
         <div class="pd-tags"><span>#트레이드오프</span><span>#보안</span><span>#가용성</span></div>
         <p>보안 기능을 만들며 "완벽한 방어"와 "서비스 가용성"이 계속 충돌했습니다. 같은 시스템 안에서도 상황마다 다른 선택을 해야 했고, 중요한 것은 그 이유를 설명하고 기록하는 일이었습니다. <b>좋은 설계란 정답을 고르는 것이 아니라 트레이드오프를 명시적으로 선택하고 설명할 수 있는 것임을 깨달았습니다.</b></p>
       </div>
-      <div class="pd-growth-item">
-        <div class="pd-tags"><span>#운영</span><span>#관측성</span></div>
-        <p>"에러가 나면 알림이 온다"를 구현하고 나니 질문이 남았습니다. 알림 시스템 자체가 조용히 멈추면 누가 알아차리는가. 그래서 알림 시스템을 감시하는 외부 감시까지 계층으로 설계했습니다. <b>시스템을 만드는 일과 시스템이 실패하는 방식을 설계하는 일은 별개의 역량이며, 후자가 운영 품질을 결정한다는 것을 배웠습니다.</b></p>
+    </div>
+    </div>
+
+    <div class="pd-pane" data-pane="fe" role="tabpanel" hidden>
+    <div class="pd-block">
+      <h4>Tech</h4>
+      <div class="pd-tech"><span>React</span><span>TypeScript</span><span>Vite</span><span>Ant Design</span><span>TanStack Query</span></div>
+    </div>
+
+    <div class="pd-block">
+      <h4>진행한 일 · Frontend</h4>
+      <div class="pd-work-item">
+        <h5>1. 서버 상태 캐시 전략 설계 (TanStack Query)</h5>
+        <ul class="pd-sublist">
+          <li>화면 데이터가 낡는 두 경로를 구분했습니다. <b>내가 일으킨 변경</b>은 쓰기 직후 캐시를 무효화(invalidate-on-write)하고, <b>서버가 배치로 뒤집는 변경</b>(매체 연동 상태 등)은 주기적으로 다시 조회(refetch-for-freshness). 둘은 대체가 아닌 보완 관계임을 팀 표준으로 정립</li>
+          <li>하나의 쓰기가 여러 목록을 바꾸면 관련 캐시를 <b>전부</b> 무효화. 하나라도 빠지면 낡은 데이터가 조용히 남는 버그가 되므로, 무효화 세트를 헬퍼 하나로 단일화</li>
+          <li>낡은 데이터가 위험한 목록(연동 가능 계정 선택)만 선별적으로 캐시 제외. 성능과 신선도를 화면 단위로 조절</li>
+        </ul>
       </div>
+      <div class="pd-work-item">
+        <h5>2. 테이블 렌더링 버그 원인 분석</h5>
+        <div class="pd-ba">
+          <div class="ba-col problem"><span class="ba-label">문제</span><p>1:N 펼침 목록에서 데이터가 바뀐 뒤에도 <b>이전 행이 화면에 남아 보이는</b> 현상. 재현은 되지만 원인이 서버 응답인지 화면 갱신인지 불분명했습니다</p></div>
+          <div class="ba-col after"><span class="ba-label">해결</span><p>원인은 antd Table의 <code>rowKey</code> 중복. 키가 같으면 React가 바뀐 행을 새 행으로 인식하지 못해 다시 그리지 않았습니다. 펼침 목록의 <b>행 고유 키 규칙</b>을 세워 해결하고 재발 방지 규칙으로 문서화</p></div>
+        </div>
+      </div>
+      <div class="pd-work-item">
+        <h5>3. 로딩 UX 설계</h5>
+        <ul class="pd-sublist">
+          <li><b>200ms 지연 게이트</b>: 빠른 응답에서 스켈레톤이 한 프레임 떴다 사라지는 깜빡임을 제거. 짧으면 자리표시 없이 바로 페이드인, 길면 스켈레톤</li>
+          <li><b>점진 노출</b>: GNB·LNB·본문이 각자 준비되는 즉시 전환. 전체 화면 스켈레톤으로 준비된 영역까지 묶어두지 않아 체감 대기 시간 감소</li>
+          <li>GNB 사용자 영역은 부분 스켈레톤 대신 완성 후 한 번에 페이드인. 이름 길이에 따라 아이콘이 튀는 레이아웃 시프트 제거</li>
+          <li><code>prefers-reduced-motion</code> 사용자에게는 페이드 없이 즉시 표시</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pd-block">
+      <h4>성장한 점</h4>
       <div class="pd-growth-item">
         <div class="pd-tags"><span>#AI_주도_개발</span><span>#문서화</span><span>#하네스</span></div>
         <p>AI 주도 개발에서는 문서화가 곧 개발 속도였습니다. 캐시 전략, 로딩 UX 정책 같은 팀 기준을 패턴 문서(SSOT)로 정립하자 AI가 참조할 맥락이 생겼고, AI가 같은 실수를 반복하지 않도록 팀 내 하네스(컨벤션, 체크리스트, 가드)를 설정하는 일이 코드 작성만큼 중요해졌습니다. <b>AI 시대의 팀 품질은 문서와 하네스가 결정한다는 것을 배웠습니다.</b></p>
       </div>
+    </div>
     </div>
   </div>
 
@@ -1018,16 +1008,17 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
       <span>2025.07 – 2026.02 (6개월)</span>
       <span>동국대 서버실</span>
       <span>Backend · 기여 30%</span>
+      <span>서버 15대 · GPU 81개+</span>
     </div>
     <p class="pd-catch">"30분의 GPU 관리 시간을 5분 안으로 단축하다."</p>
 
     <div class="pd-block">
       <h4>개요</h4>
-      <p class="pd-p">'미니 AWS'처럼 온프레미스 환경에서 AI 연구자들의 GPU 자원과 권한을 관리하는 Kubernetes 기반 자동화 시스템입니다.</p>
+      <p class="pd-p">'미니 AWS'처럼 온프레미스 환경에서 AI 연구자들의 GPU 자원과 권한을 관리하는 Kubernetes 기반 자동화 시스템입니다. 고성능 서버 15대, GPU 81개 이상을 운영하는 서버실에서 GPU 서버 관리자로 일하며 직접 겪은 수작업을 자동화했습니다.</p>
       <ul class="pd-whr">
-        <li><span class="k">Why</span><span>비효율적인 수작업 프로세스 (Google Sheet, SSH 접속)</span></li>
-        <li><span class="k">How</span><span>웹 UI 기반 시스템 &amp; Kubernetes 도입</span></li>
-        <li><span class="k">Result</span><span>관리자 업무 시간 <b>90% 이상 단축</b>, 인적 오류 <b>zero</b> 달성</span></li>
+        <li><span class="k">Why</span><span>Google Sheet로 신청을 확인하고 SSH로 접속해 직접 작업하는 수작업. 연구자 데이터를 다루기에 명령어 하나의 실수도 큰 부담</span></li>
+        <li><span class="k">How</span><span>반복 작업을 Script로, 이어서 신청 정보가 실제 자원 생성까지 이어지는 Web UI로 단계적 자동화</span></li>
+        <li><span class="k">Result</span><span>관리 업무 약 <b>30분 → 5분</b>, 신청 정보와 서버 상태가 어긋나는 운영 부담 해소</span></li>
       </ul>
     </div>
 
@@ -1048,17 +1039,25 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
     <div class="pd-block">
       <h4>진행한 일</h4>
       <div class="pd-work-item">
-        <h5>1. 모놀리식 아키텍처 관심사 분리</h5>
+        <h5>1. 서버 관리 방식의 단계적 자동화</h5>
+        <div class="pd-ba">
+          <div class="ba-col before"><span class="ba-label">Before</span><p>Google Sheet의 신청 정보를 보고 SSH로 서버에 접속해 컨테이너 생성, 권한 부여를 직접 수행. 명령어를 여러 번 확인해야 했고 Sheet와 실제 서버 상태가 어긋나기도 했습니다</p></div>
+          <div class="ba-col problem"><span class="ba-label">1단계 · Script</span><p>Docker 생성, 권한 부여 등 반복 명령을 Script로 묶어 직접 입력을 줄임. 다만 사람이 잘못된 인자를 넘길 가능성은 그대로 남았습니다</p></div>
+          <div class="ba-col after"><span class="ba-label">2단계 · Web UI</span><p>신청 정보를 입력으로 받아 <b>Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성·할당, 만료 자원 탐지·회수</b>까지 이어지는 웹 기반 관리 시스템 개발. 신청 정보와 실제 자원 생성 흐름을 하나로 연결</p></div>
+        </div>
+      </div>
+      <div class="pd-work-item">
+        <h5>2. 모놀리식 아키텍처 관심사 분리</h5>
         <div class="pd-ba">
           <div class="ba-col before"><span class="ba-label">Before</span><p>단일 앱에 사용자 요청 처리(Web)와 리소스 집약적 K8s 제어 로직이 혼재, K8s 부하/오류가 웹 응답 저하로 이어질 위험 (Client → Flask → K8s)</p></div>
           <div class="ba-col after"><span class="ba-label">After</span><p>Web Server와 K8s Worker로 역할 분리 (Client → Spring Boot → Flask → K8s). Spring Boot: 신청·수락·UID/GID 할당·스케줄러 / Flask: K8s 제어·리소스 할당. 코드베이스 분리로 범위 파악 용이, 빌드·배포 속도 개선</p></div>
         </div>
       </div>
       <div class="pd-work-item">
-        <h5>2. Slack API rate limit 대응</h5>
+        <h5>3. Slack Rate Limit으로 인한 핵심 작업 장애 격리</h5>
         <div class="pd-ba">
-          <div class="ba-col before"><span class="ba-label">Before</span><p>아침 대규모 정리 작업 중 Slack 429 발생 시 전체 스케줄러 중단. 비즈니스 로직(계정 삭제)과 부가 기능(알림)의 강한 동기 결합. 메모리 큐는 장애 시 대기 알림 유실 위험</p></div>
-          <div class="ba-col after"><span class="ba-label">After</span><p>알림 발송을 <b>Redis 큐로 분리</b>해 본 작업(계정 삭제)과 독립적으로 처리. 발송 속도를 제한 범위 안으로 조절하고, 서버 장애가 나도 대기 중인 알림이 유실되지 않게 설계</p></div>
+          <div class="ba-col before"><span class="ba-label">Before</span><p>만료 계정·컨테이너 정리 스케줄러가 Slack API를 동기 호출. 대량 알림에서 429가 발생하면 알림 실패 때문에 <b>핵심 작업인 계정 정리까지 중단</b>. 메모리 큐는 서버 재시작 시 대기 알림 유실 위험</p></div>
+          <div class="ba-col after"><span class="ba-label">After</span><p>계정 정리는 반드시 수행돼야 할 핵심 로직, 알림은 실패해도 핵심에 영향을 주면 안 되는 부가 기능. <b>두 작업의 실패 범위가 같아선 안 된다</b>고 판단해 Redis List 기반 Producer-Consumer로 분리. Consumer가 BRPOP으로 Slack 속도에 맞춰 발송하고, 이미 운영 중인 Redis를 써 재시작에도 메시지 보존. <code>AFTER_COMMIT</code> 이벤트로 DB 롤백 시 알림만 나가는 문제 차단</p></div>
         </div>
         <a class="pd-link" href="https://kiritoni.tistory.com/52" target="_blank" rel="noopener">관련 글: Slack Rate Limit을 Redis 메시지 큐로 해결하기 <span class="ext" aria-hidden="true">↗</span></a>
       </div>
@@ -1068,7 +1067,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
       <h4>성장한 점</h4>
       <div class="pd-growth-item">
         <div class="pd-tags"><span>#서버관리자</span><span>#수작업</span><span>#불편함</span></div>
-        <p>1년간 Google Sheet 수기 관리·SSH 수동 컨테이너 생성의 번거로움을 직접 자동화했습니다. '불편함이 곧 기술로 해결할 과제'임을 깨달았고, 연구자들이 연구에만 몰입할 환경을 '내 손'으로 개선한 뿌듯함을 느꼈습니다.</p>
+        <p>처음에는 실수하지 않으려고 명령어를 여러 번 확인하는 것이 최선이었습니다. 1년간 Google Sheet 수기 관리와 SSH 수동 작업을 반복하다 보니 생각이 바뀌었습니다. <b>반복해서 확인해야 하는 일이 있다면 그 확인 자체를 줄일 방법을 찾는 것이 엔지니어의 일</b>이라는 것. 그렇게 Script를 거쳐 Web UI까지 자동화했고, 연구자들이 연구에만 몰입할 환경을 '내 손'으로 개선한 뿌듯함을 느꼈습니다.</p>
       </div>
       <div class="pd-growth-item">
         <div class="pd-tags"><span>#연구_데이터</span><span>#트랜잭션</span><span>#에러_핸들링</span></div>
@@ -1127,8 +1126,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
     <div class="pd-block">
       <h4>성장한 점</h4>
       <div class="pd-growth-item">
-        <div class="pd-tags"><span>#신속</span><span>#공유</span><span>#집단지성</span><span>#협업</span></div>
-        <p>디자이너·프론트·백엔드·게임 개발자 약 20여 명을 조율하는 리더를 맡았습니다. 기술 이슈와 일정 부담이 컸지만 '신속한 공유'와 '집단지성'으로 풀어갔고, 그 과정에서 혼자 고민하기보다 팀과 의견을 나누는 편이 더 견고한 시스템을 만드는 지름길임을 배웠습니다.</p>
+        <div class="pd-tags"><span>#리더십</span><span>#협업</span><span>#팀의_속도</span></div>
+        <p>디자이너·프론트·백엔드·게임 개발자 약 20명을 이끌었습니다. 학년, 개발 경험, 투입 가능한 시간이 모두 달랐는데, 처음에는 일정을 촘촘하게 관리하면 팀의 속도가 오를 거라 생각했습니다. 실제로는 구성원마다 상황이 달라 기여도에 대한 불만이 생겼습니다. <b>팀의 속도를 높이는 것은 일정을 압축하는 일이 아니라 각자의 상황을 이해하고 방향을 맞추는 과정</b>이라는 것을 배웠고, 이후 신속한 공유와 집단지성으로 기술 이슈와 일정 부담을 함께 풀어갔습니다.</p>
       </div>
       <div class="pd-growth-item">
         <div class="pd-tags"><span>#회고</span><span>#기술</span><span>#의사결정</span></div>
@@ -1190,7 +1189,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 
   /* ---------- hero typing (JetBrains Mono + caret blink 530ms) ---------- */
   var typed=document.getElementById('typed');
-  var phrases=['Software Engineer','Java, Kotlin, Spring Boot','함께할 때 빛나는 엔지니어'];
+  var phrases=['Software Engineer','Java, Kotlin, Spring Boot','Backend · Frontend · Infra'];
   if(typed){
     if(reduce){
       typed.textContent=phrases[0];
@@ -1301,6 +1300,15 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
       btn.addEventListener('click',function(){ openModal(btn.getAttribute('data-open'), btn); });
     });
     closeBtn.addEventListener('click',closeModal);
+    bodyEl.addEventListener('click',function(e){            // 모달 내부 탭 전환
+      var tab=e.target.closest('.pd-tab'); if(!tab)return;
+      var key=tab.getAttribute('data-tab');
+      [].slice.call(bodyEl.querySelectorAll('.pd-tab')).forEach(function(t){
+        var on=t===tab; t.classList.toggle('is-active',on); t.setAttribute('aria-selected',on?'true':'false');
+      });
+      [].slice.call(bodyEl.querySelectorAll('.pd-pane')).forEach(function(p){ p.hidden=p.getAttribute('data-pane')!==key; });
+      var top=tab.parentNode.offsetTop-34; if(bodyEl.scrollTop>top)bodyEl.scrollTop=top;
+    });
     overlay.addEventListener('click',function(e){ if(e.target===overlay)closeModal(); }); // 배경 클릭
     document.addEventListener('keydown',function(e){
       if(overlay.hidden)return;
