@@ -61,7 +61,7 @@ export default function AdOnChatDetail() {
                               <ul className="pd-sublist">
                                 <li>한 사용자가 같은 광고계정을 중복 등록하면 안 됩니다. 애플리케이션의 사전 중복 조회는 동시 요청에서 둘 다 "중복 없음"으로 통과할 수 있어, <b>DB Unique Constraint를 최종 방어선</b>으로 두었습니다</li>
                                 <li>Soft Delete된 행까지 유니크에 포함하면 삭제한 계정을 재등록할 수 없는 문제가 생겨, 활성 행에만 적용되는 <b>PostgreSQL Partial Unique Index</b>를 사용</li>
-                                <li>인증정보는 암호화 저장되고 매번 다른 암호문이 나와 직접 비교가 불가능합니다. 원본 기반의 <b>결정적 SHA-256 fingerprint</b>를 별도 컬럼에 두고 Unique Constraint로 중복을 판별. 보안과 정합성을 함께 확보</li>
+                                <li>인증정보는 KMS로 암호화 저장되어 매번 다른 암호문이 나오므로 암호문으로는 중복을 비교할 수 없습니다. 평문으로 만든 <b>결정적 SHA-256 지문</b>을 별도 컬럼에 두고, (회원, 매체, 지문)에 <b>Partial Unique Index</b>를 걸어 DB가 중복 등록을 막습니다</li>
                                 <li>원칙: 애플리케이션은 빠르고 명확한 오류를, DB는 동시 요청에서도 깨지지 않는 최종 정합성을 담당</li>
                               </ul>
                             </div>
