@@ -1,22 +1,9 @@
 import { ReloadOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { APPLE } from '../data/pixels'
 import { prefersReducedMotion } from '../hooks/useReducedMotion'
 
-// 11×11 픽셀 사과. S 꼭지, L 잎, R 껍질, H 하이라이트, D 그늘
-const APPLE = [
-  '.....S.LL..',
-  '.....SLLL..',
-  '..RRR.RRR..',
-  '.RHRRRRRRR.',
-  'RHRRRRRRRRR',
-  'RRRRRRRRRRD',
-  'RRRRRRRRRRD',
-  'RRRRRRRRRDD',
-  '.RRRRRRRDD.',
-  '..RRRRRDD..',
-  '...RD.DD...',
-]
 const N = APPLE.length
 
 // 새로 고칠 때마다 흩어진 모양이 달라지지 않도록 고정 시드 난수를 쓴다
@@ -150,7 +137,7 @@ export default function HeroStage() {
             ref={(el) => {
               pixelRefs.current[i] = el
             }}
-            className={`px px-${p.kind}`}
+            className={`px pk-${p.kind}`}
             style={
               {
                 gridRow: p.row + 1,

@@ -1,11 +1,14 @@
 import { Card, Flex, Tag } from 'antd'
 import { SKILL_GROUPS } from '../data/profile'
+import { SECTION_PIXELS } from '../data/pixels'
+import PixelArt from './PixelArt'
 
 export default function Skills() {
   return (
     <section className="section section-alt section-panel" id="skills" aria-labelledby="skills-title">
       <div className="container-inner">
         <div className="section-head" data-reveal>
+          <PixelArt pattern={SECTION_PIXELS.skills} className="section-mark" />
           <h2 className="section-title" id="skills-title">
             Skills
           </h2>

@@ -1,5 +1,7 @@
 import { Typography } from 'antd'
 import { AWARDS, LICENSES, type Credential } from '../data/profile'
+import { SECTION_PIXELS } from '../data/pixels'
+import PixelArt from './PixelArt'
 
 function CredList({ title, items }: { title: string; items: Credential[] }) {
   return (
@@ -27,6 +29,7 @@ export default function Credentials() {
     <section className="section" id="credentials" aria-labelledby="cred-title">
       <div className="container-inner">
         <div className="section-head" data-reveal>
+          <PixelArt pattern={SECTION_PIXELS.credentials} className="section-mark" />
           <h2 className="section-title" id="cred-title">
             Awards &amp; Licenses
           </h2>

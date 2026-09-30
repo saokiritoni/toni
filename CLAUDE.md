@@ -22,6 +22,7 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 | 프로젝트 카드 (제목·개발한 곳·기술 스택·미리보기 항목) | `src/data/projects.tsx` |
 | 상세 모달 내용 | `src/details/{프로젝트}Detail.tsx`, 연결은 `src/details/index.ts` |
 | 섹션 컴포넌트 | `src/components/` |
+| 픽셀 그림 (히어로 사과·섹션 아이콘·카드 아이콘) | `src/data/pixels.ts`, 그리는 부품은 `src/components/PixelArt.tsx` |
 | antd 테마 토큰 | `src/theme/AntdTheme.tsx` |
 | 라이트·다크 전환 상태 | `src/theme/ThemeContext.tsx`, 첫 렌더 전 결정은 `index.html` 인라인 스크립트 |
 | 전역 스타일·디자인 토큰 | `src/styles/global.css` |
@@ -87,6 +88,13 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 - `Card` 의 `cover` 는 antd 가 자식을 `display:block` 으로 바꾼다. 커버 안에서 flex 배치가 필요하면 `.ant-card .ant-card-cover > .card-thumb` 로 되돌린다.
 - 카드 안에 antd `Button` 이 있으므로 카드는 `<button>` 이 아니라 `role="button"` + Enter/Space 키 처리로 만든다.
 - 대체한 요소의 옛 CSS 규칙은 남기지 않고 지운다.
+
+### 픽셀 블록
+
+- 히어로의 "흩어진 블록이 구조로 모인다"는 장면이 사이트 전체의 공통 요소다. 섹션 제목 옆·About 카드·프로젝트 카드 커버·푸터의 아이콘을 모두 `PixelArt` 로 그린다.
+- 그림은 `pixels.ts` 에 문자열 배열로 적는다. 한 글자가 블록 하나이고, 글자와 색의 대응은 `global.css` 의 `.pk-*` 에 있다. 새 글자를 쓰면 `.pk-*` 도 추가한다.
+- `PixelArt` 는 `[data-reveal]` 조상이 드러날 때 모인다. 조상이 없는 곳(푸터 등)에는 `static` 을 준다.
+- Awards & Licenses 목록은 장식을 줄이라는 교정을 받은 곳이다. 제목 옆 아이콘 말고는 장식을 더하지 않는다.
 
 ### 모션
 

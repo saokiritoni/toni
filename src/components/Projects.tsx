@@ -3,6 +3,8 @@ import { Button, Card, Flex, Tag } from 'antd'
 import type { KeyboardEvent, PointerEvent } from 'react'
 import { FEATURED, GRID_PROJECTS, type GridProject, type ProjectKey } from '../data/projects'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+import { PROJECT_PIXELS, SECTION_PIXELS } from '../data/pixels'
+import PixelArt from './PixelArt'
 
 type OpenHandler = (key: ProjectKey) => void
 
@@ -84,6 +86,7 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
     >
       <div className="feat-grid">
         <div className="feat-panel">
+          <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
           <div className="feat-heading">
             <span className="project-org">{p.org}</span>
             <h3 className="feat-title">{p.title}</h3>
@@ -119,6 +122,7 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
       data-reveal
       cover={
         <div className={`card-thumb ${p.thumb.tone}`}>
+          <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
           <div>
             <span className="project-org">{p.org}</span>
             <h3 className="thumb-title">{p.title}</h3>
@@ -146,6 +150,7 @@ export default function Projects({ onOpen }: { onOpen: OpenHandler }) {
     <section className="section" id="projects" aria-labelledby="projects-title">
       <div className="container-inner">
         <div className="section-head" data-reveal>
+          <PixelArt pattern={SECTION_PIXELS.projects} className="section-mark" />
           <h2 className="section-title" id="projects-title">
             Projects
           </h2>

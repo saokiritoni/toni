@@ -170,11 +170,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   background-size:calc(100% / 11) calc(100% / 11);opacity:.7;
   -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 45%,transparent 75%);mask-image:radial-gradient(circle at 50% 50%,#000 45%,transparent 75%)}
 .px{position:relative;pointer-events:none;border-radius:var(--r-compact);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),var(--sh-soft);will-change:transform}
-.px-R{background:var(--apple)}
-.px-D{background:var(--apple-deep)}
-.px-H{background:color-mix(in srgb,var(--apple),#fff 55%)}
-.px-L{background:linear-gradient(135deg,var(--leaf-bright),var(--leaf-deep))}
-.px-S{background:var(--stem)}
 .hero-stage.is-scattered .px{transform:translate(var(--sx),var(--sy)) rotate(var(--sr)) scale(.55);opacity:.35;
   transition:transform .8s var(--ease),opacity .8s var(--ease)}
 .hero-stage.is-assembling .px{transform:none;opacity:1;
@@ -188,6 +183,29 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .hero-stage-bar .stage-replay.ant-btn:not(:disabled):hover{color:var(--hover);background:transparent}
 
 
+/* ============================= PIXEL ART (공용 블록 그림) ============================= */
+/* 블록 색. 글자와 색의 대응은 src/data/pixels.ts 맨 위 주석과 같다 */
+.pk-R{background:var(--apple)}
+.pk-D{background:var(--apple-deep)}
+.pk-H{background:color-mix(in srgb,var(--apple),#fff 55%)}
+.pk-L{background:linear-gradient(135deg,var(--leaf-bright),var(--leaf-deep))}
+.pk-G{background:var(--leaf-deep)}
+.pk-S{background:var(--stem)}
+.pk-K{background:var(--text)}
+.pk-d{background:var(--border-strong)}
+.pk-Y{background:var(--gold)}
+.pk-W{background:rgba(255,255,255,.92)}
+.pk-w{background:rgba(255,255,255,.42)}
+/* [data-reveal] 조상이 드러나면 흩어진 블록이 제자리로 모인다 */
+.pixel-art{display:inline-grid;grid-template-columns:repeat(var(--cols),var(--cell));grid-auto-rows:var(--cell);gap:1px;flex:none;vertical-align:middle}
+.pa-px{border-radius:1px;transform:translate(var(--sx),var(--sy)) scale(.3);opacity:0;
+  transition:transform .8s cubic-bezier(.16,1,.3,1) var(--d),opacity .45s var(--ease) var(--d)}
+.is-revealed .pa-px,.pixel-art.is-static .pa-px{transform:none;opacity:1}
+/* 카드에 마우스를 올리면 블록이 왼쪽부터 한 번씩 튀어 오른다 */
+@keyframes paHop{40%{transform:translateY(calc(var(--cell) * -.7))}}
+.about-card:hover .pa-px,.ant-card:hover .thumb-pixel .pa-px,.footer-brand:hover .pa-px,.section-head:hover .section-mark .pa-px{
+  animation:paHop .42s var(--ease) calc(var(--i) * 22ms)}
+
 /* ============================= SECTION SHELL ============================= */
 .section{padding:80px 0}
 /* 교차 배경 패널 섹션 경계 트리트먼트: 상단 accent hairline + top light edge + 하단 은은한 inset → 스크롤 리듬 */
@@ -197,17 +215,23 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent) 40%,transparent),transparent)}
 /* 옅은 배경 패널 섹션 (Skills·Experience). 기존 인라인 style 을 클래스로 옮겼다 */
 .section-panel{background:var(--surface-100);border-block:1px solid var(--border)}
-.section-head{margin-bottom:44px}
+.section-head{margin-bottom:44px;display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-items:center}
+.section-head .section-sub{grid-column:2}
+.section-mark{align-self:center}
 .section-title{font-family:var(--f-display);font-weight:500;font-size:clamp(26px,4vw,36px);letter-spacing:-.02em;line-height:1.2}
 .section-sub{color:var(--text-dim);margin-top:12px;font-size:16px;max-width:56ch}
 
 /* ============================= ABOUT ============================= */
-.about-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:4px}
-.about-col{position:relative;padding-top:18px;border-top:1px solid var(--border-med)}
-.about-idx{font-family:var(--f-mono);font-size:12px;color:var(--accent);display:block;margin-bottom:14px;letter-spacing:.04em}
-.about-col::before{content:"";position:absolute;top:-1px;left:0;width:34px;height:2px;background:var(--accent)}
+.about-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:4px}
+.about-col{display:flex}
+/* 등장(data-reveal)은 바깥 .about-col 이, hover 이동은 안쪽 .about-card 가 맡아서 두 transform 이 겹치지 않는다 */
+.about-card{flex:1;padding:26px 26px 28px;border-radius:var(--r-feat);background:var(--surface-100);border:1px solid var(--border);
+  box-shadow:var(--edge-top),var(--sh-soft);transition:transform var(--m-standard) var(--ease)}
+.about-card:hover{transform:translateY(-3px)}
+.about-card-top{display:flex;align-items:flex-end;justify-content:space-between;min-height:71px;margin-bottom:22px}
+.about-idx{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);letter-spacing:.04em}
 .about-title{font-family:var(--f-display);font-size:18px;font-weight:600;letter-spacing:-.02em;line-height:1.45;color:var(--text);margin-bottom:10px;word-break:keep-all}
-.about-col p{font-size:15.5px;line-height:1.75;color:var(--text-dim);word-break:keep-all}
+.about-card p{font-size:15.5px;line-height:1.75;color:var(--text-dim);word-break:keep-all}
 
 /* ============================= SKILLS ============================= */
 .skills-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px}
@@ -216,10 +240,13 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .skill-group .ant-card-head{min-height:0;padding:18px 20px 0;border-bottom:none}
 .skill-group .ant-card-head-title{font-family:var(--f-mono);font-size:12px;font-weight:400;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em}
 .skill-group .ant-card-body{padding:14px 20px 20px}
-.skill-group .skill-tag{font-family:var(--f-mono);font-size:12px;line-height:22px;padding:2px 12px;margin:0;border-radius:var(--r-pill)}
-.skill-group .skill-tag.ant-tag{color:var(--text);background:var(--surface-400);border-color:var(--border);transition:color var(--m-fast) var(--ease),border-color var(--m-fast) var(--ease)}
-.skill-group .skill-tag.ant-tag.is-main{color:var(--accent);border-color:var(--accent)}
-.skill-group .skill-tag.ant-tag:hover{color:var(--hover);border-color:var(--border-med)}
+/* 기술 이름을 키보드 키캡처럼 보여 준다. 아래 두께는 그림자로 고정하고, 누르는 느낌은 transform 으로만 낸다 */
+.skill-group .skill-tag{font-family:var(--f-mono);font-size:12px;line-height:24px;padding:2px 12px;margin:0;border-radius:6px}
+.skill-group .skill-tag.ant-tag{color:var(--text);background:var(--surface-100);border-color:var(--border-med);
+  box-shadow:0 3px 0 var(--border-med);transition:transform var(--m-fast) var(--ease)}
+.skill-group .skill-tag.ant-tag.is-main{color:#fff;background:var(--apple);border-color:var(--apple-deep);box-shadow:0 3px 0 var(--apple-deep)}
+.skill-group .skill-tag.ant-tag:hover{transform:translateY(-2px)}
+.skill-group .skill-tag.ant-tag:active{transform:translateY(2px)}
 
 /* ============================= PROJECTS ============================= */
 .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -238,6 +265,9 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .card-thumb.g1{background:linear-gradient(135deg,var(--apple),var(--apple-deep))}
 .card-thumb.g2{background:linear-gradient(135deg,#26251e,#4a4736)}
 .card-thumb.g3{background:linear-gradient(135deg,var(--leaf-bright),var(--leaf-deep))}
+/* 커버 오른쪽의 흰색 픽셀 아이콘. 제목·태그와 겹치지 않도록 가운데 높이에 둔다 */
+.thumb-pixel{position:absolute;right:18px;top:50%;margin-top:-12px}
+.feat-panel .thumb-pixel{top:30px;right:30px;margin-top:0}
 .thumb-title{font-family:var(--f-display);font-weight:600;font-size:22px;letter-spacing:-.02em;line-height:1.3;word-break:keep-all;color:#fff}
 .ant-card.card .card-body{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}
 .card-role{font-family:var(--f-mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.05em}
@@ -288,8 +318,12 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .ant-card:hover .card-more.ant-btn{color:var(--hover);border-color:var(--border-med)}
 
 /* ============================= EXPERIENCE ============================= */
-/* antd Timeline: 점은 accent 테두리 원, 세로선은 border 토큰 */
-.exp-timeline .ant-timeline-item-icon{width:12px;height:12px;border:2px solid var(--accent);background:var(--bg)}
+/* antd Timeline: 점은 accent 테두리의 네모 블록, 지금 하는 일은 잎 초록으로 채우고 바깥 고리가 퍼진다 */
+.exp-timeline .ant-timeline-item-icon{width:12px;height:12px;border-radius:2px;border:2px solid var(--accent);background:var(--bg)}
+.exp-timeline .is-now .ant-timeline-item-icon{position:relative;background:var(--leaf);border-color:var(--leaf)}
+.exp-timeline .is-now .ant-timeline-item-icon::after{content:"";position:absolute;inset:-5px;border-radius:3px;border:2px solid var(--leaf);
+  animation:nowPulse 2.2s var(--ease) infinite}
+@keyframes nowPulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.5);opacity:0}}
 .exp-timeline .ant-timeline-item-content{padding-bottom:22px}
 .tl-period{font-family:var(--f-mono);font-size:12px;color:var(--text-dim)}
 .tl-role{font-family:var(--f-display);font-size:18px;font-weight:500;letter-spacing:-.01em;margin-top:3px}
@@ -315,6 +349,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .footer-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
 .footer-meta{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);line-height:1.7}
 .footer-wordmark{font-size:16px}
+.footer-brand{display:flex;align-items:center;gap:18px}
 .footer-meta{margin-top:8px}
 .footer-mail{transition:color var(--m-fast) var(--ease)}
 .footer-mail:hover{color:var(--hover)}
@@ -485,6 +520,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .caret{animation:none}
   .hero-ornament::before,.hero-ornament::after{animation:none}
   .hero-stage .px{transition:none}
+  .pa-px{transform:none;opacity:1;animation:none !important}
+  .exp-timeline .is-now .ant-timeline-item-icon::after{animation:none;opacity:0}
   .card-thumb::after{display:none}
   .card::before,.card-featured::before{display:none}
   .pd-impl>summary::before{transition:none}
