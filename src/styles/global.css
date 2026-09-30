@@ -391,7 +391,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pd-sublist code,.pd-p code,.ba-col code{font-family:var(--f-mono);font-size:.88em;background:var(--surface-300);padding:1px 5px;border-radius:var(--r-compact);color:var(--text)}
 /* Before/After: flat 카드, 라벨 색 한 포인트 (좌측 rule·edge·보더 제거) */
 .pd-ba{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:12px;margin-top:4px}
-.pd-ba+.pd-after-ba{margin-top:14px}
 .ba-col{border-radius:var(--r-feat);padding:16px 18px;background:var(--surface-100)}
 .ba-label{font-family:var(--f-mono);font-size:11px;letter-spacing:.03em;padding:3px 10px;border-radius:var(--r-pill);display:inline-block;margin-bottom:11px}
 .ba-col.before .ba-label{background:var(--surface-400);color:var(--text-dim)}
@@ -399,6 +398,10 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .ba-col.after .ba-label{background:rgba(245,78,0,.12);color:var(--accent)}
 .ba-col p{font-size:15px;line-height:1.6;color:var(--text)}
 .ba-col p b{font-weight:600}
+.ba-col p+p{margin-top:10px}
+.ba-col p+.pd-sublist{margin-top:10px}
+.ba-col .pd-sublist li{color:var(--text)}
+.ba-col .pd-sublist li:last-child{margin-bottom:0}
 .pd-impl{margin-top:12px}
 .pd-impl>summary{display:inline-flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font-size:13.5px;color:var(--text-dim);padding:4px 0}
 .pd-impl>summary::-webkit-details-marker{display:none}
