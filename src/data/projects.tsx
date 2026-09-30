@@ -42,15 +42,9 @@ export const FEATURED: FeaturedProject = {
   title: 'AdOnChat',
   overview: '광고 매체 계정을 연동해 대량 광고 작업을 처리하고, 자연어 대화로 광고 데이터를 분석하는 B2B 광고 운영 솔루션',
   points: [
-    <>
-      <b>Backend</b>: 여러 서버가 동시에 처리하는 대량 광고 작업의 동시성과 데이터 정합성을 DB 락·제약조건으로 보장하고, 48종의 대량 작업을 하나의 공통 구조로 묶어 기존 코드를 고치지 않고 새 작업을 추가할 수 있도록 설계
-    </>,
-    <>
-      <b>Backend</b>: 소셜 로그인·세션·비정상 접근 차단·운영 알림까지 인증과 운영 기반을 설계·구현
-    </>,
-    <>
-      <b>Frontend</b>: TanStack Query 캐시 전략과 로딩 UX를 설계해 화면 데이터의 신선도와 체감 속도를 개선
-    </>,
+    '광고 계정 연동부터 권한·대량 작업·감사로그까지 B2B 광고 운영 기능 개발',
+    '동시성·트랜잭션 문제에서 처리량과 데이터 정합성을 고려해 구조 설계',
+    '백엔드를 중심으로 프론트엔드와 인프라까지 기능 단위의 개발 경험',
   ],
 }
 
@@ -62,7 +56,11 @@ export const GRID_PROJECTS: GridProject[] = [
     thumb: { tone: 'g1' },
     role: 'Frontend, Backend · 기여 100%',
     title: '[인턴 과제] 자연어 광고 분석 서비스',
-    points: ['자연어로 광고 데이터를 분석하는 AI 서비스', '2주 MVP로 설계·개발, 대시보드 응답 99.58%↓'],
+    points: [
+      '자연어 질문을 실제 광고 데이터 조회로 연결하는 AI 분석 서비스 개발',
+      '데이터 수집부터 AI 분석·리포트까지 AWS 기반으로 2주 만에 MVP 구현',
+      '마케터의 실제 업무를 확인해 PDF 리포트를 Excel 중심으로 개선',
+    ],
     stack: ['EventBridge', 'Lambda', 'Athena', 'Bedrock', 'Redis'],
   },
   {
@@ -72,7 +70,11 @@ export const GRID_PROJECTS: GridProject[] = [
     thumb: { tone: 'g2' },
     role: 'Backend · 기여 30%',
     title: '서버 관리 자동화 시스템',
-    points: ['AI 연구자용 GPU 서버 자원·권한을 관리하는 Kubernetes 자동화 시스템', '백엔드 개발, 관리 시간 30분→5분(90%↓) · 알림 발송 안정화'],
+    points: [
+      'Google Sheet와 SSH로 처리하던 GPU 서버 관리 업무를 Web UI로 자동화',
+      '신청부터 Linux 계정·GPU 자원 생성과 회수까지 하나의 흐름으로 연결',
+      '서버 15대·GPU 81개 이상의 관리 업무를 약 30분에서 5분 이내로 단축',
+    ],
     stack: ['Spring Boot', 'Kubernetes', 'Redis', 'MySQL'],
   },
   {
@@ -82,7 +84,11 @@ export const GRID_PROJECTS: GridProject[] = [
     thumb: { tone: 'g3' },
     role: 'Leader · Backend 30%',
     title: 'Farm System 동아리 홈페이지',
-    points: ['동아리 공식 홈페이지 + 내부 커뮤니티(파밍로그) 서비스', '20여 명 팀 리드 · AWS 운영, 악성 트래픽 14,000건 무중단 차단'],
+    points: [
+      '약 20명의 팀을 이끌며 공식 홈페이지와 내부 커뮤니티 개발·운영',
+      '서로 다른 경험과 참여 여건을 고려해 역할과 일정을 조율하며 프로젝트 완성',
+      '170명 이상의 회원이 실제 사용하는 서비스를 운영하며 보안·인프라 이슈 대응',
+    ],
     stack: ['Spring Boot', 'AWS WAF', 'RDS', 'Docker'],
   },
 ]
