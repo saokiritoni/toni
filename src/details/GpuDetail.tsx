@@ -1,5 +1,6 @@
 import { ExportOutlined } from '@ant-design/icons'
 import { Tag, Typography } from 'antd'
+import WorkParts from '../components/WorkParts'
 
 export default function GpuDetail() {
   return (
@@ -38,29 +39,45 @@ export default function GpuDetail() {
 
       <div className="pd-block">
         <h4>진행한 일</h4>
-        <div className="pd-work-item">
-          <h5>1. 서버 관리 방식의 단계적 자동화</h5>
-          <div className="pd-ba">
-            <div className="ba-col before"><span className="ba-label">Before</span><p>Google Sheet의 신청 정보를 보고 SSH로 서버에 접속해 컨테이너 생성, 권한 부여를 직접 수행. 명령어를 여러 번 확인해야 했고 Sheet와 실제 서버 상태가 어긋나기도 했습니다</p></div>
-            <div className="ba-col problem"><span className="ba-label">1단계 · Script</span><p>Docker 생성, 권한 부여 등 반복 명령을 Script로 묶어 직접 입력을 줄임. 다만 사람이 잘못된 인자를 넘길 가능성은 그대로 남았습니다</p></div>
-            <div className="ba-col after"><span className="ba-label">2단계 · Web UI</span><p>신청 정보를 입력으로 받아 <b>Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성·할당, 만료 자원 탐지·회수</b>까지 이어지는 웹 기반 관리 시스템 개발. 신청 정보와 실제 자원 생성 흐름을 하나로 연결</p></div>
-          </div>
-        </div>
-        <div className="pd-work-item">
-          <h5>2. 모놀리식 아키텍처 관심사 분리</h5>
-          <div className="pd-ba">
-            <div className="ba-col before"><span className="ba-label">Before</span><p>단일 앱에 사용자 요청 처리(Web)와 리소스 집약적 K8s 제어 로직이 혼재, K8s 부하/오류가 웹 응답 저하로 이어질 위험 (Client → Flask → K8s)</p></div>
-            <div className="ba-col after"><span className="ba-label">After</span><p>Web Server와 K8s Worker로 역할 분리 (Client → Spring Boot → Flask → K8s). Spring Boot: 신청·수락·UID/GID 할당·스케줄러 / Flask: K8s 제어·리소스 할당. 코드베이스 분리로 범위 파악 용이, 빌드·배포 속도 개선</p></div>
-          </div>
-        </div>
-        <div className="pd-work-item">
-          <h5>3. Slack Rate Limit으로 인한 핵심 작업 장애 격리</h5>
-          <div className="pd-ba">
-            <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리 스케줄러가 Slack API를 동기 호출. 대량 알림에서 429가 발생하면 알림 실패 때문에 <b>핵심 작업인 계정 정리까지 중단</b>. 메모리 큐는 서버 재시작 시 대기 알림 유실 위험</p></div>
-            <div className="ba-col after"><span className="ba-label">After</span><p>계정 정리는 반드시 수행돼야 할 핵심 로직, 알림은 실패해도 핵심에 영향을 주면 안 되는 부가 기능. <b>두 작업의 실패 범위가 같아선 안 된다</b>고 판단해 Redis List 기반 Producer-Consumer로 분리. Consumer가 BRPOP으로 Slack 속도에 맞춰 발송하고, 이미 운영 중인 Redis를 써 재시작에도 메시지 보존. <code>AFTER_COMMIT</code> 이벤트로 DB 롤백 시 알림만 나가는 문제 차단</p></div>
-          </div>
-          <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/52" target="_blank" rel="noopener">관련 글: Slack Rate Limit을 Redis 메시지 큐로 해결하기 <ExportOutlined /></Typography.Link>
-        </div>
+        <WorkParts
+          parts={[
+            {
+              title: '서버 관리 방식의 단계적 자동화',
+              content: (
+                <>
+                  <div className="pd-ba">
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>Google Sheet의 신청 정보를 보고 SSH로 서버에 접속해 컨테이너 생성, 권한 부여를 직접 수행. 명령어를 여러 번 확인해야 했고 Sheet와 실제 서버 상태가 어긋나기도 했습니다</p></div>
+                    <div className="ba-col problem"><span className="ba-label">1단계 · Script</span><p>Docker 생성, 권한 부여 등 반복 명령을 Script로 묶어 직접 입력을 줄임. 다만 사람이 잘못된 인자를 넘길 가능성은 그대로 남았습니다</p></div>
+                    <div className="ba-col after"><span className="ba-label">2단계 · Web UI</span><p>신청 정보를 입력으로 받아 <b>Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성·할당, 만료 자원 탐지·회수</b>까지 이어지는 웹 기반 관리 시스템 개발. 신청 정보와 실제 자원 생성 흐름을 하나로 연결</p></div>
+                  </div>
+                </>
+              ),
+            },
+            {
+              title: '모놀리식 아키텍처 관심사 분리',
+              content: (
+                <>
+                  <div className="pd-ba">
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>단일 앱에 사용자 요청 처리(Web)와 리소스 집약적 K8s 제어 로직이 혼재, K8s 부하/오류가 웹 응답 저하로 이어질 위험 (Client → Flask → K8s)</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>Web Server와 K8s Worker로 역할 분리 (Client → Spring Boot → Flask → K8s). Spring Boot: 신청·수락·UID/GID 할당·스케줄러 / Flask: K8s 제어·리소스 할당. 코드베이스 분리로 범위 파악 용이, 빌드·배포 속도 개선</p></div>
+                  </div>
+                </>
+              ),
+            },
+            {
+              title: 'Slack Rate Limit으로 인한 핵심 작업 장애 격리',
+              content: (
+                <>
+                  <div className="pd-ba">
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리 스케줄러가 Slack API를 동기 호출. 대량 알림에서 429가 발생하면 알림 실패 때문에 <b>핵심 작업인 계정 정리까지 중단</b>. 메모리 큐는 서버 재시작 시 대기 알림 유실 위험</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>계정 정리는 반드시 수행돼야 할 핵심 로직, 알림은 실패해도 핵심에 영향을 주면 안 되는 부가 기능. <b>두 작업의 실패 범위가 같아선 안 된다</b>고 판단해 Redis List 기반 Producer-Consumer로 분리. Consumer가 BRPOP으로 Slack 속도에 맞춰 발송하고, 이미 운영 중인 Redis를 써 재시작에도 메시지 보존. <code>AFTER_COMMIT</code> 이벤트로 DB 롤백 시 알림만 나가는 문제 차단</p></div>
+                  </div>
+                  <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/52" target="_blank" rel="noopener">관련 글: Slack Rate Limit을 Redis 메시지 큐로 해결하기 <ExportOutlined /></Typography.Link>
+                </>
+              ),
+            },
+          ]}
+        />
       </div>
 
       <div className="pd-block">

@@ -1,5 +1,6 @@
 import { ExportOutlined } from '@ant-design/icons'
 import { Tag, Typography } from 'antd'
+import WorkParts from '../components/WorkParts'
 
 export default function FarmDetail() {
   return (
@@ -26,22 +27,34 @@ export default function FarmDetail() {
 
       <div className="pd-block">
         <h4>진행한 일</h4>
-        <div className="pd-work-item">
-          <h5>1. 해외 악성 트래픽 차단 (AWS WAF)</h5>
-          <div className="pd-ba">
-            <div className="ba-col before"><span className="ba-label">Before</span><p>Google Analytics·MS Clarity 모니터링 중 독일 등에서 비정상 트래픽 유입 발견, 운영 중단 없이 차단 필요</p></div>
-            <div className="ba-col after"><span className="ba-label">After</span><p>ALB에 WAF 적용으로 해외 트래픽 100% 차단(불필요한 트래픽 <b>14,000건 차단</b>), 무중단으로 보안 강화</p></div>
-          </div>
-        </div>
-        <div className="pd-work-item">
-          <h5>2. AWS 리소스 마이그레이션, RDS Double Copy</h5>
-          <div className="pd-ba">
-            <div className="ba-col before"><span className="ba-label">Before</span><p>교내 SW교육원 요청으로 동아리 홈페이지를 연계 회사 AWS 계정으로 이전</p></div>
-            <div className="ba-col problem"><span className="ba-label">문제</span><p>스냅샷 공유만으로 끝날 줄 알았으나, 스냅샷이 AWS 관리형 키로 암호화되어 복원 불가 (계정 소유자도 키 권한 편집 불가)</p></div>
-            <div className="ba-col after"><span className="ba-label">After</span><p><b>KMS Double Copy 전략</b>: 직접 관리 가능한 새 암호화 키를 만들어 스냅샷을 두 단계로 재암호화·복사, 키 의존성을 제거하고 새 계정에서 인스턴스 복원 완료</p></div>
-          </div>
-          <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/49" target="_blank" rel="noopener">관련 글: 암호화된 RDS를 다른 계정으로 이전하기, KMS Double Copy <ExportOutlined /></Typography.Link>
-        </div>
+        <WorkParts
+          parts={[
+            {
+              title: '해외 악성 트래픽 차단 (AWS WAF)',
+              content: (
+                <>
+                  <div className="pd-ba">
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>Google Analytics·MS Clarity 모니터링 중 독일 등에서 비정상 트래픽 유입 발견, 운영 중단 없이 차단 필요</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>ALB에 WAF 적용으로 해외 트래픽 100% 차단(불필요한 트래픽 <b>14,000건 차단</b>), 무중단으로 보안 강화</p></div>
+                  </div>
+                </>
+              ),
+            },
+            {
+              title: 'AWS 리소스 마이그레이션, RDS Double Copy',
+              content: (
+                <>
+                  <div className="pd-ba">
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>교내 SW교육원 요청으로 동아리 홈페이지를 연계 회사 AWS 계정으로 이전</p></div>
+                    <div className="ba-col problem"><span className="ba-label">문제</span><p>스냅샷 공유만으로 끝날 줄 알았으나, 스냅샷이 AWS 관리형 키로 암호화되어 복원 불가 (계정 소유자도 키 권한 편집 불가)</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p><b>KMS Double Copy 전략</b>: 직접 관리 가능한 새 암호화 키를 만들어 스냅샷을 두 단계로 재암호화·복사, 키 의존성을 제거하고 새 계정에서 인스턴스 복원 완료</p></div>
+                  </div>
+                  <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/49" target="_blank" rel="noopener">관련 글: 암호화된 RDS를 다른 계정으로 이전하기, KMS Double Copy <ExportOutlined /></Typography.Link>
+                </>
+              ),
+            },
+          ]}
+        />
       </div>
 
       <div className="pd-block">

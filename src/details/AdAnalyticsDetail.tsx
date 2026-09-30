@@ -1,4 +1,5 @@
 import { Tag } from 'antd'
+import WorkParts from '../components/WorkParts'
 
 export default function AdAnalyticsDetail() {
   return (
@@ -32,20 +33,32 @@ export default function AdAnalyticsDetail() {
 
       <div className="pd-block">
         <h4>진행한 일</h4>
-        <div className="pd-work-item">
-          <h5>1. S3 생명주기 비용 최적화</h5>
-          <div className="pd-ba">
-            <div className="ba-col before"><span className="ba-label">Before</span><p>광고 데이터 누적으로 S3 비용 증가, 접근 빈도별 스토리지 전략 부재</p></div>
-            <div className="ba-col after"><span className="ba-label">After</span><p>3단계 전환 설계, 엑셀: Standard+1일 삭제 / 리포트: Standard→IA→Glacier IR / Athena 결과: Standard+7일 삭제. GB당 $0.023→$0.004(<b>약 83% 절감</b>). 전환 기준은 광고 계약 주기라는 도메인 지식에서 도출</p></div>
-          </div>
-        </div>
-        <div className="pd-work-item">
-          <h5>2. AI Tool Use 설계</h5>
-          <ul className="pd-sublist">
-            <li>Bedrock Tool Use로 AI가 질문 분석 → SQL 자동 생성 → Athena 조회 → 자연어 답변(SSE 스트리밍: 텍스트·차트·표). 5회 API 호출 제한으로 정확도 보완</li>
-            <li>비개발자도 자연어 질문만으로 광고 성과를 조회할 수 있게 되어, 퍼포먼스 마케터의 리포트 작업 시간을 단축</li>
-          </ul>
-        </div>
+        <WorkParts
+          parts={[
+            {
+              title: 'S3 생명주기 비용 최적화',
+              content: (
+                <>
+                  <div className="pd-ba">
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>광고 데이터 누적으로 S3 비용 증가, 접근 빈도별 스토리지 전략 부재</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>3단계 전환 설계, 엑셀: Standard+1일 삭제 / 리포트: Standard→IA→Glacier IR / Athena 결과: Standard+7일 삭제. GB당 $0.023→$0.004(<b>약 83% 절감</b>). 전환 기준은 광고 계약 주기라는 도메인 지식에서 도출</p></div>
+                  </div>
+                </>
+              ),
+            },
+            {
+              title: 'AI Tool Use 설계',
+              content: (
+                <>
+                  <ul className="pd-sublist">
+                    <li>Bedrock Tool Use로 AI가 질문 분석 → SQL 자동 생성 → Athena 조회 → 자연어 답변(SSE 스트리밍: 텍스트·차트·표). 5회 API 호출 제한으로 정확도 보완</li>
+                    <li>비개발자도 자연어 질문만으로 광고 성과를 조회할 수 있게 되어, 퍼포먼스 마케터의 리포트 작업 시간을 단축</li>
+                  </ul>
+                </>
+              ),
+            },
+          ]}
+        />
       </div>
 
       <div className="pd-block">
