@@ -8,7 +8,7 @@ type ProjectBase = {
   modalTitle: string
 }
 
-/** 상단 가로형 카드 (AdOnChat) */
+/** 상단 가로형 카드 (AdOnChat). 왼쪽 패널에 제목(title)과 부제(catch)를 보여 준다 */
 export type FeaturedProject = ProjectBase & {
   catch: string
   role: string
@@ -21,7 +21,8 @@ export type FeaturedProject = ProjectBase & {
 
 /** 3열 그리드 카드 */
 export type GridProject = ProjectBase & {
-  thumb: { tone: 'g1' | 'g2' | 'g3'; metric: ReactNode; catch: string }
+  /** 카드 윗부분의 색 영역. 제목(title)과 한 줄 소개(catch)를 보여 준다 */
+  thumb: { tone: 'g1' | 'g2' | 'g3'; catch: string }
   role: string
   year: string
   title: string
@@ -58,13 +59,6 @@ export const GRID_PROJECTS: GridProject[] = [
     modalTitle: 'AI 기반 광고 분석 서비스 · NHN AD 인턴 과제',
     thumb: {
       tone: 'g1',
-      metric: (
-        <>
-          13 AWS
-          <br />
-          services
-        </>
-      ),
       catch: '"대시보드를 보지 말고, 대화하세요."',
     },
     role: 'Frontend, Backend · 기여 100%',
@@ -76,7 +70,7 @@ export const GRID_PROJECTS: GridProject[] = [
   {
     key: 'gpu',
     modalTitle: 'GPU 서버 관리 자동화 시스템',
-    thumb: { tone: 'g2', metric: '30분 → 5분', catch: '"관리 시간을 5분 안으로 단축하다."' },
+    thumb: { tone: 'g2', catch: '"관리 시간을 5분 안으로 단축하다."' },
     role: 'Backend · 기여 30%',
     year: '2025–26',
     title: 'GPU 서버 관리 자동화',
@@ -88,13 +82,6 @@ export const GRID_PROJECTS: GridProject[] = [
     modalTitle: 'Farm System 동아리 홈페이지',
     thumb: {
       tone: 'g3',
-      metric: (
-        <>
-          14,000건
-          <br />
-          차단
-        </>
-      ),
       catch: '"쉽고 즐거운 동아리 생활을 위해."',
     },
     role: 'Leader · Backend 30%',

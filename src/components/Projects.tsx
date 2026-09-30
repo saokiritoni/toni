@@ -84,6 +84,7 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
     >
       <div className="feat-grid">
         <div className="feat-panel">
+          <h3 className="feat-title">{p.title}</h3>
           <p className="feat-catch">{p.catch}</p>
           <p className="feat-role">
             {p.role}
@@ -93,7 +94,6 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
           <TechTags items={p.tech} className="feat-tech" />
         </div>
         <div className="feat-body">
-          <h3 className="feat-title">{p.title}</h3>
           <p className="feat-overview">{p.overview}</p>
           <ol className="feat-points">
             {p.points.map((pt, i) => (
@@ -116,7 +116,7 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
       data-reveal
       cover={
         <div className={`card-thumb ${p.thumb.tone}`}>
-          <span className="thumb-metric">{p.thumb.metric}</span>
+          <h3 className="thumb-title">{p.title}</h3>
           <span className="thumb-catch">{p.thumb.catch}</span>
         </div>
       }
@@ -128,7 +128,6 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
         {p.role}
         <span className="yr">{p.year}</span>
       </span>
-      <span className="card-title">{p.title}</span>
       <ul className="card-points">
         {p.points.map((pt) => (
           <li key={pt}>{pt}</li>
