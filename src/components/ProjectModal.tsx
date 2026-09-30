@@ -1,11 +1,36 @@
 import { Modal } from 'antd'
-import { useState } from 'react'
-import { ALL_PROJECTS, type ProjectKey } from '../data/projects'
+import { useEffect, useState } from 'react'
+import { PROJECT_PIXELS } from '../data/pixels'
+import { ALL_PROJECTS, GRID_PROJECTS, type ProjectKey } from '../data/projects'
 import { DETAILS } from '../details'
+import PixelArt from './PixelArt'
 
 type Props = {
   openKey: ProjectKey | null
   onClose: () => void
+}
+
+/** 모달 머리의 색 띠는 누른 카드의 색 영역과 같은 배경을 쓴다. AdOnChat 은 가로형 카드의 왼쪽 패널 색이다 */
+function toneOf(key: ProjectKey) {
+  return GRID_PROJECTS.find((p) => p.key === key)?.thumb.tone ?? 'feat'
+}
+
+/** 모달 머리. 열린 뒤 한 프레임 늦게 is-revealed 를 붙여 픽셀 아이콘이 흩어진 상태에서 모이게 한다 */
+function ModalHead({ projectKey, org, title }: { projectKey: ProjectKey; org: string; title: string }) {
+  const [revealed, setRevealed] = useState(false)
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setRevealed(true))
+    return () => cancelAnimationFrame(frame)
+  }, [])
+  return (
+    <div className={`pm-head tone-${toneOf(projectKey)}${revealed ? ' is-revealed' : ''}`}>
+      <div className="pm-head-text">
+        <span className="project-org">{org}</span>
+        <span className="pm-title">{title}</span>
+      </div>
+      <PixelArt pattern={PROJECT_PIXELS[projectKey]} cell={6} className="pm-pixel" />
+    </div>
+  )
 }
 
 /**
@@ -24,7 +49,8 @@ export default function ProjectModal({ openKey, onClose }: Props) {
     <Modal
       rootClassName="project-modal"
       open={openKey !== null}
-      title={project?.modalTitle}
+      title={project && <ModalHead key={project.key} projectKey={project.key} org={project.org} title={project.modalTitle} />}
+      transitionName="pm-pop"
       onCancel={onClose}
       afterClose={() => setShownKey(null)}
       footer={null}

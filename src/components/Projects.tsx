@@ -1,5 +1,4 @@
-import { ArrowRightOutlined } from '@ant-design/icons'
-import { Button, Card, Flex, Tag } from 'antd'
+import { Card, Flex, Tag } from 'antd'
 import type { KeyboardEvent, PointerEvent } from 'react'
 import { FEATURED, GRID_PROJECTS, type GridProject, type ProjectKey } from '../data/projects'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -8,7 +7,7 @@ import PixelArt from './PixelArt'
 
 type OpenHandler = (key: ProjectKey) => void
 
-/** 카드 전체를 버튼처럼 쓴다. 안에 antd Button 이 있어서 <button> 대신 role="button" 을 준다. */
+/** 카드 전체를 버튼처럼 쓴다. <button> 안에는 제목·목록 같은 블록 요소를 넣을 수 없어서 role="button" 을 준다. */
 function clickable(key: ProjectKey, onOpen: OpenHandler) {
   return {
     role: 'button',
@@ -56,9 +55,13 @@ function useTilt() {
   return enabled ? { onPointerMove, onPointerLeave } : { onPointerMove: trackSpotlight }
 }
 
-/** 카드 오른쪽 아래 화살표. 클릭은 카드가 처리하므로 버튼은 포커스를 받지 않는다. */
-function MoreButton() {
-  return <Button className="card-more" shape="circle" icon={<ArrowRightOutlined />} tabIndex={-1} aria-hidden="true" />
+/** 포인터를 따라다니는 "click!" 라벨. 위치는 스포트라이트와 같은 --mx·--my 를 쓴다 */
+function CursorLabel() {
+  return (
+    <span className="card-cursor" aria-hidden="true">
+      click!
+    </span>
+  )
 }
 
 function TechTags({ items, className }: { items: string[]; className?: string }) {
@@ -86,10 +89,12 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
     >
       <div className="feat-grid">
         <div className="feat-panel">
-          <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
-          <div className="feat-heading">
-            <span className="project-org">{p.org}</span>
-            <h3 className="feat-title">{p.title}</h3>
+          <div className="feat-heading thumb-head">
+            <div>
+              <span className="project-org">{p.org}</span>
+              <h3 className="feat-title">{p.title}</h3>
+            </div>
+            <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
           </div>
           <p className="feat-catch">{p.catch}</p>
           <p className="feat-role">
@@ -106,9 +111,9 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
               <li key={i}>{pt}</li>
             ))}
           </ol>
-          <MoreButton />
         </div>
       </div>
+      <CursorLabel />
     </Card>
   )
 }
@@ -122,10 +127,12 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
       data-reveal
       cover={
         <div className={`card-thumb ${p.thumb.tone}`}>
-          <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
-          <div>
-            <span className="project-org">{p.org}</span>
-            <h3 className="thumb-title">{p.title}</h3>
+          <div className="thumb-head">
+            <div>
+              <span className="project-org">{p.org}</span>
+              <h3 className="thumb-title">{p.title}</h3>
+            </div>
+            <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
           </div>
           <TechTags items={p.stack} className="thumb-tech" />
         </div>
@@ -140,7 +147,7 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
           <li key={pt}>{pt}</li>
         ))}
       </ul>
-      <MoreButton />
+      <CursorLabel />
     </Card>
   )
 }

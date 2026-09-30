@@ -84,9 +84,9 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 ### antd 오버라이드
 
 - antd 스타일은 `:where()` 로 우선순위가 낮고 우리 CSS 보다 먼저 들어간다. 같은 우선순위(예: `.ant-card.card .card-body`)로 덮으면 된다. `!important` 를 쓰지 않는다.
-- `Tag` 에 `color` 로 hex 를 넘기면 antd 가 밝은 배경색을 인라인 스타일로 넣어서 다크 모드에서 튄다. 색은 클래스(`is-main` 등)와 CSS 로 준다.
+- `Tag` 에 `color` 로 hex 를 넘기면 antd 가 밝은 배경색을 인라인 스타일로 넣어서 다크 모드에서 튄다. 색은 클래스와 CSS 로 준다.
 - `Card` 의 `cover` 는 antd 가 자식을 `display:block` 으로 바꾼다. 커버 안에서 flex 배치가 필요하면 `.ant-card .ant-card-cover > .card-thumb` 로 되돌린다.
-- 카드 안에 antd `Button` 이 있으므로 카드는 `<button>` 이 아니라 `role="button"` + Enter/Space 키 처리로 만든다.
+- `<button>` 안에는 제목·목록 같은 블록 요소를 넣을 수 없으므로, 카드는 `<button>` 이 아니라 `role="button"` + Enter/Space 키 처리로 만든다.
 - 대체한 요소의 옛 CSS 규칙은 남기지 않고 지운다.
 
 ### 픽셀 블록

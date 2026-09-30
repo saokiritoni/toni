@@ -1,5 +1,4 @@
-import { Timeline, Typography } from 'antd'
-import { Fragment } from 'react'
+import { Timeline } from 'antd'
 import { EXPERIENCE } from '../data/profile'
 import { SECTION_PIXELS } from '../data/pixels'
 import PixelArt from './PixelArt'
@@ -24,19 +23,8 @@ export default function Experience() {
               content: (
                 <div className="tl-item">
                   <div className="tl-period">{item.period}</div>
-                  <div className="tl-role">
-                    <span className="co">{item.company}</span> · {item.role}
-                  </div>
-                  {item.desc && (
-                    <Typography.Paragraph className="tl-desc">
-                      {item.desc.map((line, i) => (
-                        <Fragment key={i}>
-                          {i > 0 && <br />}
-                          {line}
-                        </Fragment>
-                      ))}
-                    </Typography.Paragraph>
-                  )}
+                  <div className="tl-company">{item.company}</div>
+                  <div className="tl-role">{item.role}</div>
                 </div>
               ),
             }))}

@@ -18,7 +18,7 @@ export default function Skills() {
             <Card className="skill-group" size="small" key={g.title} data-reveal title={g.title}>
               <Flex wrap gap={8}>
                 {g.items.map((s) => (
-                  <Tag key={s.name} className={`skill-tag${s.main ? ' is-main' : ''}`} variant="outlined">
+                  <Tag key={s.name} className="skill-tag" variant="outlined">
                     {s.name}
                   </Tag>
                 ))}
