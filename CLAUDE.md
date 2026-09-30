@@ -54,7 +54,10 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 
 - AdOnChat(AOC)은 aoc 저장소(`~/IdeaProjects/aoc`)의 코드와 git 기록으로 확인한다. 본인 커밋은 `saokiritori` 또는 `이소은`(이메일 `soeun-lee@nhnad.com`)이다. 다른 사람이 만든 것을 본인 설계로 쓰지 않는다.
 - AOC-Memo vault 는 정본이 아니다. vault 와 aoc 코드가 어긋나면 코드를 믿는다.
-- 나머지 프로젝트(인턴 과제·서버 관리 자동화·Farm System)는 코드가 이 컴퓨터에 없다. 원문에 없는 절차·이유·수치를 짐작해서 덧붙이지 않는다. 설명을 보태야 하면 사용자에게 먼저 확인한다.
+- 인턴 과제(AI 광고 분석 서비스)는 GitHub 저장소 세 개를 클론해서 확인한다. 인프라 [soeun-cdk](https://github.com/hyper-rookies/soeun-cdk)(README·계획서 PDF 포함), 백엔드 [soeun-chat](https://github.com/hyper-rookies/soeun-chat), 프론트엔드 [soeun-report-frontend](https://github.com/hyper-rookies/soeun-report-frontend).
+  - 저장소에 없는 수치(대시보드 응답 99.58% 감소, S3 저장 단가 $0.023 → $0.004, 리포트 전환 시점과 광고 계약 주기)는 사용자가 발표 때 확인한 값이므로 그대로 믿는다.
+  - 인프라는 직접 설계한 구조와 이유만 쓴다. CDK 로 만들었다는 사실이나 큐 재시도 횟수 같은 CDK 설정 세부는 쓰지 않는다.
+- 나머지 프로젝트(서버 관리 자동화·Farm System)는 코드가 이 컴퓨터에 없다. 원문에 없는 절차·이유·수치를 짐작해서 덧붙이지 않는다. 설명을 보태야 하면 사용자에게 먼저 확인한다.
 
 ### 카드와 미리보기
 
