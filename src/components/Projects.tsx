@@ -123,23 +123,19 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
             <span className="project-org">{p.org}</span>
             <h3 className="thumb-title">{p.title}</h3>
           </div>
-          <span className="thumb-catch">{p.thumb.catch}</span>
+          <TechTags items={p.stack} className="thumb-tech" />
         </div>
       }
       classNames={{ body: 'card-body' }}
       {...tilt}
       {...clickable(p.key, onOpen)}
     >
-      <span className="card-role">
-        {p.role}
-        <span className="yr">{p.year}</span>
-      </span>
+      <span className="card-role">{p.role}</span>
       <ul className="card-points">
         {p.points.map((pt) => (
           <li key={pt}>{pt}</li>
         ))}
       </ul>
-      <TechTags items={p.stack} />
       <MoreButton />
     </Card>
   )
