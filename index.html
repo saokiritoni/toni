@@ -216,9 +216,9 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .card-points{list-style:none;margin:0;padding:0;flex:1;display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:var(--text-dim);line-height:1.55}
 .card-points li{position:relative;padding-left:13px;word-break:keep-all}
 .card-points li::before{content:"·";position:absolute;left:1px;color:var(--accent);font-weight:700}
-.feat-points{list-style:none;margin:10px 0 18px;padding:0;display:flex;flex-direction:column;gap:7px;font-size:14px;color:var(--text-dim);line-height:1.6}
-.feat-points li{position:relative;padding-left:14px;word-break:keep-all}
-.feat-points li::before{content:"·";position:absolute;left:2px;color:var(--accent);font-weight:700}
+.feat-points{list-style:none;margin:10px 0 18px;padding:0;display:flex;flex-direction:column;gap:7px;font-size:14px;color:var(--text-dim);line-height:1.6;counter-reset:fp}
+.feat-points li{position:relative;padding-left:20px;word-break:keep-all;counter-increment:fp}
+.feat-points li::before{content:counter(fp) ".";position:absolute;left:0;color:var(--accent);font-weight:700;font-family:var(--f-mono)}
 .card-stack{display:flex;flex-wrap:wrap;gap:6px}
 .card-stack span{font-family:var(--f-mono);font-size:11px;color:var(--text-dim);background:var(--surface-100);border:1px solid var(--border);border-radius:var(--r-compact);padding:3px 8px}
 
@@ -516,11 +516,11 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
       </div>
       <div class="about-col" data-reveal>
         <span class="about-idx">02</span>
-        <p>업무의 규칙을 이해해 데이터와 시스템 구조에 반영하고, 반복되는 문제는 더 나은 방식으로 바꾸는 것을 좋아합니다. 동시성과 데이터 정합성을 고려한 백엔드 개발부터 서버 관리 자동화, AI Agent를 활용한 새로운 서비스 구조까지 직접 고민하고 구현했습니다.</p>
+        <p>업무의 규칙을 이해해 데이터와 시스템 구조에 반영하고, 반복되는 문제는 더 나은 방식으로 바꾸는 것을 좋아합니다.</p>
       </div>
       <div class="about-col" data-reveal>
         <span class="about-idx">03</span>
-        <p>새로운 기술을 사용하는 것보다 <b>왜 필요한지, 어떤 문제를 더 잘 해결할 수 있는지</b>를 먼저 생각하는 개발자가 되고자 합니다.</p>
+        <p><b>기술이 왜 필요한지, 어떤 문제를 더 잘 해결할 수 있는지</b>를 먼저 생각하는 개발자가 되고자 합니다.</p>
       </div>
     </div>
   </div>
@@ -536,31 +536,25 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
       <div class="skill-group" data-reveal>
         <h3>// language & framework</h3>
         <div class="pills">
-          <span class="pill main">Java</span><span class="pill main">Kotlin</span><span class="pill main">Spring Boot</span><span class="pill">Spring Security</span><span class="pill">JPA</span><span class="pill">Python</span>
+          <span class="pill main">Java</span><span class="pill main">Kotlin</span><span class="pill main">Spring Boot</span>
         </div>
       </div>
       <div class="skill-group" data-reveal>
         <h3>// database & storage</h3>
         <div class="pills">
-          <span class="pill main">PostgreSQL</span><span class="pill">MySQL</span><span class="pill">Redis</span><span class="pill">DynamoDB</span>
-        </div>
-      </div>
-      <div class="skill-group" data-reveal>
-        <h3>// backend patterns</h3>
-        <div class="pills">
-          <span class="pill">Transaction</span><span class="pill">Pessimistic Lock</span><span class="pill">SKIP LOCKED</span><span class="pill">Partial Unique Index</span><span class="pill">Transactional Outbox</span><span class="pill">Idempotency</span><span class="pill">Producer-Consumer</span><span class="pill">비동기 · 배치</span>
+          <span class="pill main">PostgreSQL</span><span class="pill">DynamoDB</span>
         </div>
       </div>
       <div class="skill-group" data-reveal>
         <h3>// devops & infra</h3>
         <div class="pills">
-          <span class="pill main">AWS</span><span class="pill main">Docker</span><span class="pill">Kubernetes</span><span class="pill">Ubuntu Linux</span><span class="pill">GitHub Actions</span>
+          <span class="pill main">AWS</span><span class="pill main">Docker</span><span class="pill">Ubuntu Linux</span>
         </div>
       </div>
       <div class="skill-group" data-reveal>
         <h3>// collaboration & ai</h3>
         <div class="pills">
-          <span class="pill">Git</span><span class="pill">GitHub</span><span class="pill main">Claude Code</span>
+          <span class="pill">Git</span><span class="pill main">Claude Code</span>
         </div>
       </div>
     </div>
@@ -578,18 +572,18 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
     <!-- Featured: AdOnChat (NHN AD 실무 서비스, 링크·스크린샷 없음). 클릭 시 상세 모달 -->
     <button class="card-featured" type="button" data-open="nhnad" data-reveal aria-haspopup="dialog">
       <div class="feat-panel">
-        <p class="feat-catch">AI 기반 광고 운영 솔루션</p>
-        <p class="feat-role">NHN AD · Frontend, Backend<br>2026.04 – 현재</p>
+        <p class="feat-catch">AI Agent 기반 검색광고 운영 솔루션</p>
+        <p class="feat-role">NHN AD · Frontend, Backend · 기여 20%<br>2026.05 – 현재</p>
         <div class="feat-tech"><span>Kotlin</span><span>Spring Boot</span><span>PostgreSQL</span><span>TypeScript</span><span>React</span></div>
       </div>
       <div class="feat-body">
         <h3 class="feat-title">AdOnChat</h3>
         <p class="feat-overview">광고 매체 계정을 연동해 대량 광고 작업을 처리하고, 자연어 대화로 광고 데이터를 분석하는 B2B 광고 운영 솔루션</p>
-        <ul class="feat-points">
-          <li>여러 서버가 동시에 처리하는 대량 광고 작업의 <b>동시성 제어와 데이터 정합성</b>을 DB 락·제약조건으로 보장</li>
-          <li>약 60종 대량 광고 작업을 <b>BulkTask 추상화</b>로 구조화, 작업 추가 시 기존 코드 변경 최소화</li>
-          <li>인증·권한·운영 알림 등 <b>신뢰 기반</b> 백엔드 설계, 화면 갱신 전략과 로딩 UX 등 프론트엔드 개발</li>
-        </ul>
+        <ol class="feat-points">
+          <li><b>Backend</b>: 여러 서버가 동시에 처리하는 대량 광고 작업의 동시성과 데이터 정합성을 DB 락·제약조건으로 보장하고, 약 60종의 대량 작업을 하나의 공통 구조로 묶어 기존 코드를 고치지 않고 새 작업을 추가할 수 있도록 설계</li>
+          <li><b>Backend</b>: 소셜 로그인·세션·비정상 접근 차단·운영 알림까지 인증과 운영 기반을 설계·구현</li>
+          <li><b>Frontend</b>: TanStack Query 캐시 전략과 로딩 UX를 설계해 화면 데이터의 신선도와 체감 속도를 개선</li>
+        </ol>
         <span class="card-more"><svg class="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
       </div>
     </button>
@@ -602,7 +596,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
           <span class="thumb-catch">"대시보드를 보지 말고, 대화하세요."</span>
         </div>
         <div class="card-body">
-          <span class="card-role">Full-Stack · 기여 100%<span class="yr">2026 · 2주</span></span>
+          <span class="card-role">Frontend, Backend · 기여 100%<span class="yr">2026 · 2주</span></span>
           <span class="card-title">AI 기반 광고 분석 서비스 · NHN AD 인턴 과제</span>
           <ul class="card-points">
             <li>자연어로 광고 데이터를 분석하는 AI 서비스</li>
@@ -943,7 +937,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
     <div class="pd-meta">
       <span>2026.02 – 2026.03 (2주)</span>
       <span>NHN AD</span>
-      <span>Full-Stack · 기여 100%</span>
+      <span>Frontend, Backend · 기여 100%</span>
     </div>
     <p class="pd-catch">"대시보드를 보지 말고, 대화하세요."</p>
 
