@@ -6,6 +6,8 @@ type ProjectBase = {
   key: ProjectKey
   /** 상세 모달 제목. 상세 내용 컴포넌트는 src/details/index.ts 에서 key 로 찾는다 */
   modalTitle: string
+  /** 개발한 곳. 카드 제목 위에 작게 보여 준다 */
+  org: string
 }
 
 /** 상단 가로형 카드 (AdOnChat). 왼쪽 패널에 제목(title)과 부제(catch)를 보여 준다 */
@@ -33,8 +35,9 @@ export type GridProject = ProjectBase & {
 export const FEATURED: FeaturedProject = {
   key: 'nhnad',
   modalTitle: 'AdOnChat',
+  org: 'NHN AD',
   catch: 'AI Agent 기반 검색광고 운영 솔루션',
-  role: 'NHN AD · Frontend, Backend · 기여 20%',
+  role: 'Frontend, Backend · 기여 20%',
   period: '2026.05 – 현재',
   tech: ['Kotlin', 'Spring Boot', 'PostgreSQL', 'TypeScript', 'React'],
   title: 'AdOnChat',
@@ -57,29 +60,32 @@ export const GRID_PROJECTS: GridProject[] = [
   {
     key: 'ad-analytics',
     modalTitle: 'AI 기반 광고 분석 서비스 · NHN AD 인턴 과제',
+    org: 'NHN AD',
     thumb: {
       tone: 'g1',
       catch: '"대시보드를 보지 말고, 대화하세요."',
     },
     role: 'Frontend, Backend · 기여 100%',
     year: '2026 · 2주',
-    title: 'AI 기반 광고 분석 서비스 · NHN AD 인턴 과제',
+    title: '[인턴 과제] 자연어 광고 분석 서비스',
     points: ['자연어로 광고 데이터를 분석하는 AI 서비스', '13개 AWS 서비스 서버리스 아키텍처를 2주 단독 설계, 응답 99.58%↓ · 비용 83%↓'],
     stack: ['EventBridge', 'Lambda', 'Athena', 'Bedrock', 'Redis'],
   },
   {
     key: 'gpu',
     modalTitle: 'GPU 서버 관리 자동화 시스템',
+    org: '동국대학교 GPU 서버실',
     thumb: { tone: 'g2', catch: '"관리 시간을 5분 안으로 단축하다."' },
     role: 'Backend · 기여 30%',
     year: '2025–26',
-    title: 'GPU 서버 관리 자동화',
+    title: '서버 관리 자동화 시스템',
     points: ['AI 연구자용 GPU 서버 자원·권한을 관리하는 Kubernetes 자동화 시스템', '백엔드 개발, 관리 시간 30분→5분(90%↓) · 알림 발송 안정화'],
     stack: ['Spring Boot', 'Kubernetes', 'Redis', 'MySQL'],
   },
   {
     key: 'farm',
     modalTitle: 'Farm System 동아리 홈페이지',
+    org: '동국대학교 Farm System',
     thumb: {
       tone: 'g3',
       catch: '"쉽고 즐거운 동아리 생활을 위해."',

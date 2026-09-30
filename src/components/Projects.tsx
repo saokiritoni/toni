@@ -84,7 +84,10 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
     >
       <div className="feat-grid">
         <div className="feat-panel">
-          <h3 className="feat-title">{p.title}</h3>
+          <div className="feat-heading">
+            <span className="project-org">{p.org}</span>
+            <h3 className="feat-title">{p.title}</h3>
+          </div>
           <p className="feat-catch">{p.catch}</p>
           <p className="feat-role">
             {p.role}
@@ -116,7 +119,10 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
       data-reveal
       cover={
         <div className={`card-thumb ${p.thumb.tone}`}>
-          <h3 className="thumb-title">{p.title}</h3>
+          <div>
+            <span className="project-org">{p.org}</span>
+            <h3 className="thumb-title">{p.title}</h3>
+          </div>
           <span className="thumb-catch">{p.thumb.catch}</span>
         </div>
       }
