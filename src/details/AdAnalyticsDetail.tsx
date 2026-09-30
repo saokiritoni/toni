@@ -13,7 +13,7 @@ export default function AdAnalyticsDetail() {
 
       <div className="pd-block">
         <h4>개요</h4>
-        <p className="pd-p">'방대한 광고 데이터를 사람이 직접 조작해야 한다'는 페인 포인트에서 출발해, 자연어로 광고 데이터를 분석하는 서비스를 만들었습니다. 이를 위해 <b>13개 AWS 서비스를 조합한 서버리스 아키텍처를 2주 안에 단독으로 설계·구축</b>했습니다.</p>
+        <p className="pd-p">'방대한 광고 데이터를 사람이 직접 조작해야 한다'는 페인 포인트에서 출발해, 자연어로 광고 데이터를 분석하는 서비스를 만들었습니다. 2주 동안 혼자 서버리스 구조로 설계·구축했고, 구성 요소마다 <b>"한 곳이 실패하면 어디까지 영향이 퍼지는가"</b>와 <b>"데이터를 얼마나 자주 읽는가"</b>를 기준으로 판단했습니다.</p>
         <ul className="pd-whr">
           <li><span className="k">Why</span><span>마케터가 raw 데이터를 직접 조작, 반복되는 엑셀 리포트 수작업</span></li>
           <li><span className="k">How</span><span>AWS 서버리스 파이프라인 + Bedrock(Claude) Tool-Use</span></li>
@@ -24,9 +24,9 @@ export default function AdAnalyticsDetail() {
       <div className="pd-block">
         <h4>아키텍처 (AWS)</h4>
         <ul className="pd-sublist">
-          <li><b>데이터 수집 파이프라인</b>: 광고 API(Kakao·Google)의 일별 성과를 서버 없이 자동 수집(EventBridge → SQS → Lambda → S3). 일부가 실패해도 전체가 멈추지 않는 큐 기반 구조</li>
+          <li><b>데이터 수집 파이프라인</b>: 광고 API(Kakao·Google)의 일별 성과를 자동 수집합니다(EventBridge → SQS → Lambda → S3). 수집 요청을 큐에 하나씩 넣어 처리하므로, 한 광고주의 수집이 실패해도 나머지는 계속 진행되고 실패한 요청만 다시 처리됩니다. <b>큐로 작업 단위를 나눠 실패 범위를 격리</b>했습니다</li>
           <li><b>AI 분석</b>: 자연어 질문을 받으면 AI(Bedrock)가 직접 SQL을 만들어 데이터 레이크(Athena)를 조회하고 자연어로 답변</li>
-          <li><b>캐싱</b>: Redis 캐싱으로 대시보드 응답 시간 <b>99.58% 감소</b></li>
+          <li><b>캐싱</b>: 같은 기간·같은 조건의 대시보드 조회는 결과가 바뀌지 않으므로, 결과를 Redis에 캐시해 Athena를 다시 조회하지 않게 했습니다. 대시보드 응답 시간이 <b>99.58% 감소</b>했습니다</li>
           <li><b>리포트 공유</b>: 매주 자동 생성되는 리포트를 로그인 없이 볼 수 있는 읽기 전용 링크로 공유, Excel 다운로드 지원</li>
         </ul>
       </div>
@@ -40,8 +40,8 @@ export default function AdAnalyticsDetail() {
               content: (
                 <>
                   <div className="pd-ba">
-                    <div className="ba-col before"><span className="ba-label">Before</span><p>광고 데이터 누적으로 S3 비용 증가, 접근 빈도별 스토리지 전략 부재</p></div>
-                    <div className="ba-col after"><span className="ba-label">After</span><p>3단계 전환 설계, 엑셀: Standard+1일 삭제 / 리포트: Standard→IA→Glacier IR / Athena 결과: Standard+7일 삭제. GB당 $0.023→$0.004(<b>약 83% 절감</b>). 전환 기준은 광고 계약 주기라는 도메인 지식에서 도출</p></div>
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>광고 데이터가 쌓이면서 S3 비용이 늘었습니다. 엑셀 파일·주간 리포트·Athena 조회 결과는 읽히는 빈도와 보관 기간이 서로 다른데, 모두 같은 저장 계층에 두고 있었습니다</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>데이터마다 <b>접근 패턴에 맞는 저장 계층</b>을 정했습니다. 엑셀은 1일 뒤 삭제, 리포트는 Standard → IA → Glacier IR 순으로 이동, Athena 결과는 7일 뒤 삭제합니다. 리포트의 전환 시점은 광고 계약 주기에 맞췄습니다. GB당 $0.023 → $0.004로 <b>약 83% 절감</b>하도록 설계했습니다</p></div>
                   </div>
                 </>
               ),
@@ -70,10 +70,6 @@ export default function AdAnalyticsDetail() {
         <div className="pd-growth-item">
           <div className="pd-tags"><span>#이슈</span><span>#대응</span><span>#계획</span></div>
           <p>2주라는 타이트한 일정에서는 이슈 핸들링이 최우선이었습니다. 그래서 MVP 우선순위로 개발 순서를 정했고, 카카오 API 심사 승인처럼 예측하기 어려운 외부 이슈는 여유 시간을 미리 확보해 대응했습니다. <b>완벽한 계획보다 변화에 빠르게 대응하는 계획이 더 강하다는 것을 배웠습니다.</b></p>
-        </div>
-        <div className="pd-growth-item">
-          <div className="pd-tags"><span>#Claude_Code</span><span>#Gemini</span><span>#교차검증</span></div>
-          <p>Claude와 Gemini 교차 피드백으로 결과물을 검증하고, Claude가 설계·Claude Code가 구현을 맡는 역할 분담을 설계하며 효율을 대폭 높였습니다. <b>AI의 역량을 나의 역량으로 흡수하는 방법을 아는 것이 곧 경쟁력임을 깨달았습니다.</b></p>
         </div>
       </div>
     </>

@@ -58,8 +58,8 @@ export default function GpuDetail() {
               content: (
                 <>
                   <div className="pd-ba">
-                    <div className="ba-col before"><span className="ba-label">Before</span><p>단일 앱에 사용자 요청 처리(Web)와 리소스 집약적 K8s 제어 로직이 혼재, K8s 부하/오류가 웹 응답 저하로 이어질 위험 (Client → Flask → K8s)</p></div>
-                    <div className="ba-col after"><span className="ba-label">After</span><p>Web Server와 K8s Worker로 역할 분리 (Client → Spring Boot → Flask → K8s). Spring Boot: 신청·수락·UID/GID 할당·스케줄러 / Flask: K8s 제어·리소스 할당. 코드베이스 분리로 범위 파악 용이, 빌드·배포 속도 개선</p></div>
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>하나의 앱이 사용자 요청 처리(Web)와 무거운 K8s 제어를 함께 맡았습니다(Client → Flask → K8s). K8s 쪽이 느려지거나 실패하면 <b>그 영향이 웹 응답까지 그대로 번지는</b> 구조였습니다</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>역할을 Web Server와 K8s Worker로 나눴습니다(Client → Spring Boot → Flask → K8s). Spring Boot는 신청·수락·UID/GID 할당·스케줄러를, Flask는 K8s 제어·자원 할당을 맡습니다. 관심사를 나누자 한쪽의 장애가 다른 쪽으로 번지는 범위가 줄었고, 코드 범위가 명확해져 빌드·배포도 빨라졌습니다</p></div>
                   </div>
                 </>
               ),
@@ -69,8 +69,8 @@ export default function GpuDetail() {
               content: (
                 <>
                   <div className="pd-ba">
-                    <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리 스케줄러가 Slack API를 동기 호출. 대량 알림에서 429가 발생하면 알림 실패 때문에 <b>핵심 작업인 계정 정리까지 중단</b>. 메모리 큐는 서버 재시작 시 대기 알림 유실 위험</p></div>
-                    <div className="ba-col after"><span className="ba-label">After</span><p>계정 정리는 반드시 수행돼야 할 핵심 로직, 알림은 실패해도 핵심에 영향을 주면 안 되는 부가 기능. <b>두 작업의 실패 범위가 같아선 안 된다</b>고 판단해 Redis List 기반 Producer-Consumer로 분리. Consumer가 BRPOP으로 Slack 속도에 맞춰 발송하고, 이미 운영 중인 Redis를 써 재시작에도 메시지 보존. <code>AFTER_COMMIT</code> 이벤트로 DB 롤백 시 알림만 나가는 문제 차단</p></div>
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리 스케줄러가 Slack API를 같은 흐름 안에서 바로 호출했습니다. 알림이 몰려 429(Rate Limit)가 나면 <b>부가 기능인 알림의 실패 때문에 핵심 작업인 계정 정리까지 멈췄습니다</b>. 메모리 큐로 옮기면 서버가 재시작될 때 대기 중인 알림이 사라집니다</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>계정 정리는 반드시 끝나야 하는 핵심 작업이고, 알림은 실패해도 핵심에 영향을 주면 안 되는 부가 작업입니다. <b>두 작업의 실패 범위를 분리</b>하려고 Redis List 기반 Producer-Consumer로 나눴습니다. Consumer는 <code>BRPOP</code>으로 하나씩 꺼내 Slack이 허용하는 속도로 보내고, 메시지는 Redis에 남아 재시작에도 사라지지 않습니다. 또 알림은 <code>AFTER_COMMIT</code> 이벤트에서만 큐에 넣어, <b>트랜잭션이 커밋된 뒤에만 부수 효과가 일어나게</b> 했습니다. 롤백된 작업에 대해 "정리됐습니다" 알림이 나가는 일을 막기 위해서입니다</p></div>
                   </div>
                   <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/52" target="_blank" rel="noopener">관련 글: Slack Rate Limit을 Redis 메시지 큐로 해결하기 <ExportOutlined /></Typography.Link>
                 </>
@@ -87,12 +87,8 @@ export default function GpuDetail() {
           <p>처음에는 실수하지 않으려고 명령어를 여러 번 확인하는 것이 최선이었습니다. 1년간 Google Sheet 수기 관리와 SSH 수동 작업을 반복하다 보니 생각이 바뀌었습니다. <b>반복해서 확인해야 하는 일이 있다면 그 확인 자체를 줄일 방법을 찾는 것이 엔지니어의 일</b>이라는 것. 그렇게 Script를 거쳐 Web UI까지 자동화했고, 연구자들이 연구에만 몰입할 환경을 '내 손'으로 개선한 뿌듯함을 느꼈습니다.</p>
         </div>
         <div className="pd-growth-item">
-          <div className="pd-tags"><span>#연구_데이터</span><span>#트랜잭션</span><span>#에러_핸들링</span></div>
-          <p>수많은 AI 연구생의 데이터가 담긴 인프라 관리, '단 한 번의 로직 실수로 자원이 유실되어선 안 된다'는 원칙으로 엄격한 트랜잭션 제어와 보수적 에러 핸들링을 적용하며 <b>시스템 안정성·데이터 무결성에 대한 책임감</b>을 배웠습니다.</p>
-        </div>
-        <div className="pd-growth-item">
-          <div className="pd-tags"><span>#아키텍처</span><span>#리팩토링</span></div>
-          <p>스케줄러 성능을 최적화하며 트랜잭션을 분리하다가, 같은 클래스 안의 메서드 호출(self-invocation)이 스프링 프록시를 거치지 않아 트랜잭션이 걸리지 않는 문제를 만났습니다. 프록시 동작 방식을 확인해 호출 구조를 바꿔 해결했지만, 초기 설계 때 서비스 레이어를 더 세밀하게 분리해뒀다면 겪지 않았을 문제였습니다. 그래서 <b>확장성과 가독성을 고려한 초기 아키텍처 설계의 중요성</b>을 실감했고, 지금도 구조 개선을 고민하고 있습니다.</p>
+          <div className="pd-tags"><span>#트랜잭션</span><span>#프록시</span></div>
+          <p>스케줄러의 트랜잭션을 작업 단위로 나누다가, <code>@Transactional</code>을 붙인 메서드가 트랜잭션 없이 실행되는 문제를 만났습니다. 스프링의 <code>@Transactional</code>은 객체를 감싼 프록시가 호출을 가로채 트랜잭션을 시작하는 방식인데, 같은 클래스 안에서 메서드를 부르면(self-invocation) 프록시를 거치지 않기 때문이었습니다. 호출이 프록시를 거치도록 호출 구조를 바꿔 해결했습니다. <b>애너테이션이 "어떻게" 동작하는지 알아야 그것이 동작하지 않는 순간을 알아챌 수 있다</b>는 것, 그리고 처음부터 서비스 계층을 역할별로 나눠 두는 설계의 중요성을 배웠습니다.</p>
         </div>
         <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/50" target="_blank" rel="noopener">관련 글: 1년간 GPU 서버 관리자로 일하며 배운 것 <ExportOutlined /></Typography.Link>
       </div>

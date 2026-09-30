@@ -35,7 +35,7 @@ export default function FarmDetail() {
                 <>
                   <div className="pd-ba">
                     <div className="ba-col before"><span className="ba-label">Before</span><p>Google Analytics·MS Clarity 모니터링 중 독일 등에서 비정상 트래픽 유입 발견, 운영 중단 없이 차단 필요</p></div>
-                    <div className="ba-col after"><span className="ba-label">After</span><p>ALB에 WAF 적용으로 해외 트래픽 100% 차단(불필요한 트래픽 <b>14,000건 차단</b>), 무중단으로 보안 강화</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>ALB에 WAF를 적용해 해외 트래픽을 막았고, 서비스 중단 없이 비정상 트래픽 <b>14,000건</b>을 차단했습니다</p></div>
                   </div>
                 </>
               ),
@@ -46,8 +46,8 @@ export default function FarmDetail() {
                 <>
                   <div className="pd-ba">
                     <div className="ba-col before"><span className="ba-label">Before</span><p>교내 SW교육원 요청으로 동아리 홈페이지를 연계 회사 AWS 계정으로 이전</p></div>
-                    <div className="ba-col problem"><span className="ba-label">문제</span><p>스냅샷 공유만으로 끝날 줄 알았으나, 스냅샷이 AWS 관리형 키로 암호화되어 복원 불가 (계정 소유자도 키 권한 편집 불가)</p></div>
-                    <div className="ba-col after"><span className="ba-label">After</span><p><b>KMS Double Copy 전략</b>: 직접 관리 가능한 새 암호화 키를 만들어 스냅샷을 두 단계로 재암호화·복사, 키 의존성을 제거하고 새 계정에서 인스턴스 복원 완료</p></div>
+                    <div className="ba-col problem"><span className="ba-label">문제</span><p>스냅샷을 공유하면 끝날 줄 알았지만, 스냅샷이 AWS 관리형 키로 암호화되어 있었습니다. AWS 관리형 키는 키 정책을 바꿀 수 없어서 다른 계정에 권한을 줄 수 없고, 그래서 받은 계정에서 복원할 수 없었습니다. <b>암호화된 데이터를 옮길 수 있는지는 키를 누가 관리하는지가 결정</b>했습니다</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>직접 관리하는 KMS 키(고객 관리형 키)를 만들고, 그 키로 스냅샷을 다시 암호화해 복사했습니다. 이 키의 정책에 새 계정의 사용 권한을 주고 스냅샷을 공유한 뒤, 새 계정에서 다시 복사해 인스턴스를 복원했습니다(<b>KMS Double Copy</b>)</p></div>
                   </div>
                   <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/49" target="_blank" rel="noopener">관련 글: 암호화된 RDS를 다른 계정으로 이전하기, KMS Double Copy <ExportOutlined /></Typography.Link>
                 </>
