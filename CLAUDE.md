@@ -73,7 +73,7 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 - 색은 `global.css` 의 `:root` 토큰(`--bg`, `--surface-*`, `--text`, `--text-dim`, `--accent`, `--hover`, `--border*` 등)만 쓴다. 새 hex 를 쓰지 않는다. 테마마다 달라지는 반투명 색도 토큰으로 만든다.
 - 다크 모드는 `:root[data-theme="dark"]` 에서 토큰을 다시 정의한다. 새 색을 추가하면 두 테마 값을 모두 정한다.
 - antd 는 CSS 변수를 토큰으로 받지 못하는 곳이 있어서 `AntdTheme.tsx` 의 `PALETTE` 에 hex 로 같은 값을 적는다. `global.css` 토큰을 바꾸면 `PALETTE` 도 같이 바꾼다.
-- 강조색은 `--accent`(#f54e00), hover 는 `--hover`. 헤더 GitHub·히어로 "프로젝트 보기" 같은 주 버튼은 antd primary 의 주황이 아니라 어두운 색(`--text` 배경)으로 덮어쓴다.
+- 포인트 색은 사과 팔레트다. 강조색 `--accent` 는 사과 빨강(라이트 #d42a2a, 다크 #ff4d4f), hover 는 `--hover`, 보조색 `--leaf` 는 잎 초록이다. 카드 커버 그라데이션은 테마와 상관없는 `--apple*`·`--leaf-*` 토큰을 쓴다. 반투명 강조색은 rgba 대신 `color-mix(in srgb,var(--accent) N%,transparent)` 로 만든다. 헤더 GitHub·히어로 "프로젝트 보기" 같은 주 버튼은 antd primary 의 주황이 아니라 어두운 색(`--text` 배경)으로 덮어쓴다.
 
 ### 글꼴
 

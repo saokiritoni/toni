@@ -16,7 +16,7 @@ export default function Experience() {
             className="exp-timeline"
             items={EXPERIENCE.map((item) => ({
               key: item.period + item.role,
-              color: '#f54e00',
+              color: 'var(--accent)',
               content: (
                 <div className="tl-item">
                   <div className="tl-period">{item.period}</div>
