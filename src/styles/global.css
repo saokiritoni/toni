@@ -17,6 +17,12 @@
   /* depth 변형 (기존 ambient/elev의 알파 변형 + white top-edge overlay, DESIGN.md §6 준수) */
   --sh-soft:rgba(0,0,0,.05) 0 1px 2px, rgba(0,0,0,.045) 0 8px 20px;
   --edge-top:inset 0 1px 0 rgba(255,255,255,.55);
+  /* 테마마다 달라지는 반투명 면 (다크 모드에서 다시 정의) */
+  --header-bg:rgba(242,241,237,.72); --nav-sheet-bg:rgba(242,241,237,.98);
+  --grid-dot:rgba(38,37,30,.055); --overlay:rgba(38,37,30,.42); --btn-dark-hover:#4a4736;
+  --alt-edge:inset 0 1px 0 rgba(255,255,255,.6), inset 0 -16px 26px -20px rgba(38,37,30,.14);
+  --spotlight:rgba(245,78,0,.09);
+  color-scheme:light;
   /* motion */
   --m-instant:0ms; --m-fast:150ms; --m-blink:530ms; --m-standard:250ms;
   --ease:cubic-bezier(.4,0,.2,1);
@@ -26,6 +32,34 @@
   --f-mono:'JetBrains Mono',ui-monospace,'SF Mono',monospace;
   --f-body:'Pretendard','Space Grotesk',system-ui,sans-serif;
 }
+
+/* ============================= DARK THEME =============================
+   html[data-theme] 값은 index.html 의 인라인 스크립트가 첫 렌더 전에 정한다 (저장값 → OS 설정 순).
+   accent 는 그대로 두고, 면·글자·테두리만 뒤집는다. hover 는 어두운 면에서 대비가 낮아 밝게 올렸다 */
+:root[data-theme="dark"]{
+  --bg:#15140f;
+  --surface-100:#1b1a15; --surface-300:#24231d; --surface-400:#29281f; --surface-500:#302f27;
+  --text:#edebe3; --text-dim:rgba(237,235,227,.6);
+  --hover:#ff6a8b;
+  --border:rgba(237,235,227,.1); --border-med:rgba(237,235,227,.2); --border-strong:rgba(237,235,227,.55);
+  --sh-ambient:rgba(0,0,0,.3) 0 0 16px;
+  --sh-focus:rgba(0,0,0,.45) 0 4px 12px;
+  --sh-elev:rgba(0,0,0,.55) 0 28px 70px, rgba(0,0,0,.35) 0 14px 32px;
+  --sh-soft:rgba(0,0,0,.3) 0 1px 2px, rgba(0,0,0,.25) 0 8px 20px;
+  --edge-top:inset 0 1px 0 rgba(255,255,255,.05);
+  --header-bg:rgba(21,20,15,.72); --nav-sheet-bg:rgba(21,20,15,.98);
+  --grid-dot:rgba(237,235,227,.07); --overlay:rgba(0,0,0,.6); --btn-dark-hover:#d6d3c7;
+  --alt-edge:inset 0 1px 0 rgba(255,255,255,.04), inset 0 -16px 26px -20px rgba(0,0,0,.5);
+  --spotlight:rgba(245,78,0,.13);
+  color-scheme:dark;
+}
+/* 밝은 면 기준으로 만든 grain 이 어두운 면에서는 거칠게 보여서, 배경색과 soft-light 로 섞어 질감만 남긴다 */
+:root[data-theme="dark"] body{background-blend-mode:soft-light}
+/* 어두운 카드 위에서 AdOnChat 왼쪽 패널이 묻히지 않도록 accent 쪽으로 따뜻하게 띄운다 */
+:root[data-theme="dark"] .feat-panel{background:linear-gradient(150deg,#2b2218,#4a3421)}
+/* 테마 전환 순간에만 색을 부드럽게 바꾼다 (평소 hover 트랜지션과 겹치지 않도록 클래스로 한정) */
+html.theme-switching *,html.theme-switching *::before,html.theme-switching *::after{
+  transition:background-color .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease) !important}
 
 /* ============================= RESET ============================= */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -60,7 +94,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 /* ============================= HEADER ============================= */
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:50;
-  background:rgba(242,241,237,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  background:var(--header-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   border-bottom:1px solid transparent;transition:border-color var(--m-standard) var(--ease),box-shadow var(--m-standard) var(--ease);
 }
 .header-row{display:flex;align-items:center;justify-content:space-between;height:64px}
@@ -78,14 +112,14 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   transition:background var(--m-fast) var(--ease),box-shadow var(--m-fast) var(--ease);
 }
 .btn-github svg{width:15px;height:15px}
-.btn-github:hover{background:#4a4736;box-shadow:var(--sh-focus)}
+.btn-github:hover{background:var(--btn-dark-hover);box-shadow:var(--sh-focus)}
 .nav-toggle{display:none}
 
 /* ============================= HERO (archetype B center-text) ============================= */
 .hero{position:relative;padding:150px 0 128px;text-align:center;overflow:hidden}
 /* 은은한 dot-grid, 중앙 마스크로 페이드 (엔지니어 톤 blueprint 뉘앙스, --text 저알파) */
 .hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-  background-image:radial-gradient(rgba(38,37,30,.055) 1px,transparent 1.4px);
+  background-image:radial-gradient(var(--grid-dot) 1px,transparent 1.4px);
   background-size:24px 24px;
   -webkit-mask-image:radial-gradient(ellipse 78% 58% at 50% 34%,#000 38%,transparent 80%);
   mask-image:radial-gradient(ellipse 78% 58% at 50% 34%,#000 38%,transparent 80%)}
@@ -134,7 +168,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .section{padding:80px 0}
 /* 교차 배경 패널 섹션 경계 트리트먼트: 상단 accent hairline + top light edge + 하단 은은한 inset → 스크롤 리듬 */
 .section-alt{position:relative;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), inset 0 -16px 26px -20px rgba(38,37,30,.14)}
+  box-shadow:var(--alt-edge)}
 .section-alt::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,rgba(245,78,0,.4),transparent)}
 /* 옅은 배경 패널 섹션 (Skills·Experience). 기존 인라인 style 을 클래스로 옮겼다 */
@@ -207,7 +241,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 /* dark 패널 상단 accent glow (§8 on-dark overlay 톤) */
 .feat-panel::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent,rgba(245,78,0,.7),rgba(207,45,86,.5),transparent)}
-/* .feat-catch 규칙은 기존 index.html 에서 바로 앞 줄의 CSS 문법 오류 때문에 적용되지 않았다. 지금 모습을 유지하려고 규칙을 뺐다 */
+.feat-catch{font-family:var(--f-display);font-size:24px;font-weight:500;letter-spacing:-.02em;line-height:1.35;margin-top:auto;word-break:keep-all}
 .feat-role{font-family:var(--f-mono);font-size:12px;color:rgba(255,255,255,.7);line-height:1.6}
 .feat-tech{display:flex;flex-wrap:wrap;gap:6px}
 .feat-tech span{font-family:var(--f-mono);font-size:10.5px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r-compact);padding:3px 7px}
@@ -292,9 +326,32 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   transform:translateX(-120%);transition:transform .7s var(--ease),opacity .3s var(--ease);opacity:0}
 .card:hover .card-thumb::after{transform:translateX(120%);opacity:1}
 
+/* card spotlight: 포인터 위치(--mx, --my)를 따라 옅은 accent 빛이 움직인다. 색 대신 opacity 만 전환 */
+.card,.card-featured{position:relative}
+.card::before,.card-featured::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),var(--spotlight),transparent 62%);
+  opacity:0;transition:opacity var(--m-standard) var(--ease)}
+.card:hover::before,.card-featured:hover::before{opacity:1}
+
+/* theme toggle: 헤더 오른쪽 아이콘 버튼. 해·달 아이콘을 회전·페이드로 맞바꾼다 */
+.header-right{display:flex;align-items:center;gap:14px}
+.theme-toggle{position:relative;width:38px;height:38px;border-radius:var(--r);border:1px solid var(--border);
+  display:inline-flex;align-items:center;justify-content:center;color:var(--text-dim);
+  transition:color var(--m-fast) var(--ease),border-color var(--m-fast) var(--ease),background var(--m-fast) var(--ease)}
+.theme-toggle:hover{color:var(--hover);border-color:var(--border-med)}
+.theme-toggle svg{position:absolute;width:18px;height:18px;transition:transform .4s var(--ease),opacity .25s var(--ease)}
+.theme-toggle .ic-moon{opacity:0;transform:rotate(-90deg) scale(.6)}
+:root[data-theme="dark"] .theme-toggle .ic-sun{opacity:0;transform:rotate(90deg) scale(.6)}
+:root[data-theme="dark"] .theme-toggle .ic-moon{opacity:1;transform:none}
+
+/* 탭 밑줄 인디케이터: 활성 탭의 위치·너비(--x, --w)로 미끄러지듯 이동 */
+.pd-tab-indicator{position:absolute;left:0;bottom:-1px;height:2px;width:var(--w,0);background:var(--accent);border-radius:2px;
+  transform:translateX(var(--x,0));transition:transform .32s cubic-bezier(.3,.7,.2,1),width .32s cubic-bezier(.3,.7,.2,1)}
+.pd-tabs.has-indicator .pd-tab.is-active{border-bottom-color:transparent}
+
 /* ============================= PROJECT DETAIL MODAL ============================= */
 .modal-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;
-  background:rgba(38,37,30,.42);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  background:var(--overlay);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   opacity:0;transition:opacity var(--m-standard) var(--ease)}
 .modal-overlay.open{opacity:1}
 .modal-overlay[hidden]{display:none}
@@ -380,7 +437,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .contact{padding:72px 0}
   .nav{
     position:absolute;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
-    background:rgba(242,241,237,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+    background:var(--nav-sheet-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
     padding:8px 24px 16px;transform:translateY(-8px);opacity:0;pointer-events:none;
     transition:opacity var(--m-standard) var(--ease),transform var(--m-standard) var(--ease);
   }
@@ -413,4 +470,5 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .hero-ornament::before,.hero-ornament::after{animation:none}
   .card-thumb::after{display:none}
   .nav-link::after{transition:none}
+  .card::before,.card-featured::before{display:none}
 }

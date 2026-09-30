@@ -14,6 +14,7 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
       data-reveal
       aria-haspopup="dialog"
       onClick={(e) => onOpen(p.key, e.currentTarget)}
+      onPointerMove={trackSpotlight}
     >
       <div className="feat-panel">
         <p className="feat-catch">{p.catch}</p>
@@ -44,6 +45,13 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
   )
 }
 
+/** 카드 위 스포트라이트가 포인터를 따라가도록 좌표를 CSS 변수로 넘긴다. */
+function trackSpotlight(e: PointerEvent<HTMLElement>) {
+  const r = e.currentTarget.getBoundingClientRect()
+  e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`)
+  e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
+}
+
 /** 마우스 위치에 따라 카드를 살짝 기울인다. 터치 기기와 동작 줄이기 설정에서는 끈다. */
 function useTilt() {
   const reduce = useReducedMotion()
@@ -51,6 +59,7 @@ function useTilt() {
   const enabled = !reduce && finePointer
 
   const onPointerMove = (e: PointerEvent<HTMLElement>) => {
+    trackSpotlight(e)
     const card = e.currentTarget
     const r = card.getBoundingClientRect()
     const px = (e.clientX - r.left) / r.width - 0.5
@@ -65,7 +74,7 @@ function useTilt() {
     card.style.setProperty('--rx', '0deg')
     card.style.setProperty('--ry', '0deg')
   }
-  return enabled ? { onPointerMove, onPointerLeave } : {}
+  return enabled ? { onPointerMove, onPointerLeave } : { onPointerMove: trackSpotlight }
 }
 
 function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: OpenHandler }) {

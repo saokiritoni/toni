@@ -1,12 +1,34 @@
-import { useId, useRef, useState, type ReactNode } from 'react'
+import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 
 type Tab = { key: string; label: string; content: ReactNode }
 
-/** 상세 모달 안의 밑줄 탭. 탭을 바꾸면 탭 바가 모달 상단에 보이도록 스크롤을 되돌린다. */
+/**
+ * 상세 모달 안의 밑줄 탭.
+ * 활성 탭의 위치와 너비를 재서 밑줄이 탭 사이를 미끄러지듯 이동하게 하고,
+ * 탭을 바꾸면 탭 바가 모달 상단에 보이도록 스크롤을 되돌린다.
+ */
 export default function DetailTabs({ label, tabs }: { label: string; tabs: Tab[] }) {
   const [active, setActive] = useState(tabs[0].key)
   const listRef = useRef<HTMLDivElement>(null)
+  const indicatorRef = useRef<HTMLSpanElement>(null)
   const id = useId()
+
+  useLayoutEffect(() => {
+    const list = listRef.current
+    const indicator = indicatorRef.current
+    if (!list || !indicator) return
+    const place = () => {
+      const tab = list.querySelector<HTMLElement>('.pd-tab.is-active')
+      if (!tab) return
+      indicator.style.setProperty('--x', `${tab.offsetLeft}px`)
+      indicator.style.setProperty('--w', `${tab.offsetWidth}px`)
+    }
+    place()
+    // 웹폰트가 늦게 로드되면 탭 너비가 바뀌므로 크기 변화를 따라간다
+    const ro = new ResizeObserver(place)
+    ro.observe(list)
+    return () => ro.disconnect()
+  }, [active])
 
   const select = (key: string) => {
     setActive(key)
@@ -19,7 +41,7 @@ export default function DetailTabs({ label, tabs }: { label: string; tabs: Tab[]
 
   return (
     <>
-      <div className="pd-tabs" role="tablist" aria-label={label} ref={listRef}>
+      <div className="pd-tabs has-indicator" role="tablist" aria-label={label} ref={listRef}>
         {tabs.map((t) => (
           <button
             key={t.key}
@@ -34,6 +56,7 @@ export default function DetailTabs({ label, tabs }: { label: string; tabs: Tab[]
             {t.label}
           </button>
         ))}
+        <span className="pd-tab-indicator" ref={indicatorRef} aria-hidden="true" />
       </div>
       {tabs.map((t) => (
         <div
