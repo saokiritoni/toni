@@ -1,11 +1,14 @@
+import { ExportOutlined } from '@ant-design/icons'
+import { Tag, Typography } from 'antd'
+
 export default function GpuDetail() {
   return (
     <>
       <div className="pd-meta">
-        <span>2025.07 – 2026.02 (6개월)</span>
-        <span>동국대 서버실</span>
-        <span>Backend · 기여 30%</span>
-        <span>서버 15대 · GPU 81개+</span>
+        <Tag variant="filled">2025.07 – 2026.02 (6개월)</Tag>
+        <Tag variant="filled">동국대 서버실</Tag>
+        <Tag variant="filled">Backend · 기여 30%</Tag>
+        <Tag variant="filled">서버 15대 · GPU 81개+</Tag>
       </div>
       <p className="pd-catch">"30분의 GPU 관리 시간을 5분 안으로 단축하다."</p>
 
@@ -30,7 +33,7 @@ export default function GpuDetail() {
 
       <div className="pd-block">
         <h4>Tech</h4>
-        <div className="pd-tech"><span>Spring Boot 3.x (Java 17)</span><span>MySQL</span><span>Redis</span><span>Kubernetes (on-premise)</span><span>Helm</span><span>GitHub Actions</span><span>Docker</span></div>
+        <div className="pd-tech"><Tag variant="filled">Spring Boot 3.x (Java 17)</Tag><Tag variant="filled">MySQL</Tag><Tag variant="filled">Redis</Tag><Tag variant="filled">Kubernetes (on-premise)</Tag><Tag variant="filled">Helm</Tag><Tag variant="filled">GitHub Actions</Tag><Tag variant="filled">Docker</Tag></div>
       </div>
 
       <div className="pd-block">
@@ -56,7 +59,7 @@ export default function GpuDetail() {
             <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리 스케줄러가 Slack API를 동기 호출. 대량 알림에서 429가 발생하면 알림 실패 때문에 <b>핵심 작업인 계정 정리까지 중단</b>. 메모리 큐는 서버 재시작 시 대기 알림 유실 위험</p></div>
             <div className="ba-col after"><span className="ba-label">After</span><p>계정 정리는 반드시 수행돼야 할 핵심 로직, 알림은 실패해도 핵심에 영향을 주면 안 되는 부가 기능. <b>두 작업의 실패 범위가 같아선 안 된다</b>고 판단해 Redis List 기반 Producer-Consumer로 분리. Consumer가 BRPOP으로 Slack 속도에 맞춰 발송하고, 이미 운영 중인 Redis를 써 재시작에도 메시지 보존. <code>AFTER_COMMIT</code> 이벤트로 DB 롤백 시 알림만 나가는 문제 차단</p></div>
           </div>
-          <a className="pd-link" href="https://kiritoni.tistory.com/52" target="_blank" rel="noopener">관련 글: Slack Rate Limit을 Redis 메시지 큐로 해결하기 <span className="ext" aria-hidden="true">↗</span></a>
+          <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/52" target="_blank" rel="noopener">관련 글: Slack Rate Limit을 Redis 메시지 큐로 해결하기 <ExportOutlined /></Typography.Link>
         </div>
       </div>
 
@@ -74,7 +77,7 @@ export default function GpuDetail() {
           <div className="pd-tags"><span>#아키텍처</span><span>#리팩토링</span></div>
           <p>스케줄러 성능을 최적화하며 트랜잭션을 분리하다가, 같은 클래스 안의 메서드 호출(self-invocation)이 스프링 프록시를 거치지 않아 트랜잭션이 걸리지 않는 문제를 만났습니다. 프록시 동작 방식을 확인해 호출 구조를 바꿔 해결했지만, 초기 설계 때 서비스 레이어를 더 세밀하게 분리해뒀다면 겪지 않았을 문제였습니다. 그래서 <b>확장성과 가독성을 고려한 초기 아키텍처 설계의 중요성</b>을 실감했고, 지금도 구조 개선을 고민하고 있습니다.</p>
         </div>
-        <a className="pd-link" href="https://kiritoni.tistory.com/50" target="_blank" rel="noopener">관련 글: 1년간 GPU 서버 관리자로 일하며 배운 것 <span className="ext" aria-hidden="true">↗</span></a>
+        <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/50" target="_blank" rel="noopener">관련 글: 1년간 GPU 서버 관리자로 일하며 배운 것 <ExportOutlined /></Typography.Link>
       </div>
     </>
   )

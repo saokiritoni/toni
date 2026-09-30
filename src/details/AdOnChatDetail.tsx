@@ -1,12 +1,14 @@
+import { ExportOutlined } from '@ant-design/icons'
+import { Tag, Typography } from 'antd'
 import DetailTabs from '../components/DetailTabs'
 
 export default function AdOnChatDetail() {
   return (
     <>
       <div className="pd-meta">
-        <span>2026.04 – 현재</span>
-        <span>NHN AD</span>
-        <span>Frontend, Backend</span>
+        <Tag variant="filled">2026.04 – 현재</Tag>
+        <Tag variant="filled">NHN AD</Tag>
+        <Tag variant="filled">Frontend, Backend</Tag>
       </div>
       <p className="pd-catch">AI 기반 광고 운영 솔루션</p>
 
@@ -26,7 +28,7 @@ export default function AdOnChatDetail() {
               <>
                 <div className="pd-block">
                   <h4>Tech</h4>
-                  <div className="pd-tech"><span>Kotlin</span><span>Spring Boot</span><span>JPA</span><span>PostgreSQL</span><span>DynamoDB</span><span>Redis</span><span>AWS</span></div>
+                  <div className="pd-tech"><Tag variant="filled">Kotlin</Tag><Tag variant="filled">Spring Boot</Tag><Tag variant="filled">JPA</Tag><Tag variant="filled">PostgreSQL</Tag><Tag variant="filled">DynamoDB</Tag><Tag variant="filled">Redis</Tag><Tag variant="filled">AWS</Tag></div>
                 </div>
 
                 <div className="pd-block">
@@ -109,7 +111,7 @@ export default function AdOnChatDetail() {
                       <li>차단 저장소에 장애가 나도 서비스는 멈추지 않도록 설계. <b>"보안 기능의 장애가 정상 사용자를 막아선 안 된다"</b>는 우선순위를 명시적으로 선택하고 문서화</li>
                       <li>허용 목록에 없는 API는 기본 차단(default-deny). 새 기능을 추가하다 권한 설정을 빠뜨려도 <b>실수로 열리는 사고가 구조적으로 불가능</b>하게 설계</li>
                     </ul>
-                    <a className="pd-link" href="https://kiritoni.tistory.com/56" target="_blank" rel="noopener">관련 글: RDBMS vs NoSQL, 동시성을 다루는 두 저장소의 철학 <span className="ext" aria-hidden="true">↗</span></a>
+                    <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/56" target="_blank" rel="noopener">관련 글: RDBMS vs NoSQL, 동시성을 다루는 두 저장소의 철학 <ExportOutlined /></Typography.Link>
                   </div>
                   <div className="pd-work-item">
                     <h5>10. 운영 알림 체계 설계 (PostgreSQL 기반)</h5>
@@ -146,7 +148,7 @@ export default function AdOnChatDetail() {
               <>
                 <div className="pd-block">
                   <h4>Tech</h4>
-                  <div className="pd-tech"><span>React</span><span>TypeScript</span><span>Vite</span><span>Ant Design</span><span>TanStack Query</span></div>
+                  <div className="pd-tech"><Tag variant="filled">React</Tag><Tag variant="filled">TypeScript</Tag><Tag variant="filled">Vite</Tag><Tag variant="filled">Ant Design</Tag><Tag variant="filled">TanStack Query</Tag></div>
                 </div>
 
                 <div className="pd-block">

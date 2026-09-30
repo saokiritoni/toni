@@ -1,10 +1,12 @@
+import { Tag } from 'antd'
+
 export default function AdAnalyticsDetail() {
   return (
     <>
       <div className="pd-meta">
-        <span>2026.02 – 2026.03 (2주)</span>
-        <span>NHN AD</span>
-        <span>Frontend, Backend · 기여 100%</span>
+        <Tag variant="filled">2026.02 – 2026.03 (2주)</Tag>
+        <Tag variant="filled">NHN AD</Tag>
+        <Tag variant="filled">Frontend, Backend · 기여 100%</Tag>
       </div>
       <p className="pd-catch">"대시보드를 보지 말고, 대화하세요."</p>
 

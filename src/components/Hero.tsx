@@ -1,6 +1,7 @@
+import { ArrowDownOutlined, MailOutlined } from '@ant-design/icons'
+import { Button } from 'antd'
 import { EMAIL, HERO_PHRASES } from '../data/profile'
 import { useTypewriter } from '../hooks/useTypewriter'
-import { ArrowDownIcon, MailIcon } from './Icons'
 
 export default function Hero() {
   const typed = useTypewriter(HERO_PHRASES)
@@ -20,14 +21,12 @@ export default function Hero() {
           <span className="caret blink" aria-hidden="true" />
         </p>
         <div className="hero-ctas" data-reveal>
-          <a className="btn-primary" href="#projects">
+          <Button className="hero-cta" type="primary" size="large" href="#projects" icon={<ArrowDownOutlined />} iconPlacement="end">
             프로젝트 보기
-            <ArrowDownIcon />
-          </a>
-          <a className="btn-secondary" href={`mailto:${EMAIL}`}>
-            <MailIcon width={17} height={17} />
+          </Button>
+          <Button className="hero-cta" size="large" shape="round" href={`mailto:${EMAIL}`} icon={<MailOutlined />}>
             이메일 보내기
-          </a>
+          </Button>
         </div>
       </div>
     </section>

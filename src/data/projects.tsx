@@ -1,16 +1,11 @@
-import type { ComponentType, ReactNode } from 'react'
-import AdOnChatDetail from '../details/AdOnChatDetail'
-import AdAnalyticsDetail from '../details/AdAnalyticsDetail'
-import GpuDetail from '../details/GpuDetail'
-import FarmDetail from '../details/FarmDetail'
+import type { ReactNode } from 'react'
 
 export type ProjectKey = 'nhnad' | 'ad-analytics' | 'gpu' | 'farm'
 
 type ProjectBase = {
   key: ProjectKey
-  /** 상세 모달 제목 */
+  /** 상세 모달 제목. 상세 내용 컴포넌트는 src/details/index.ts 에서 key 로 찾는다 */
   modalTitle: string
-  Detail: ComponentType
 }
 
 /** 상단 가로형 카드 (AdOnChat) */
@@ -37,7 +32,6 @@ export type GridProject = ProjectBase & {
 export const FEATURED: FeaturedProject = {
   key: 'nhnad',
   modalTitle: 'AdOnChat',
-  Detail: AdOnChatDetail,
   catch: 'AI Agent 기반 검색광고 운영 솔루션',
   role: 'NHN AD · Frontend, Backend · 기여 20%',
   period: '2026.05 – 현재',
@@ -62,7 +56,6 @@ export const GRID_PROJECTS: GridProject[] = [
   {
     key: 'ad-analytics',
     modalTitle: 'AI 기반 광고 분석 서비스 · NHN AD 인턴 과제',
-    Detail: AdAnalyticsDetail,
     thumb: {
       tone: 'g1',
       metric: (
@@ -83,7 +76,6 @@ export const GRID_PROJECTS: GridProject[] = [
   {
     key: 'gpu',
     modalTitle: 'GPU 서버 관리 자동화 시스템',
-    Detail: GpuDetail,
     thumb: { tone: 'g2', metric: '30분 → 5분', catch: '"관리 시간을 5분 안으로 단축하다."' },
     role: 'Backend · 기여 30%',
     year: '2025–26',
@@ -94,7 +86,6 @@ export const GRID_PROJECTS: GridProject[] = [
   {
     key: 'farm',
     modalTitle: 'Farm System 동아리 홈페이지',
-    Detail: FarmDetail,
     thumb: {
       tone: 'g3',
       metric: (

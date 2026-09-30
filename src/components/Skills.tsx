@@ -1,3 +1,4 @@
+import { Card, Flex, Tag } from 'antd'
 import { SKILL_GROUPS } from '../data/profile'
 
 export default function Skills() {
@@ -11,16 +12,15 @@ export default function Skills() {
         </div>
         <div className="skills-groups">
           {SKILL_GROUPS.map((g) => (
-            <div className="skill-group" data-reveal key={g.title}>
-              <h3>{g.title}</h3>
-              <div className="pills">
+            <Card className="skill-group" size="small" key={g.title} data-reveal title={g.title}>
+              <Flex wrap gap={8}>
                 {g.items.map((s) => (
-                  <span key={s.name} className={`pill${s.main ? ' main' : ''}`}>
+                  <Tag key={s.name} className={`skill-tag${s.main ? ' is-main' : ''}`} variant="outlined">
                     {s.name}
-                  </span>
+                  </Tag>
                 ))}
-              </div>
-            </div>
+              </Flex>
+            </Card>
           ))}
         </div>
       </div>

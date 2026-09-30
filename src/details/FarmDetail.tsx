@@ -1,10 +1,13 @@
+import { ExportOutlined } from '@ant-design/icons'
+import { Tag, Typography } from 'antd'
+
 export default function FarmDetail() {
   return (
     <>
       <div className="pd-meta">
-        <span>2025.01 – 2026.02 (1년)</span>
-        <span>동아리</span>
-        <span>Leader · Backend 30%</span>
+        <Tag variant="filled">2025.01 – 2026.02 (1년)</Tag>
+        <Tag variant="filled">동아리</Tag>
+        <Tag variant="filled">Leader · Backend 30%</Tag>
       </div>
       <p className="pd-catch">"학생들이 쉽고 즐겁게 동아리 생활을 할 수 있도록."</p>
 
@@ -18,7 +21,7 @@ export default function FarmDetail() {
 
       <div className="pd-block">
         <h4>Tech</h4>
-        <div className="pd-tech"><span>Spring Boot 3.x (Java 17)</span><span>MySQL</span><span>Redis</span><span>AWS Route 53</span><span>ALB</span><span>WAF</span><span>EC2</span><span>S3</span><span>RDS</span><span>Docker</span></div>
+        <div className="pd-tech"><Tag variant="filled">Spring Boot 3.x (Java 17)</Tag><Tag variant="filled">MySQL</Tag><Tag variant="filled">Redis</Tag><Tag variant="filled">AWS Route 53</Tag><Tag variant="filled">ALB</Tag><Tag variant="filled">WAF</Tag><Tag variant="filled">EC2</Tag><Tag variant="filled">S3</Tag><Tag variant="filled">RDS</Tag><Tag variant="filled">Docker</Tag></div>
       </div>
 
       <div className="pd-block">
@@ -37,7 +40,7 @@ export default function FarmDetail() {
             <div className="ba-col problem"><span className="ba-label">문제</span><p>스냅샷 공유만으로 끝날 줄 알았으나, 스냅샷이 AWS 관리형 키로 암호화되어 복원 불가 (계정 소유자도 키 권한 편집 불가)</p></div>
             <div className="ba-col after"><span className="ba-label">After</span><p><b>KMS Double Copy 전략</b>: 직접 관리 가능한 새 암호화 키를 만들어 스냅샷을 두 단계로 재암호화·복사, 키 의존성을 제거하고 새 계정에서 인스턴스 복원 완료</p></div>
           </div>
-          <a className="pd-link" href="https://kiritoni.tistory.com/49" target="_blank" rel="noopener">관련 글: 암호화된 RDS를 다른 계정으로 이전하기, KMS Double Copy <span className="ext" aria-hidden="true">↗</span></a>
+          <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/49" target="_blank" rel="noopener">관련 글: 암호화된 RDS를 다른 계정으로 이전하기, KMS Double Copy <ExportOutlined /></Typography.Link>
         </div>
       </div>
 

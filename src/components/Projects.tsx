@@ -1,48 +1,25 @@
-import type { PointerEvent } from 'react'
+import { ArrowRightOutlined } from '@ant-design/icons'
+import { Button, Card, Flex, Tag } from 'antd'
+import type { KeyboardEvent, PointerEvent } from 'react'
 import { FEATURED, GRID_PROJECTS, type GridProject, type ProjectKey } from '../data/projects'
 import { useReducedMotion } from '../hooks/useReducedMotion'
-import { ArrowRightIcon } from './Icons'
 
-type OpenHandler = (key: ProjectKey, trigger: HTMLElement) => void
+type OpenHandler = (key: ProjectKey) => void
 
-function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
-  const p = FEATURED
-  return (
-    <button
-      className="card-featured"
-      type="button"
-      data-reveal
-      aria-haspopup="dialog"
-      onClick={(e) => onOpen(p.key, e.currentTarget)}
-      onPointerMove={trackSpotlight}
-    >
-      <div className="feat-panel">
-        <p className="feat-catch">{p.catch}</p>
-        <p className="feat-role">
-          {p.role}
-          <br />
-          {p.period}
-        </p>
-        <div className="feat-tech">
-          {p.tech.map((t) => (
-            <span key={t}>{t}</span>
-          ))}
-        </div>
-      </div>
-      <div className="feat-body">
-        <h3 className="feat-title">{p.title}</h3>
-        <p className="feat-overview">{p.overview}</p>
-        <ol className="feat-points">
-          {p.points.map((pt, i) => (
-            <li key={i}>{pt}</li>
-          ))}
-        </ol>
-        <span className="card-more">
-          <ArrowRightIcon />
-        </span>
-      </div>
-    </button>
-  )
+/** 카드 전체를 버튼처럼 쓴다. 안에 antd Button 이 있어서 <button> 대신 role="button" 을 준다. */
+function clickable(key: ProjectKey, onOpen: OpenHandler) {
+  return {
+    role: 'button',
+    tabIndex: 0,
+    'aria-haspopup': 'dialog' as const,
+    onClick: () => onOpen(key),
+    onKeyDown: (e: KeyboardEvent<HTMLElement>) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        onOpen(key)
+      }
+    },
+  }
 }
 
 /** 카드 위 스포트라이트가 포인터를 따라가도록 좌표를 CSS 변수로 넘긴다. */
@@ -77,42 +54,89 @@ function useTilt() {
   return enabled ? { onPointerMove, onPointerLeave } : { onPointerMove: trackSpotlight }
 }
 
+/** 카드 오른쪽 아래 화살표. 클릭은 카드가 처리하므로 버튼은 포커스를 받지 않는다. */
+function MoreButton() {
+  return <Button className="card-more" shape="circle" icon={<ArrowRightOutlined />} tabIndex={-1} aria-hidden="true" />
+}
+
+function TechTags({ items, className }: { items: string[]; className?: string }) {
+  return (
+    <Flex wrap gap={6} className={className}>
+      {items.map((t) => (
+        <Tag key={t} variant="filled" className="tech-tag">
+          {t}
+        </Tag>
+      ))}
+    </Flex>
+  )
+}
+
+function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
+  const p = FEATURED
+  return (
+    <Card
+      className="card-featured"
+      hoverable
+      data-reveal
+      styles={{ body: { padding: 0 } }}
+      onPointerMove={trackSpotlight}
+      {...clickable(p.key, onOpen)}
+    >
+      <div className="feat-grid">
+        <div className="feat-panel">
+          <p className="feat-catch">{p.catch}</p>
+          <p className="feat-role">
+            {p.role}
+            <br />
+            {p.period}
+          </p>
+          <TechTags items={p.tech} className="feat-tech" />
+        </div>
+        <div className="feat-body">
+          <h3 className="feat-title">{p.title}</h3>
+          <p className="feat-overview">{p.overview}</p>
+          <ol className="feat-points">
+            {p.points.map((pt, i) => (
+              <li key={i}>{pt}</li>
+            ))}
+          </ol>
+          <MoreButton />
+        </div>
+      </div>
+    </Card>
+  )
+}
+
 function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: OpenHandler }) {
   const tilt = useTilt()
   return (
-    <button
+    <Card
       className="card"
-      type="button"
+      hoverable
       data-reveal
-      aria-haspopup="dialog"
-      onClick={(e) => onOpen(p.key, e.currentTarget)}
-      {...tilt}
-    >
-      <div className={`card-thumb ${p.thumb.tone}`}>
-        <span className="thumb-metric">{p.thumb.metric}</span>
-        <span className="thumb-catch">{p.thumb.catch}</span>
-      </div>
-      <div className="card-body">
-        <span className="card-role">
-          {p.role}
-          <span className="yr">{p.year}</span>
-        </span>
-        <span className="card-title">{p.title}</span>
-        <ul className="card-points">
-          {p.points.map((pt) => (
-            <li key={pt}>{pt}</li>
-          ))}
-        </ul>
-        <div className="card-stack">
-          {p.stack.map((s) => (
-            <span key={s}>{s}</span>
-          ))}
+      cover={
+        <div className={`card-thumb ${p.thumb.tone}`}>
+          <span className="thumb-metric">{p.thumb.metric}</span>
+          <span className="thumb-catch">{p.thumb.catch}</span>
         </div>
-        <span className="card-more">
-          <ArrowRightIcon />
-        </span>
-      </div>
-    </button>
+      }
+      classNames={{ body: 'card-body' }}
+      {...tilt}
+      {...clickable(p.key, onOpen)}
+    >
+      <span className="card-role">
+        {p.role}
+        <span className="yr">{p.year}</span>
+      </span>
+      <span className="card-title">{p.title}</span>
+      <ul className="card-points">
+        {p.points.map((pt) => (
+          <li key={pt}>{pt}</li>
+        ))}
+      </ul>
+      <TechTags items={p.stack} />
+      <MoreButton />
+    </Card>
   )
 }
 

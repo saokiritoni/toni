@@ -1,17 +1,20 @@
+import { Typography } from 'antd'
 import { AWARDS, LICENSES, type Credential } from '../data/profile'
 
 function CredList({ title, items }: { title: string; items: Credential[] }) {
   return (
     <div className="cred-col" data-reveal>
-      <h3>{title}</h3>
+      <Typography.Title level={3} className="cred-title">
+        {title}
+      </Typography.Title>
       <ul className="cred-list">
         {items.map((c) => (
           <li key={c.year + c.strong + c.rest}>
             <span className="yr">{c.year}</span>
-            <span className="name">
-              <strong>{c.strong}</strong>
+            <Typography.Text className="name">
+              <Typography.Text strong>{c.strong}</Typography.Text>
               {c.rest}
-            </span>
+            </Typography.Text>
           </li>
         ))}
       </ul>

@@ -1,15 +1,15 @@
+import { ExportOutlined, GithubOutlined, MenuOutlined } from '@ant-design/icons'
+import { Anchor, Button, Drawer } from 'antd'
 import { useEffect, useState } from 'react'
 import { BLOG_URL, GITHUB_URL, NAV_SECTIONS } from '../data/profile'
-import { useScrollSpy } from '../hooks/useScrollSpy'
-import { ArrowUpRightIcon, GithubIcon, MenuIcon } from './Icons'
 import ThemeToggle from './ThemeToggle'
 
-const SECTION_IDS = NAV_SECTIONS.map((s) => s.id)
+const HEADER_HEIGHT = 64
+const ANCHOR_ITEMS = NAV_SECTIONS.map((s) => ({ key: s.id, href: `#${s.id}`, title: s.label }))
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const active = useScrollSpy(SECTION_IDS)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -17,8 +17,6 @@ export default function Header() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  const closeMenu = () => setMenuOpen(false)
 
   return (
     <header className={`site-header${scrolled ? ' scrolled' : ''}`}>
@@ -28,34 +26,56 @@ export default function Header() {
             Soeun Lee<span className="dot">.</span>
           </a>
           <div className="header-right">
-            <nav className={`nav${menuOpen ? ' open' : ''}`} id="nav" aria-label="주요">
-              {NAV_SECTIONS.map((s) => (
-                <a key={s.id} className={`nav-link${active === s.id ? ' active' : ''}`} href={`#${s.id}`} onClick={closeMenu}>
-                  {s.label}
-                </a>
-              ))}
-              <a className="nav-link nav-link-ext" href={BLOG_URL} target="_blank" rel="noopener" onClick={closeMenu}>
-                블로그
-                <ArrowUpRightIcon />
-              </a>
-              <a className="btn-github" href={GITHUB_URL} target="_blank" rel="noopener" onClick={closeMenu}>
-                <GithubIcon />
-                GitHub
-              </a>
-            </nav>
+            {/* antd Anchor 가 스크롤 위치에 맞춰 현재 섹션을 표시하고, 고정 헤더 높이만큼 비켜서 스크롤한다 */}
+            <Anchor
+              className="nav-anchor"
+              direction="horizontal"
+              affix={false}
+              targetOffset={HEADER_HEIGHT + 8}
+              bounds={HEADER_HEIGHT}
+              items={ANCHOR_ITEMS}
+            />
+            <Button className="nav-ext" type="text" href={BLOG_URL} target="_blank" rel="noopener" icon={<ExportOutlined />} iconPlacement="end">
+              블로그
+            </Button>
+            <Button className="nav-ext" type="primary" href={GITHUB_URL} target="_blank" rel="noopener" icon={<GithubOutlined />}>
+              GitHub
+            </Button>
             <ThemeToggle />
-            <button
+            <Button
               className="nav-toggle"
-              aria-label={menuOpen ? '메뉴 닫기' : '메뉴 열기'}
+              icon={<MenuOutlined />}
+              aria-label="메뉴 열기"
               aria-expanded={menuOpen}
-              aria-controls="nav"
-              onClick={() => setMenuOpen((o) => !o)}
-            >
-              <MenuIcon />
-            </button>
+              onClick={() => setMenuOpen(true)}
+            />
           </div>
         </div>
       </div>
+
+      <Drawer
+        className="nav-drawer"
+        placement="right"
+        size={280}
+        title="Soeun Lee."
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+      >
+        <Anchor
+          affix={false}
+          targetOffset={HEADER_HEIGHT + 8}
+          items={ANCHOR_ITEMS}
+          onClick={() => setMenuOpen(false)}
+        />
+        <div className="nav-drawer-actions">
+          <Button block href={BLOG_URL} target="_blank" rel="noopener" icon={<ExportOutlined />} iconPlacement="end">
+            블로그
+          </Button>
+          <Button block type="primary" href={GITHUB_URL} target="_blank" rel="noopener" icon={<GithubOutlined />}>
+            GitHub
+          </Button>
+        </div>
+      </Drawer>
     </header>
   )
 }
