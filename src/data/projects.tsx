@@ -62,7 +62,7 @@ export const GRID_PROJECTS: GridProject[] = [
     thumb: { tone: 'g1' },
     role: 'Frontend, Backend · 기여 100%',
     title: '[인턴 과제] 자연어 광고 분석 서비스',
-    points: ['자연어로 광고 데이터를 분석하는 AI 서비스', '13개 AWS 서비스 서버리스 아키텍처를 2주 단독 설계, 응답 99.58%↓ · 비용 83%↓'],
+    points: ['자연어로 광고 데이터를 분석하는 AI 서비스', '2주 MVP로 설계·개발, 대시보드 응답 99.58%↓'],
     stack: ['EventBridge', 'Lambda', 'Athena', 'Bedrock', 'Redis'],
   },
   {
