@@ -1,0 +1,416 @@
+/* ============================= TOKENS (cursor canonical) ============================= */
+:root{
+  --bg:#f2f1ed;
+  --surface-100:#f7f7f4; --surface-300:#ebeae5; --surface-400:#e6e5e0; --surface-500:#e1e0db;
+  --text:#26251e; --text-dim:rgba(38,37,30,.55);
+  --accent:#f54e00; --hover:#cf2d56; --gold:#c08532; --success:#1f8a65;
+  --border:rgba(38,37,30,.1); --border-med:rgba(38,37,30,.2); --border-strong:rgba(38,37,30,.55);
+  /* syntax palette (cursor timeline colors) */
+  --tk-think:#dfa88f; --tk-grep:#9fc9a2; --tk-read:#9fbbe0; --tk-edit:#c0a8dd;
+  /* radius */
+  --r-compact:4px; --r:8px; --r-feat:10px; --r-pill:9999px;
+  /* shadow */
+  --sh-ambient:rgba(0,0,0,.02) 0 0 16px, rgba(0,0,0,.008) 0 0 8px;
+  --sh-focus:rgba(0,0,0,.1) 0 4px 12px;
+  --sh-elev:rgba(0,0,0,.14) 0 28px 70px, rgba(0,0,0,.1) 0 14px 32px;
+  --ring:rgba(38,37,30,.1) 0 0 0 1px;
+  /* depth 변형 (기존 ambient/elev의 알파 변형 + white top-edge overlay, DESIGN.md §6 준수) */
+  --sh-soft:rgba(0,0,0,.05) 0 1px 2px, rgba(0,0,0,.045) 0 8px 20px;
+  --edge-top:inset 0 1px 0 rgba(255,255,255,.55);
+  /* motion */
+  --m-instant:0ms; --m-fast:150ms; --m-blink:530ms; --m-standard:250ms;
+  --ease:cubic-bezier(.4,0,.2,1);
+  /* fonts */
+  --f-display:'Space Grotesk','Pretendard',system-ui,sans-serif;
+  --f-serif:'Fraunces','Pretendard',Georgia,serif;
+  --f-mono:'JetBrains Mono',ui-monospace,'SF Mono',monospace;
+  --f-body:'Pretendard','Space Grotesk',system-ui,sans-serif;
+}
+
+/* ============================= RESET ============================= */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background-color:var(--bg);
+  /* 은은한 grain 텍스처 (grayscale feTurbulence, cream 위 미세 질감 → flat 완화). 정적, reduced-motion 무관 */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
+  background-attachment:fixed;
+  color:var(--text);font-family:var(--f-body);
+  font-size:16px;line-height:1.5;font-weight:400;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+ul{list-style:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+/* ============================= SINGLE SHARED CONTAINER ============================= */
+/* 모든 top-level 섹션은 이 컨테이너 하나만 사용, left/right edge 일치 (self-audit 대상) */
+.container-inner{width:100%;max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* ============================= REVEAL (failsafe safety net) ============================= */
+@keyframes failsafeReveal{to{opacity:1;transform:none}}
+[data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+[data-reveal]{animation:failsafeReveal .01s ease 2s forwards} /* JS 없으면 2s 뒤 강제 노출 */
+html.js-ready [data-reveal]{animation:none}                    /* JS 살아있으면 IO가 제어 */
+.is-revealed{opacity:1 !important;transform:none !important}
+
+/* ============================= HEADER ============================= */
+.site-header{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  background:rgba(242,241,237,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;transition:border-color var(--m-standard) var(--ease),box-shadow var(--m-standard) var(--ease);
+}
+.header-row{display:flex;align-items:center;justify-content:space-between;height:64px}
+.wordmark{font-family:var(--f-display);font-weight:600;font-size:18px;letter-spacing:-.03em;color:var(--text)}
+.wordmark .dot{color:var(--accent)}
+.site-header.scrolled{border-bottom-color:var(--border);box-shadow:var(--sh-ambient)}
+.nav{display:flex;align-items:center;gap:28px}
+.nav-link{font-size:14px;color:var(--text-dim);transition:color var(--m-fast) var(--ease)}
+.nav-link:hover{color:var(--hover)}
+.nav-link-ext{display:inline-flex;align-items:center;gap:4px}
+.nav-link-ext svg{width:12px;height:12px;opacity:.55}
+.btn-github{
+  display:inline-flex;align-items:center;gap:7px;font-size:14px;padding:8px 16px;border-radius:var(--r);
+  background:var(--text);color:var(--bg);border:1px solid var(--text);
+  transition:background var(--m-fast) var(--ease),box-shadow var(--m-fast) var(--ease);
+}
+.btn-github svg{width:15px;height:15px}
+.btn-github:hover{background:#4a4736;box-shadow:var(--sh-focus)}
+.nav-toggle{display:none}
+
+/* ============================= HERO (archetype B center-text) ============================= */
+.hero{position:relative;padding:150px 0 128px;text-align:center;overflow:hidden}
+/* 은은한 dot-grid, 중앙 마스크로 페이드 (엔지니어 톤 blueprint 뉘앙스, --text 저알파) */
+.hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(rgba(38,37,30,.055) 1px,transparent 1.4px);
+  background-size:24px 24px;
+  -webkit-mask-image:radial-gradient(ellipse 78% 58% at 50% 34%,#000 38%,transparent 80%);
+  mask-image:radial-gradient(ellipse 78% 58% at 50% 34%,#000 38%,transparent 80%)}
+.hero-ornament{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero-ornament::before,.hero-ornament::after{content:"";position:absolute;border-radius:50%;filter:blur(120px);opacity:.5}
+.hero-ornament::before{width:520px;height:520px;top:-120px;left:50%;transform:translateX(-60%);
+  background:radial-gradient(circle,rgba(245,78,0,.20),transparent 70%)}
+.hero-ornament::after{width:440px;height:440px;top:40px;right:8%;
+  background:radial-gradient(circle,rgba(207,45,86,.14),transparent 70%)}
+.hero .container-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.hero-title{
+  font-family:var(--f-display);font-weight:500;letter-spacing:-.03em;line-height:1.12;
+  font-size:clamp(33px,6.2vw,72px);margin:0 auto;word-break:keep-all;
+}
+/* accent 단어에 editorial swash 언더라인 (텍스트는 accent 유지, 데코 라인은 하단 분리 → 대비 보존) */
+.hero-title em{font-style:normal;color:var(--accent);position:relative;white-space:nowrap}
+.hero-title em::after{content:"";position:absolute;left:.02em;right:.02em;bottom:-.04em;height:.085em;
+  background:linear-gradient(90deg,var(--accent),var(--hover));border-radius:var(--r-compact);opacity:.55}
+.hero-typed{
+  font-family:var(--f-mono);font-size:clamp(15px,2.4vw,20px);color:var(--text-dim);
+  margin-top:22px;min-height:1.6em;display:flex;align-items:center;justify-content:center;gap:2px;
+}
+.hero-typed .prompt{color:var(--success)}
+.hero-typed #typed{color:var(--text)}
+.caret{display:inline-block;width:9px;height:1.15em;background:var(--accent);margin-left:2px;transform:translateY(2px)}
+.caret.blink{animation:caretBlink var(--m-blink) step-end infinite}
+@keyframes caretBlink{50%{opacity:0}}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:34px}
+.btn-primary{
+  font-family:var(--f-display);font-size:15px;font-weight:500;
+  padding:12px 22px;border-radius:var(--r);background:var(--text);color:var(--bg);
+  display:inline-flex;align-items:center;gap:8px;
+  transition:box-shadow var(--m-fast) var(--ease),background var(--m-fast) var(--ease);
+}
+/* 색/그림자 전환만 (magnetic·lift 제거, 사용자 교정) */
+.btn-primary:hover{box-shadow:var(--sh-focus);background:var(--accent)}
+.btn-secondary{
+  font-size:15px;padding:12px 22px;border-radius:var(--r-pill);
+  background:var(--surface-400);color:var(--text-dim);border:1px solid var(--border);
+  display:inline-flex;align-items:center;gap:8px;transition:color var(--m-fast) var(--ease),box-shadow var(--m-fast) var(--ease);
+}
+.btn-secondary:hover{color:var(--hover);box-shadow:var(--sh-focus)}
+
+
+/* ============================= SECTION SHELL ============================= */
+.section{padding:80px 0}
+/* 교차 배경 패널 섹션 경계 트리트먼트: 상단 accent hairline + top light edge + 하단 은은한 inset → 스크롤 리듬 */
+.section-alt{position:relative;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), inset 0 -16px 26px -20px rgba(38,37,30,.14)}
+.section-alt::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(245,78,0,.4),transparent)}
+/* 옅은 배경 패널 섹션 (Skills·Experience). 기존 인라인 style 을 클래스로 옮겼다 */
+.section-panel{background:var(--surface-100);border-block:1px solid var(--border)}
+.section-head{margin-bottom:44px}
+.section-title{font-family:var(--f-display);font-weight:500;font-size:clamp(26px,4vw,36px);letter-spacing:-.02em;line-height:1.2}
+.section-sub{color:var(--text-dim);margin-top:12px;font-size:16px;max-width:56ch}
+
+/* ============================= ABOUT ============================= */
+.about-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:4px}
+.about-col{position:relative;padding-top:18px;border-top:1px solid var(--border-med)}
+.about-idx{font-family:var(--f-mono);font-size:12px;color:var(--accent);display:block;margin-bottom:14px;letter-spacing:.04em}
+.about-col::before{content:"";position:absolute;top:-1px;left:0;width:34px;height:2px;background:var(--accent)}
+.about-col p{font-size:15.5px;line-height:1.75;color:var(--text)}
+.about-col p b{font-weight:600;color:var(--accent)}
+
+/* ============================= SKILLS ============================= */
+.skills-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px}
+.skill-group{background:var(--surface-100);border:1px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--edge-top),var(--sh-soft)}
+.skill-group h3{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{
+  font-family:var(--f-mono);font-size:12px;padding:6px 12px;border-radius:var(--r-pill);
+  background:var(--surface-400);color:var(--text);border:1px solid var(--border);
+  transition:color var(--m-fast) var(--ease),border-color var(--m-fast) var(--ease),transform var(--m-fast) var(--ease);
+}
+.pill.main{border-color:var(--accent);color:var(--accent)}
+.pill:hover{color:var(--hover);border-color:var(--border-med)}
+
+/* ============================= PROJECTS ============================= */
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{
+  background:var(--surface-400);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
+  display:flex;flex-direction:column;box-shadow:var(--edge-top),var(--sh-soft);
+  transition:transform var(--m-standard) var(--ease),box-shadow var(--m-standard) var(--ease),border-color var(--m-standard) var(--ease);
+}
+.card:hover{transform:translateY(-4px);box-shadow:var(--edge-top),var(--sh-elev);border-color:rgba(245,78,0,.35)}
+.card-thumb{aspect-ratio:16/10;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:16px;color:rgba(255,255,255,.92)}
+/* brand-color gradient placeholder box (실제 스크린샷 준비되면 <img>로 교체) */
+.card-thumb.g1{background:linear-gradient(135deg,#f54e00,#cf2d56)}
+.card-thumb.g2{background:linear-gradient(135deg,#26251e,#4a4736)}
+.card-thumb.g3{background:linear-gradient(135deg,#c08532,#f54e00)}
+.thumb-metric{font-family:var(--f-display);font-weight:600;font-size:26px;letter-spacing:-.02em;line-height:1}
+.thumb-catch{font-family:var(--f-mono);font-size:11px;opacity:.85;line-height:1.4}
+.card-body{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card-role{font-family:var(--f-mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.05em}
+.card-role .yr{color:var(--text-dim);margin-left:6px}
+.card-title{font-family:var(--f-display);font-size:19px;font-weight:500;letter-spacing:-.02em;display:flex;align-items:center;gap:6px;transition:color var(--m-fast) var(--ease)}
+.card:hover .card-title{color:var(--hover)}
+.card-desc{font-size:13.5px;color:var(--text-dim);line-height:1.55;flex:1}
+.card-points{list-style:none;margin:0;padding:0;flex:1;display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:var(--text-dim);line-height:1.55}
+.card-points li{position:relative;padding-left:13px;word-break:keep-all}
+.card-points li::before{content:"·";position:absolute;left:1px;color:var(--accent);font-weight:700}
+.feat-points{list-style:none;margin:10px 0 18px;padding:0;display:flex;flex-direction:column;gap:7px;font-size:14px;color:var(--text-dim);line-height:1.6;counter-reset:fp}
+.feat-points li{position:relative;padding-left:20px;word-break:keep-all;counter-increment:fp}
+.feat-points li::before{content:counter(fp) ".";position:absolute;left:0;color:var(--accent);font-weight:700;font-family:var(--f-mono)}
+.card-stack{display:flex;flex-wrap:wrap;gap:6px}
+.card-stack span{font-family:var(--f-mono);font-size:11px;color:var(--text-dim);background:var(--surface-100);border:1px solid var(--border);border-radius:var(--r-compact);padding:3px 8px}
+
+/* featured project (AdOnChat · NHN AD, 링크 없음) */
+.card-featured{
+  display:grid;grid-template-columns:minmax(260px,360px) 1fr;margin-bottom:22px;
+  background:var(--surface-400);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--edge-top),var(--sh-soft);
+  transition:box-shadow var(--m-standard) var(--ease),border-color var(--m-standard) var(--ease);
+}
+.card-featured:hover{box-shadow:var(--edge-top),var(--sh-elev);border-color:rgba(245,78,0,.35)}
+.feat-panel{position:relative;background:linear-gradient(150deg,#26251e,#4a4736);color:#fff;padding:30px;display:flex;flex-direction:column;gap:16px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09)}
+/* dark 패널 상단 accent glow (§8 on-dark overlay 톤) */
+.feat-panel::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(245,78,0,.7),rgba(207,45,86,.5),transparent)}
+/* .feat-catch 규칙은 기존 index.html 에서 바로 앞 줄의 CSS 문법 오류 때문에 적용되지 않았다. 지금 모습을 유지하려고 규칙을 뺐다 */
+.feat-role{font-family:var(--f-mono);font-size:12px;color:rgba(255,255,255,.7);line-height:1.6}
+.feat-tech{display:flex;flex-wrap:wrap;gap:6px}
+.feat-tech span{font-family:var(--f-mono);font-size:10.5px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r-compact);padding:3px 7px}
+.feat-body{padding:30px;display:flex;flex-direction:column}
+.feat-title{font-family:var(--f-display);font-size:22px;font-weight:500;letter-spacing:-.02em}
+.feat-overview{color:var(--text-dim);font-size:14px;line-height:1.62;margin:10px 0 0;word-break:keep-all}
+.feat-highlights{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:auto}
+.feat-highlights span{font-family:var(--f-mono);font-size:11.5px;color:var(--text);background:var(--surface-100);border:1px solid var(--border);border-radius:var(--r-pill);padding:5px 11px}
+
+/* card buttons + '자세히 보기' affordance (cursor crimson shift 시그니처) */
+.card,.card-featured{font:inherit;color:inherit;text-align:left;width:100%;cursor:pointer;-webkit-appearance:none;appearance:none}
+/* 화살표 어포던스: 카드 오른쪽 하단 코너 앵커 (align-self flex-end + margin-top auto로 bottom-right) */
+.card-more{display:inline-flex;align-items:center;justify-content:center;align-self:flex-end;margin-top:auto;width:36px;height:36px;border:1px solid var(--border);border-radius:var(--r-pill);color:var(--text-dim);transition:color var(--m-fast) var(--ease),border-color var(--m-fast) var(--ease)}
+/* 색 전환 위주 (이동 제거, 사용자 교정) */
+.card:hover .card-more,.card-featured:hover .card-more{color:var(--hover);border-color:var(--border-med)}
+
+/* ============================= EXPERIENCE ============================= */
+.timeline{border-left:2px solid var(--border)}
+.tl-item{position:relative;padding:0 0 34px 30px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:"";position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.tl-period{font-family:var(--f-mono);font-size:12px;color:var(--text-dim)}
+.tl-role{font-family:var(--f-display);font-size:18px;font-weight:500;letter-spacing:-.01em;margin-top:3px}
+.tl-role .co{color:var(--accent)}
+.tl-desc{margin-top:8px;color:var(--text-dim);font-size:15px;line-height:1.6;max-width:64ch}
+
+/* ============================= CREDENTIALS (awards + licenses) ============================= */
+/* 조용한 리스트 톤: 서피스/그림자 없이 hairline 구분선만 (사용자 교정: 장식 과함) */
+.creds-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px 56px}
+.cred-col{padding-top:2px}
+.cred-col h3{font-family:var(--f-display);font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.01em;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid var(--border-med)}
+.cred-list li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14.5px}
+.cred-list li:last-child{border-bottom:none}
+.cred-list .yr{font-family:var(--f-mono);font-size:12px;color:var(--accent);flex:0 0 42px}
+.cred-list .name strong{font-weight:600}
+
+/* ============================= CONTACT + FOOTER ============================= */
+.contact{text-align:center;padding:96px 0}
+.contact-title{font-family:var(--f-display);font-weight:500;font-size:clamp(28px,5vw,44px);letter-spacing:-.03em;line-height:1.15;max-width:20ch;margin:0 auto}
+.contact-sub{color:var(--text-dim);margin-top:16px;font-size:16px}
+.contact-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:32px}
+.site-footer{border-top:1px solid var(--border);padding:40px 0}
+.footer-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-meta{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);line-height:1.7}
+.socials{display:flex;gap:8px}
+.social{width:38px;height:38px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface-100);
+  display:flex;align-items:center;justify-content:center;color:var(--text-dim);transition:color var(--m-fast) var(--ease),border-color var(--m-fast) var(--ease)}
+.social:hover{color:var(--hover);border-color:var(--border-med)}
+.social svg{width:19px;height:19px}
+.footer-mail{transition:color var(--m-fast) var(--ease)}
+.footer-mail:hover{color:var(--hover)}
+
+/* ============================= LANDING INTERACTIONS ============================= */
+/* 브랜드 톤 유지: transform/opacity만 애니메이트, 기존 토큰만 사용 (신규 hex 없음) */
+
+/* scroll progress bar — top hairline, accent→hover gradient (DESIGN.md §2) */
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:60;
+  transform:scaleX(0);transform-origin:0 50%;
+  background:linear-gradient(90deg,var(--accent),var(--hover))}
+
+/* nav-link underline sweep + scroll-spy active (visibility of system status) */
+.nav-link{position:relative}
+.nav-link::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1.5px;
+  background:currentColor;transform:scaleX(0);transform-origin:0 50%;
+  transition:transform var(--m-standard) var(--ease)}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1)}
+.nav-link.active{color:var(--text)}
+
+/* hero ornament 은은한 드리프트 (transform/scale만, 컬러 애니메이션 아님 → §1 준수) */
+@keyframes ornDriftA{50%{transform:translateX(-60%) translateY(24px) scale(1.05)}}
+@keyframes ornDriftB{50%{transform:translateY(-20px) scale(1.07)}}
+.hero-ornament::before{animation:ornDriftA 15s var(--ease) infinite}
+.hero-ornament::after{animation:ornDriftB 18s var(--ease) infinite}
+
+/* card 3D tilt (pointer-based) — 이동 중엔 transform 즉시 추종, release 시 부드럽게 복귀 */
+.card.tilt{transition:box-shadow var(--m-standard) var(--ease);
+  transform:perspective(900px) rotateX(var(--rx,0)) rotateY(var(--ry,0)) translateY(-4px);
+  box-shadow:var(--edge-top),var(--sh-elev);border-color:rgba(245,78,0,.35)}
+/* thumbnail sheen sweep on hover (§8 on-dark white overlay 토큰) */
+.card-thumb::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.20) 50%,transparent 68%);
+  transform:translateX(-120%);transition:transform .7s var(--ease),opacity .3s var(--ease);opacity:0}
+.card:hover .card-thumb::after{transform:translateX(120%);opacity:1}
+
+/* ============================= PROJECT DETAIL MODAL ============================= */
+.modal-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:rgba(38,37,30,.42);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  opacity:0;transition:opacity var(--m-standard) var(--ease)}
+.modal-overlay.open{opacity:1}
+.modal-overlay[hidden]{display:none}
+.modal{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-feat);box-shadow:var(--sh-elev);
+  width:100%;max-width:720px;max-height:88vh;display:flex;flex-direction:column;
+  transform:translateY(14px) scale(.985);transition:transform var(--m-standard) var(--ease)}
+.modal-overlay.open .modal{transform:none}
+.modal:focus{outline:none}
+/* 헤더: 깔끔한 divider + 큰 타이틀 위계 (accent bar·scroll shadow 제거, Toss idiom) */
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  padding:26px 28px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:2;
+  border-radius:var(--r-feat) var(--r-feat) 0 0}
+.modal-title{font-family:var(--f-display);font-size:25px;font-weight:600;letter-spacing:-.02em;line-height:1.25}
+/* 담백한 아이콘 버튼: 색/배경 틴트 전환만 (움직임·그림자·보더 제거) */
+.modal-close{flex:0 0 auto;width:44px;height:44px;border-radius:var(--r);border:none;background:transparent;
+  display:flex;align-items:center;justify-content:center;color:var(--text-dim);
+  transition:color var(--m-fast) var(--ease),background var(--m-fast) var(--ease)}
+.modal-close:hover{color:var(--text);background:var(--surface-300)}
+.modal-body{padding:26px 28px 32px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+/* detail content — 장식 최소화, 여백과 타이포 위계로 구조화 (Toss idiom) */
+.pd-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.pd-meta span{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);background:var(--surface-300);border-radius:var(--r-pill);padding:5px 12px}
+.pd-catch{font-family:var(--f-serif);font-size:20px;line-height:1.45;color:var(--text);margin-bottom:32px}
+/* 모달 내부 탭 (AdOnChat: Backend / Frontend). underline 탭, 모달 스크롤 시 상단 고정 */
+.pd-tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin:-8px 0 28px;position:sticky;top:-26px;padding-top:8px;background:var(--bg);z-index:1}
+.pd-tab{font:inherit;font-family:var(--f-display);font-size:15px;font-weight:500;color:var(--text-dim);background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:10px 14px;cursor:pointer;-webkit-appearance:none;appearance:none;transition:color var(--m-fast) var(--ease),border-color var(--m-fast) var(--ease)}
+.pd-tab:hover{color:var(--hover)}
+.pd-tab.is-active{color:var(--text);border-bottom-color:var(--accent)}
+.pd-pane .pd-block:last-child{margin-bottom:0}
+.pd-block{margin-bottom:36px}
+.pd-block > h4{font-family:var(--f-display);font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-bottom:16px}
+.pd-p{font-size:15px;line-height:1.72;color:var(--text);margin-bottom:8px}
+.pd-note{font-size:13px;line-height:1.6;color:var(--text-dim);margin-top:10px}
+/* 관련 블로그 글 링크 — 조용한 텍스트 링크, hover는 색 전환만 */
+.pd-link{display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:14px;color:var(--accent);transition:color var(--m-fast) var(--ease)}
+.pd-link:hover{color:var(--hover)}
+.pd-link .ext{font-size:12px}
+/* Why/How/Result: flat surface + 라벨-값 담백하게 (보더·edge 제거) */
+.pd-whr{background:var(--surface-100);border-radius:var(--r-feat);padding:6px 20px;margin-top:6px}
+.pd-whr li{display:flex;gap:18px;font-size:15px;line-height:1.6;padding:13px 0;margin:0;border-bottom:1px solid var(--border)}
+.pd-whr li:last-child{border-bottom:none}
+.pd-whr .k{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);flex:0 0 52px;padding-top:2px}
+.pd-tech{display:flex;flex-wrap:wrap;gap:7px}
+.pd-tech span{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);background:var(--surface-300);border-radius:var(--r-pill);padding:5px 12px}
+.pd-work-item{margin-bottom:26px}
+.pd-work-item:last-child{margin-bottom:0}
+.pd-work-item h5{font-family:var(--f-display);font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:12px}
+.pd-work-item h5 em{font-style:normal;font-weight:400;font-size:12.5px;color:var(--text-dim)}
+.pd-sublist li{position:relative;padding-left:16px;font-size:15px;line-height:1.65;color:var(--text-dim);margin-bottom:10px}
+.pd-sublist li::before{content:"";position:absolute;left:3px;top:10px;width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.pd-sublist li b{color:var(--text);font-weight:600}
+.pd-sublist code,.pd-p code,.ba-col code{font-family:var(--f-mono);font-size:.88em;background:var(--surface-300);padding:1px 5px;border-radius:var(--r-compact);color:var(--text)}
+/* Before/After: flat 카드, 라벨 색 한 포인트 (좌측 rule·edge·보더 제거) */
+.pd-ba{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:12px;margin-top:4px}
+.ba-col{border-radius:var(--r-feat);padding:16px 18px;background:var(--surface-100)}
+.ba-label{font-family:var(--f-mono);font-size:11px;letter-spacing:.03em;padding:3px 10px;border-radius:var(--r-pill);display:inline-block;margin-bottom:11px}
+.ba-col.before .ba-label{background:var(--surface-400);color:var(--text-dim)}
+.ba-col.problem .ba-label{background:rgba(207,45,86,.12);color:var(--hover)}
+.ba-col.after .ba-label{background:rgba(245,78,0,.12);color:var(--accent)}
+.ba-col p{font-size:15px;line-height:1.6;color:var(--text)}
+.ba-col p b{font-weight:600}
+/* 회고 블록: flat surface, 태그 색 한 포인트 (좌측 rule·edge 제거) */
+.pd-growth-item{padding:18px 20px;margin-bottom:12px;background:var(--surface-100);border-radius:var(--r-feat)}
+.pd-growth-item:last-of-type{margin-bottom:0}
+.pd-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:11px}
+.pd-tags span{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
+.pd-growth-item p{font-size:15px;line-height:1.68;color:var(--text-dim)}
+.pd-growth-item p b{color:var(--text);font-weight:600}
+.cred-list .yr{white-space:nowrap}
+
+/* ============================= RESPONSIVE ============================= */
+@media (max-width:900px){
+  .about-cols{grid-template-columns:1fr;gap:26px}
+  .card-featured{grid-template-columns:1fr}
+  .skills-groups{grid-template-columns:1fr;gap:16px}
+  .projects-grid{grid-template-columns:1fr 1fr}
+  .creds-grid{grid-template-columns:1fr}
+}
+@media (max-width:768px){
+  .hero{padding:120px 0 64px}
+  .section{padding:60px 0}
+  .contact{padding:72px 0}
+  .nav{
+    position:absolute;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
+    background:rgba(242,241,237,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+    padding:8px 24px 16px;transform:translateY(-8px);opacity:0;pointer-events:none;
+    transition:opacity var(--m-standard) var(--ease),transform var(--m-standard) var(--ease);
+  }
+  .nav.open{opacity:1;transform:translateY(0);pointer-events:auto}
+  .nav-link{padding:12px 0;border-bottom:1px solid var(--border)}
+  .nav .nav-link-ext{border-bottom:1px solid var(--border)}
+  .nav .btn-github{margin-top:12px;justify-content:center}
+  .nav-toggle{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;
+    border-radius:var(--r);border:1px solid var(--border);color:var(--text)}
+  .projects-grid{grid-template-columns:1fr}
+  .footer-row{flex-direction:column;align-items:flex-start}
+  /* modal → 풀스크린 시트 (하단 슬라이드업) */
+  .modal-overlay{padding:0;align-items:stretch}
+  .modal{max-width:none;max-height:100vh;height:100%;border-radius:0;border:none;transform:translateY(100%)}
+  .modal-overlay.open .modal{transform:none}
+  .modal-head{border-radius:0}
+  .pd-ba{grid-template-columns:1fr}
+}
+@media (max-width:400px){
+  .hero-ctas{width:100%}
+  .btn-primary,.btn-secondary{flex:1;justify-content:center}
+}
+
+/* ============================= REDUCED MOTION GUARD ============================= */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  [data-reveal]{opacity:1;transform:none;animation:none}
+  .caret{animation:none}
+  .hero-ornament::before,.hero-ornament::after{animation:none}
+  .card-thumb::after{display:none}
+  .nav-link::after{transition:none}
+}

@@ -15,3 +15,8 @@ assets/_reference/
 .cursor/
 .idea/
 .opencode/
+
+# 빌드 산출물
+node_modules/
+dist/
+*.tsbuildinfo
