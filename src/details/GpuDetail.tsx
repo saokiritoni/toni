@@ -43,7 +43,7 @@ export default function GpuDetail() {
                   <div className="pd-ba">
                     <div className="ba-col before"><span className="ba-label">Before</span><p>Google Sheet의 신청 정보를 보고 SSH로 서버에 접속해 컨테이너 생성과 권한 부여를 직접 수행했습니다. 실수를 막으려고 명령어를 여러 번 확인해야 했고, Sheet와 실제 서버 상태가 어긋나기도 했습니다.</p></div>
                     <div className="ba-col problem"><span className="ba-label">1단계 · Script</span><p>Docker 생성·권한 부여 같은 반복 명령을 Script로 묶어 직접 입력을 줄였습니다. 다만 사람이 신청 정보를 보고 인자를 넘기는 이상, 잘못된 인자를 넘길 가능성은 그대로 남았습니다.</p></div>
-                    <div className="ba-col after"><span className="ba-label">2단계 · Web UI</span><p>신청 정보를 입력으로 받아 <b>Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성·할당, 만료 자원 탐지·회수</b>까지 이어지게 했습니다. 사람이 명령을 옮겨 입력하던 과정을 시스템의 흐름으로 바꿔, 신청 1건을 처리해 사용자에게 완료 안내를 보내기까지 약 30분 걸리던 시간을 5분 안으로 줄였습니다.</p></div>
+                    <div className="ba-col after"><span className="ba-label">2단계 · Web UI</span><p>신청 정보를 입력으로 받아 Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성·할당, 만료 자원 탐지·회수까지 이어지게 했습니다. 신청 1건을 처리해 사용자에게 완료 안내를 보내기까지 약 30분 걸리던 시간이 5분 안으로 줄었습니다.</p></div>
                   </div>
                 </>
               ),
@@ -53,8 +53,8 @@ export default function GpuDetail() {
               content: (
                 <>
                   <div className="pd-ba">
-                    <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리와 Slack 알림이 같은 흐름에 있어, 알림이 몰려 Rate Limit(429)이 나면 <b>부가 기능인 알림의 실패 때문에 핵심 작업인 정리까지 멈췄습니다</b>.</p></div>
-                    <div className="ba-col after"><span className="ba-label">After</span><p>자원 정리는 반드시 끝나야 하지만 알림은 늦게 보내도 되므로, <b>Redis List 기반 Producer-Consumer</b>로 두 작업의 실패 범위를 나눴습니다. 알림은 정리가 커밋된 뒤에만 큐에 넣도록 <code>AFTER_COMMIT</code> 이벤트를 써서, 롤백된 작업에 "정리됐습니다" 알림이 나가지 않게 했습니다.</p></div>
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리와 Slack 알림이 같은 흐름에 있어, 알림이 몰려 Rate Limit(429)이 나면 알림 실패 때문에 정리 작업까지 멈췄습니다.</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>자원 정리는 반드시 끝나야 하지만 알림은 늦게 보내도 되므로, Redis List 기반 Producer-Consumer로 두 작업의 실패 범위를 나눴습니다. 알림은 정리가 커밋된 뒤에만 큐에 넣도록 <code>AFTER_COMMIT</code> 이벤트를 써서, 롤백된 작업에 "정리됐습니다" 알림이 나가지 않게 했습니다.</p></div>
                   </div>
                   <ImplDetail>
                     <li>Consumer는 <code>BRPOP</code>으로 메시지를 하나씩 꺼내 Slack이 허용하는 속도로 보냅니다.</li>
