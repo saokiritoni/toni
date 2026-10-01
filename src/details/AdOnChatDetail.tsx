@@ -116,11 +116,11 @@ export default function AdOnChatDetail() {
                               <h5>2. 회원 일괄 변경의 실패 경계</h5>
                               <div className="pd-ba stack">
                                 <div className="ba-col problem"><span className="ba-label">문제</span><p>CSV로 회원 정보를 일괄 변경하고 결과 파일을 S3에 올립니다. 업로드를 트랜잭션 밖으로 빼자, DB 변경은 커밋됐는데 결과 파일만 실패한 상태가 생겼습니다. 이를 FAILED로 표시하면 이미 바뀐 데이터를 실패라고 잘못 알리게 됩니다.</p></div>
-                                <div className="ba-col after"><span className="ba-label">해결</span><p>DB 변경이 커밋된 상태를 <code>APPLIED</code>로 따로 기록해, 결과 파일만 실패한 작업을 FAILED와 구분했습니다. 이 작업을 다시 처리해도 DB는 바뀌지 않고 결과 파일만 새로 만들어집니다.</p></div>
+                                <div className="ba-col after"><span className="ba-label">해결</span><p>DB 변경이 커밋된 상태를 <code>APPLIED</code>로 기록해 결과 파일 실패와 구분했습니다. 재처리 시 같은 값을 다시 적용하고 결과 파일을 생성하며, 값이 달라지지 않은 엔티티에는 UPDATE가 발생하지 않습니다.</p></div>
                               </div>
                               <ImplDetail>
                                 <li>업로드를 트랜잭션 안에 두면 업로드가 끝날 때까지 DB 커넥션과 잠금을 붙잡고, 업로드가 실패하면 이미 끝난 회원 변경까지 롤백됩니다. 그래서 트랜잭션 밖으로 뺐습니다.</li>
-                                <li>APPLIED 작업을 다시 처리할 때는 모든 행을 다시 적용하지만, JPA 변경 감지는 값이 같으면 UPDATE를 보내지 않아 재적용해도 결과가 같습니다.</li>
+                                <li>재처리는 CSV의 모든 행을 다시 적용합니다. JPA 변경 감지는 값이 같으면 UPDATE를 보내지 않으므로, 이미 적용된 행은 DB에 다시 쓰이지 않습니다.</li>
                               </ImplDetail>
                             </div>
                           </>
