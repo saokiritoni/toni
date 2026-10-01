@@ -42,9 +42,9 @@ export const FEATURED: FeaturedProject = {
   title: 'AdOnChat',
   overview: '광고 매체 계정을 연동해 대량 광고 작업을 처리하고, 자연어 대화로 광고 데이터를 분석하는 B2B 광고 운영 솔루션',
   points: [
-    '광고 계정 연동부터 권한·대량 작업·감사로그까지 B2B 광고 운영 기능 개발',
-    '운영자 최소 인원 보장, 감사로그 누락 해결, 일괄 작업의 실패 경계 설계',
-    '백엔드를 중심으로 프론트엔드와 인프라까지 기능 단위의 개발 경험',
+    '광고 계정 연동, 권한, 대량 작업, 감사로그 등 B2B 광고 운영 기능 개발',
+    '동시 강등으로 운영자가 0명이 되는 문제와 감사로그 누락 문제 해결',
+    '타임아웃 뒤에도 AI 에이전트가 계속 실행되던 문제를 시간 제한 조정으로 해결',
   ],
 }
 
@@ -57,9 +57,9 @@ export const GRID_PROJECTS: GridProject[] = [
     role: 'Frontend, Backend',
     title: '[인턴 과제] 자연어 광고 분석 서비스',
     points: [
-      '자연어 질문을 실제 광고 데이터 조회로 연결하는 AI 분석 서비스 개발',
-      '데이터 수집부터 AI 분석·리포트까지 AWS 기반으로 2주 만에 MVP 구현',
-      '마케터의 실제 업무를 확인해 PDF 리포트를 Excel 중심으로 개선',
+      '자연어로 물으면 광고 데이터를 조회해 답하는 AI 분석 서비스 개발',
+      '데이터 수집부터 분석·리포트까지 2주 만에 MVP로 완성',
+      '마케터의 실제 업무를 듣고 PDF 리포트를 Excel 다운로드로 변경',
     ],
     stack: ['EventBridge', 'Lambda', 'Athena', 'Bedrock', 'Redis'],
   },
@@ -72,8 +72,8 @@ export const GRID_PROJECTS: GridProject[] = [
     title: '서버 관리 자동화 시스템',
     points: [
       'Google Sheet와 SSH로 처리하던 GPU 서버 관리 업무를 Web UI로 자동화',
-      '신청부터 Linux 계정·GPU 자원 생성과 회수까지 하나의 흐름으로 연결',
-      '신청 1건을 처리해 사용자에게 안내하기까지 약 30분에서 5분 이내로 단축',
+      '신청 정보로 Linux 계정과 GPU 자원을 만들고, 기한이 지나면 회수',
+      '신청 1건을 처리해 안내하기까지 약 30분에서 5분 이내로 단축',
     ],
     stack: ['Spring Boot', 'Kubernetes', 'Redis', 'MySQL'],
   },
@@ -85,9 +85,9 @@ export const GRID_PROJECTS: GridProject[] = [
     role: 'Leader · Backend',
     title: 'Farm System 동아리 홈페이지',
     points: [
-      '약 20명의 팀을 이끌며 공식 홈페이지와 내부 커뮤니티 개발·운영',
-      '서로 다른 경험과 참여 여건을 고려해 역할과 일정을 조율하며 프로젝트 완성',
-      '170명 이상의 회원이 실제 사용하는 서비스를 운영하며 보안·인프라 이슈 대응',
+      '디자이너·개발자 약 20명의 팀을 이끌며 동아리 홈페이지 개발·운영',
+      '진행 보고만 하던 주간회의를 고민을 나누는 자리로 바꾸고 역할과 일정 재조정',
+      '170명 이상이 쓰는 서비스를 운영하며 비정상 트래픽 차단과 RDS 계정 이전 처리',
     ],
     stack: ['Spring Boot', 'AWS WAF', 'RDS', 'Docker'],
   },
