@@ -310,13 +310,15 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 
 /* ============================= EXPERIENCE ============================= */
 /* antd Timeline: 점은 accent 테두리의 네모 블록, 지금 하는 일은 잎 초록으로 채우고 바깥 고리가 퍼진다 */
-.exp-timeline .ant-timeline-item-icon{width:12px;height:12px;border-radius:2px;border:2px solid var(--accent);background:var(--bg)}
+/* 네모를 날짜 줄(line-height 20px)의 가운데에 맞춘다: (20 - 12) / 2 = 4px */
+.exp-timeline .ant-timeline-item-icon{width:12px;height:12px;margin-top:4px;border-radius:2px;border:2px solid var(--accent);background:var(--bg)}
 .exp-timeline .is-now .ant-timeline-item-icon{position:relative;background:var(--leaf);border-color:var(--leaf)}
-.exp-timeline .is-now .ant-timeline-item-icon::after{content:"";position:absolute;inset:-5px;border-radius:3px;border:2px solid var(--leaf);
+/* antd Steps 가 아이콘 ::after 에 32px 크기를 주므로, auto 로 되돌려야 inset 대로 네모를 가운데에 두고 감싼다 */
+.exp-timeline .is-now .ant-timeline-item-icon::after{content:"";position:absolute;inset:-5px;width:auto;height:auto;border-radius:3px;border:2px solid var(--leaf);
   animation:nowPulse 2.2s var(--ease) infinite}
 @keyframes nowPulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.5);opacity:0}}
 .exp-timeline .ant-timeline-item-content{padding-bottom:22px}
-.tl-period{font-family:var(--f-mono);font-size:12px;color:var(--text-dim)}
+.tl-period{font-family:var(--f-mono);font-size:12px;line-height:20px;color:var(--text-dim)}
 /* 활동명과 역할을 다른 줄에 두고, 역할은 한 단계 작고 흐린 글씨로 구분한다 */
 .tl-company{font-family:var(--f-display);font-size:18px;font-weight:600;letter-spacing:-.01em;line-height:1.35;margin-top:4px;color:var(--accent);word-break:keep-all}
 .tl-role{font-size:15px;line-height:1.5;margin-top:2px;color:var(--text-dim);word-break:keep-all}
@@ -326,7 +328,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .creds-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px 56px}
 .cred-col{padding-top:2px}
 .cred-col .cred-title.ant-typography{margin:0 0 8px;font-family:var(--f-display);font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.01em;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid var(--border-med)}
-.cred-list li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14.5px}
+/* 연도(12px)와 이름(14.5px)은 글자 크기가 달라서, 위쪽이 아니라 글자 기준선에 맞춰야 한 줄로 읽힌다 */
+.cred-list li{display:flex;align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14.5px}
 .cred-list li:last-child{border-bottom:none}
 .cred-list .yr{font-family:var(--f-mono);font-size:12px;color:var(--accent);flex:0 0 42px}
 .cred-list .name strong{font-weight:600}
