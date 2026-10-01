@@ -142,8 +142,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   font-size:clamp(38px,5.6vw,68px);margin:0;word-break:keep-all;
 }
 .hero-title em{font-style:normal;color:var(--accent);white-space:nowrap}
-.hero-role{font-family:var(--f-mono);font-size:clamp(15px,2.4vw,20px);color:var(--text);margin-top:26px}
-.hero-role .prompt{color:var(--success)}
+/* 직함 없이 이름만 둔다. 한글이 있어서 고정폭 글꼴 대신 제목 글꼴을 쓴다 */
+.hero-name{font-family:var(--f-display);font-size:clamp(16px,2.2vw,20px);font-weight:500;color:var(--text-dim);margin-top:26px}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
 /* antd Button (히어로 CTA). 기본 그림자를 끄고 hover 는 색·그림자 전환만 */
 .hero-ctas .hero-cta{font-family:var(--f-display);font-size:15px;padding-inline:22px;height:46px}
