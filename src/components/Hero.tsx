@@ -1,6 +1,6 @@
 import { ArrowDownOutlined, MailOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import { EMAIL, HERO_NAME } from '../data/profile'
+import { EMAIL, HERO_NAME, NAME_HANJA } from '../data/profile'
 import HeroStage from './HeroStage'
 
 export default function Hero() {
@@ -18,6 +18,7 @@ export default function Hero() {
           </h1>
           <p className="hero-name" data-reveal>
             {HERO_NAME}
+            <span className="hero-hanja">{NAME_HANJA}</span>
           </p>
           <div className="hero-ctas" data-reveal>
             <Button className="hero-cta" type="primary" size="large" href="#projects" icon={<ArrowDownOutlined />} iconPlacement="end">

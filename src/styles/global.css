@@ -33,6 +33,7 @@
   --f-serif:'Fraunces','Pretendard',Georgia,serif;
   --f-mono:'JetBrains Mono',ui-monospace,'SF Mono',monospace;
   --f-body:'Pretendard','Space Grotesk',system-ui,sans-serif;
+  --f-hanja:'Noto Serif KR','Apple SD Gothic Neo',serif;
 }
 
 /* ============================= DARK THEME =============================
@@ -102,7 +103,13 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 }
 .header-row{display:flex;align-items:center;justify-content:space-between;height:64px}
 .wordmark{font-family:var(--f-display);font-weight:600;font-size:18px;letter-spacing:-.03em;color:var(--text)}
-.wordmark .dot{color:var(--accent)}
+/* 이름 끝의 온점 자리에 사이트 공통 픽셀 블록 하나를 둔다. 블록처럼 위·왼쪽은 밝게, 아래·오른쪽은 어둡게 깎고, 마우스를 올리면 한 번 튀어 오른다 */
+.wordmark{display:inline-flex;align-items:baseline}
+.wordmark .dot{display:inline-block;width:.34em;height:.34em;margin-left:.1em;border-radius:1px;background:var(--accent);
+  box-shadow:inset 1.5px 1.5px 0 color-mix(in srgb,white 30%,transparent),inset -1.5px -1.5px 0 color-mix(in srgb,black 24%,transparent)}
+@keyframes dotHop{40%{transform:translateY(-.35em)}}
+.wordmark:hover .dot,.footer-brand:hover .dot{animation:dotHop .42s var(--ease)}
+
 .site-header.scrolled{border-bottom-color:var(--border);box-shadow:var(--sh-ambient)}
 /* antd Anchor (가로형) → 헤더 내비게이션. 기본 회색 트랙을 지우고 ink bar 만 accent 로 쓴다 */
 .nav-anchor.ant-anchor-wrapper-horizontal::before{display:none}
@@ -144,6 +151,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .hero-title em{font-style:normal;color:var(--accent);white-space:nowrap}
 /* 직함 없이 이름만 둔다. 한글이 있어서 고정폭 글꼴 대신 제목 글꼴을 쓴다 */
 .hero-name{font-family:var(--f-display);font-size:clamp(16px,2.2vw,20px);font-weight:500;color:var(--text-dim);margin-top:26px}
+/* 이름 옆 한자 이름: 세리프로 두어 이름 줄에 포인트를 준다 */
+.hero-hanja{margin-left:.7em;font-family:var(--f-hanja);letter-spacing:.06em;color:var(--text)}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
 /* antd Button (히어로 CTA). 기본 그림자를 끄고 hover 는 색·그림자 전환만 */
 .hero-ctas .hero-cta{font-family:var(--f-display);font-size:15px;padding-inline:22px;height:46px}
@@ -554,5 +563,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .pa-px{transform:none;opacity:1;animation:none !important}
   .exp-timeline .is-now .ant-timeline-item-icon::after{animation:none;opacity:0}
   .card-thumb::after{display:none}
+  .wordmark .dot{animation:none}
   .card::before,.card-featured::before{display:none}
 }

@@ -10,9 +10,9 @@ export default function GpuDetail() {
         <Tag variant="filled">2025.07 – 2026.02 (8개월)</Tag>
         <Tag variant="filled">동국대 서버실</Tag>
         <Tag variant="filled">Backend</Tag>
-        <Tag variant="filled">서버 15대 · GPU 81개+</Tag>
+        <Tag variant="filled">서버 15대 / GPU 81개+</Tag>
       </div>
-      <p className="pd-catch">GPU 서버 사용 신청부터 자원 생성·회수까지 관리하는 웹 서비스</p>
+      <p className="pd-catch">GPU 서버 사용 신청부터 자원 생성과 회수까지 관리하는 웹 서비스</p>
 
       <div className="pd-block">
         <h4>개요</h4>
@@ -23,7 +23,7 @@ export default function GpuDetail() {
         <h4>핵심 기능</h4>
         <ul className="pd-sublist">
           <li><b>자원 프로비저닝</b>: Linux 서버 계정을 만들고 Kubernetes 자원을 할당합니다.</li>
-          <li><b>자원 수명 관리</b>: 만료 기한이 지난 Pod·웹 계정을 찾아 회수하고, 만료 예정·삭제 알림을 Slack·Email로 보냅니다.</li>
+          <li><b>자원 수명 관리</b>: 만료 기한이 지난 Pod와 웹 계정을 찾아 회수하고, 만료 예정 / 삭제 알림을 Slack과 Email로 보냅니다.</li>
         </ul>
       </div>
 
@@ -42,8 +42,8 @@ export default function GpuDetail() {
                 <>
                   <div className="pd-ba">
                     <div className="ba-col before"><span className="ba-label">Before</span><p>Google Sheet의 신청 정보를 보고 SSH로 서버에 접속해 컨테이너 생성과 권한 부여를 직접 수행했습니다. 실수를 막으려고 명령어를 여러 번 확인해야 했고, Sheet와 실제 서버 상태가 어긋나기도 했습니다.</p></div>
-                    <div className="ba-col problem"><span className="ba-label">1단계 · Script</span><p>Docker 생성·권한 부여 같은 반복 명령을 Script로 묶어 직접 입력을 줄였습니다. 다만 사람이 신청 정보를 보고 인자를 넘기는 이상, 잘못된 인자를 넘길 가능성은 그대로 남았습니다.</p></div>
-                    <div className="ba-col after"><span className="ba-label">2단계 · Web UI</span><p>신청 정보를 입력으로 받아 Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성·할당, 만료 자원 탐지·회수까지 이어지게 했습니다. 신청 1건을 처리해 사용자에게 완료 안내를 보내기까지 약 30분 걸리던 시간이 5분 안으로 줄었습니다.</p></div>
+                    <div className="ba-col problem"><span className="ba-label">1단계 / Script</span><p>Docker 생성, 권한 부여 같은 반복 명령을 Script로 묶어 직접 입력을 줄였습니다. 다만 사람이 신청 정보를 보고 인자를 넘기는 이상, 잘못된 인자를 넘길 가능성은 그대로 남았습니다.</p></div>
+                    <div className="ba-col after"><span className="ba-label">2단계 / Web UI</span><p>신청 정보를 입력으로 받아 Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성과 할당, 만료 자원 탐지와 회수까지 이어지게 했습니다. 신청 1건을 처리해 사용자에게 완료 안내를 보내기까지 약 30분 걸리던 시간이 5분 안으로 줄었습니다.</p></div>
                   </div>
                 </>
               ),
@@ -53,7 +53,7 @@ export default function GpuDetail() {
               content: (
                 <>
                   <div className="pd-ba">
-                    <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리와 Slack 알림이 같은 흐름에 있어, 알림이 몰려 Rate Limit(429)이 나면 알림 실패 때문에 정리 작업까지 멈췄습니다.</p></div>
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정과 컨테이너 정리와 Slack 알림이 같은 흐름에 있어, 알림이 몰려 Rate Limit(429)이 나면 알림 실패 때문에 정리 작업까지 멈췄습니다.</p></div>
                     <div className="ba-col after"><span className="ba-label">After</span><p>자원 정리는 반드시 끝나야 하지만 알림은 늦게 보내도 되므로, Redis List 기반 Producer-Consumer로 두 작업의 실패 범위를 나눴습니다. 알림은 정리가 커밋된 뒤에만 큐에 넣도록 <code>AFTER_COMMIT</code> 이벤트를 써서, 롤백된 작업에 "정리됐습니다" 알림이 나가지 않게 했습니다.</p></div>
                   </div>
                   <ImplDetail>

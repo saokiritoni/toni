@@ -19,7 +19,7 @@ export default function Footer() {
             <PixelArt pattern={APPLE} cell={4} static className="footer-apple" />
             <div>
               <div className="wordmark footer-wordmark">
-                Soeun Lee<span className="dot">.</span>
+                Soeun Lee<span className="dot" aria-hidden="true" />
               </div>
               <p className="footer-meta">
                 Seoul, KR

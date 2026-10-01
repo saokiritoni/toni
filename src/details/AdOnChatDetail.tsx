@@ -135,7 +135,7 @@ export default function AdOnChatDetail() {
                               <div className="ba-col after"><span className="ba-label">해결</span><p>런타임 제한을 450초, 조회 도구의 실행 예산을 390초로 줄여 백엔드 타임아웃 전에 처리를 마치도록 조정했습니다. 응답 반환에 30초, 모델 처리에 60초를 확보했으며, 모델 처리 시간은 실측값 47초를 참고했습니다.</p><p>각 구성 요소의 시간 제한 관계를 검증하는 테스트도 추가해, 설정 변경으로 같은 문제가 반복되지 않도록 했습니다.</p></div>
                             </div>
                             <ImplDetail>
-                              <li>백엔드 설정값을 포함해 조회 도구·런타임·백엔드·SSE·세션 잠금의 시간 제한 관계를 테스트합니다.</li>
+                              <li>백엔드 설정값을 포함해 조회 도구, 런타임, 백엔드, SSE, 세션 잠금의 시간 제한 관계를 테스트합니다.</li>
                               <li>타임아웃 이후에도 실행 중인 Python 워커 스레드는 종료되지 않았습니다. 취소 플래그(<code>threading.Event</code>)를 추가하고 파일 등록 직전에 확인해, 시간 초과로 실패를 안내한 요청의 결과가 뒤늦게 등록되지 않도록 했습니다. 이미 시작된 쿼리와 S3 작업은 계속 실행됩니다.</li>
                             </ImplDetail>
                           </>
@@ -169,13 +169,13 @@ export default function AdOnChatDetail() {
                               <div className="ba-col problem"><span className="ba-label">문제</span><p>서버의 값이 바뀌어도 화면에는 캐시된 목록이 남을 수 있습니다. 특히 연동할 광고계정을 고르는 목록이 낡으면, 사용자가 이미 다른 라이선스에 연동된 계정을 다시 고를 수 있습니다.</p></div>
                               <div className="ba-col after"><span className="ba-label">해결</span><p>다른 라이선스에 연동된 계정을 다시 선택하지 않도록, 선택 목록은 캐시하지 않고 열 때마다 조회했습니다. 나머지 목록은 캐시를 쓰고, 아래 시점에 무효화합니다.</p>
                                 <ul className="pd-sublist">
-                                  <li>사용자가 저장하면 관련 캐시를 바로 무효화합니다. 광고계정을 등록·삭제하면 서버에서 라이선스 정보도 함께 바뀌므로 라이선스 목록 캐시도 무효화합니다.</li>
+                                  <li>사용자가 저장하면 관련 캐시를 바로 무효화합니다. 광고계정을 등록하거나 삭제하면 서버에서 라이선스 정보도 함께 바뀌므로 라이선스 목록 캐시도 무효화합니다.</li>
                                   <li>매체 연동 상태처럼 서버가 갱신하는 값은, 이 값을 바꿀 수 있는 계정 조회 요청이 끝나면 성공 여부와 관계없이 목록 캐시를 무효화합니다.</li>
                                 </ul>
                               </div>
                             </div>
                             <ImplDetail>
-                              <li>연동 가능 계정·로그인 ID 드롭다운·트래커 후보 목록은 <code>staleTime</code>·<code>gcTime</code>을 0으로, <code>refetchOnMount</code>를 <code>'always'</code>로 두어 열 때마다 직전 캐시를 보여 주지 않고 새로 요청합니다.</li>
+                              <li>연동 가능 계정, 로그인 ID 드롭다운, 트래커 후보 목록은 <code>staleTime</code> / <code>gcTime</code>을 0으로, <code>refetchOnMount</code>를 <code>'always'</code>로 두어 열 때마다 직전 캐시를 보여 주지 않고 새로 요청합니다.</li>
                             </ImplDetail>
                           </>
                         ),
@@ -203,8 +203,8 @@ export default function AdOnChatDetail() {
                               <div className="ba-col after"><span className="ba-label">해결</span><p>로딩이 200ms를 넘을 때만 스켈레톤을 보여 주고, 그 전에 응답하면 바로 내용을 보여 줍니다. 화면 전체를 기다리지 않고 준비된 영역부터 보여 줍니다.</p></div>
                             </div>
                             <ImplDetail>
-                              <li>로딩이 200ms 넘게 이어질 때만 true가 되는 훅(<code>useDelayedFlag</code>)과 이를 감싼 <code>LoadingFade</code> 컴포넌트를 만들어, 설정 페이지·목록 테이블·채팅 메시지 이력에 적용했습니다.</li>
-                              <li>상단 바·사이드 메뉴·본문은 각자 자기 데이터가 준비되는 즉시 전환합니다. 페이지를 옮길 때 이미 준비된 상단 바와 사이드 메뉴를 다시 스켈레톤으로 되돌리지 않습니다.</li>
+                              <li>로딩이 200ms 넘게 이어질 때만 true가 되는 훅(<code>useDelayedFlag</code>)과 이를 감싼 <code>LoadingFade</code> 컴포넌트를 만들어, 설정 페이지, 목록 테이블, 채팅 메시지 이력에 적용했습니다.</li>
+                              <li>상단 바, 사이드 메뉴, 본문은 각자 자기 데이터가 준비되는 즉시 전환합니다. 페이지를 옮길 때 이미 준비된 상단 바와 사이드 메뉴를 다시 스켈레톤으로 되돌리지 않습니다.</li>
                               <li>이름 길이 등에 따라 폭이 달라지는 영역(상단 바의 사용자 영역)은 부분 스켈레톤을 그리면 옆 아이콘이 밀려나므로, 스켈레톤 없이 완성된 뒤 한 번에 보여 줍니다.</li>
                             </ImplDetail>
                           </>
@@ -212,7 +212,7 @@ export default function AdOnChatDetail() {
                       },
                     ]}
                   />
-                  <p className="pd-note">캐시 무효화·행 key·로딩 표시 규칙은 FE 패턴 가이드로 정리했습니다.</p>
+                  <p className="pd-note">캐시 무효화, 행 key, 로딩 표시 규칙은 FE 패턴 가이드로 정리했습니다.</p>
                 </div>
               </>
             ),
