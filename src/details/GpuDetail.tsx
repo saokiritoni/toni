@@ -12,16 +12,11 @@ export default function GpuDetail() {
         <Tag variant="filled">Backend</Tag>
         <Tag variant="filled">서버 15대 · GPU 81개+</Tag>
       </div>
-      <p className="pd-catch">"30분의 GPU 관리 시간을 5분 안으로 단축하다."</p>
+      <p className="pd-catch">GPU 서버 사용 신청부터 자원 생성·회수까지 관리하는 웹 서비스</p>
 
       <div className="pd-block">
         <h4>개요</h4>
-        <p className="pd-p">2025년 3월부터 GPU 서버 관리자로 일하며 직접 겪은 반복 업무를 자동화한, Kubernetes 기반 GPU 자원 관리 시스템입니다. 서버 15대와 GPU 81개 이상을 운영하면서 Google Sheet의 신청 정보를 확인하고 SSH로 접속해 컨테이너 생성과 권한 부여를 직접 수행했습니다. 처음에는 반복 명령을 Script로 줄였고, 이후 신청 정보가 실제 자원 생성과 회수까지 이어지는 Web UI로 확장했습니다.</p>
-        <ul className="pd-whr">
-          <li><span className="k">Why</span><span>Google Sheet로 신청을 확인하고 SSH로 접속해 직접 작업하는 수작업. 연구자 데이터를 다루기에 명령어 하나의 실수도 큰 부담</span></li>
-          <li><span className="k">How</span><span>반복 작업을 Script로, 이어서 신청 정보가 실제 자원 생성까지 이어지는 Web UI로 단계적 자동화</span></li>
-          <li><span className="k">Result</span><span>신청 1건을 처리해 사용자에게 안내하기까지 약 <b>30분 → 5분</b> · 신청부터 자원 생성까지 하나의 흐름으로 연결</span></li>
-        </ul>
+        <p className="pd-p">2025년 3월부터 GPU 서버 관리자로 서버 15대와 GPU 81개 이상을 운영하며 직접 겪은 반복 업무를 자동화한, Kubernetes 기반 GPU 자원 관리 시스템입니다. 연구자의 데이터를 다루는 서버라 명령어 하나의 실수도 큰 부담이었습니다.</p>
       </div>
 
       <div className="pd-block">
@@ -29,13 +24,12 @@ export default function GpuDetail() {
         <ul className="pd-sublist">
           <li><b>자원 프로비저닝</b>: Linux 서버 계정을 만들고 Kubernetes 자원을 할당합니다.</li>
           <li><b>자원 수명 관리</b>: 만료 기한이 지난 Pod·웹 계정을 찾아 회수하고, 만료 예정·삭제 알림을 Slack·Email로 보냅니다.</li>
-          <li><b>운영 자동화</b>: 신청 정보부터 자원 생성·회수까지 Web UI에서 관리합니다.</li>
         </ul>
       </div>
 
       <div className="pd-block">
         <h4>Tech</h4>
-        <div className="pd-tech"><Tag variant="filled">Spring Boot 3.x (Java 17)</Tag><Tag variant="filled">MySQL</Tag><Tag variant="filled">Redis</Tag><Tag variant="filled">Kubernetes (on-premise)</Tag><Tag variant="filled">Helm</Tag><Tag variant="filled">GitHub Actions</Tag><Tag variant="filled">Docker</Tag></div>
+        <div className="pd-tech"><Tag variant="filled">Spring Boot</Tag><Tag variant="filled">MySQL</Tag><Tag variant="filled">Redis</Tag><Tag variant="filled">Kubernetes (on-premise)</Tag><Tag variant="filled">Helm</Tag><Tag variant="filled">GitHub Actions</Tag><Tag variant="filled">Docker</Tag></div>
       </div>
 
       <div className="pd-block">
@@ -60,7 +54,7 @@ export default function GpuDetail() {
                 <>
                   <div className="pd-ba">
                     <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리와 Slack 알림이 같은 흐름에 있어, 알림이 몰려 Rate Limit(429)이 나면 <b>부가 기능인 알림의 실패 때문에 핵심 작업인 정리까지 멈췄습니다</b>.</p></div>
-                    <div className="ba-col after"><span className="ba-label">After</span><p><b>자원 정리는 반드시 성공해야 하지만 알림은 나중에 보내도 된다</b>고 판단해, Redis List 기반 Producer-Consumer로 두 작업의 실패 범위를 분리했습니다. 알림은 정리가 커밋된 뒤에만 큐에 넣도록 <code>AFTER_COMMIT</code> 이벤트를 써서, 롤백된 작업에 "정리됐습니다" 알림이 나가지 않게 했습니다.</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p>자원 정리는 반드시 끝나야 하지만 알림은 늦게 보내도 되므로, <b>Redis List 기반 Producer-Consumer</b>로 두 작업의 실패 범위를 나눴습니다. 알림은 정리가 커밋된 뒤에만 큐에 넣도록 <code>AFTER_COMMIT</code> 이벤트를 써서, 롤백된 작업에 "정리됐습니다" 알림이 나가지 않게 했습니다.</p></div>
                   </div>
                   <ImplDetail>
                     <li>Consumer는 <code>BRPOP</code>으로 메시지를 하나씩 꺼내 Slack이 허용하는 속도로 보냅니다.</li>
@@ -76,10 +70,7 @@ export default function GpuDetail() {
 
       <div className="pd-block">
         <h4>돌아보며</h4>
-        <div className="pd-growth-item">
-          <div className="pd-tags"><span>#서버관리자</span><span>#반복_확인</span></div>
-          <p>처음에는 실수하지 않기 위해 명령어와 입력값을 여러 번 확인하는 것이 최선이라고 생각했습니다. 하지만 같은 작업을 반복하면서 생각이 바뀌었습니다. <b>반복해서 확인해야 하는 일이 있다면 더 꼼꼼하게 확인하는 것보다, 사람이 반복해서 확인해야 하는 지점을 줄이는 구조를 만드는 것이 엔지니어의 역할</b>이라고 배웠습니다. 이 생각이 Script를 거쳐 Web UI까지 자동화하는 계기가 됐습니다.</p>
-        </div>
+        <p className="pd-p">처음에는 명령어와 입력값을 여러 번 확인하는 것이 실수를 막는 최선이라고 생각했습니다. 같은 작업을 반복하면서, 확인을 더 꼼꼼히 하기보다 사람이 확인해야 하는 지점 자체를 줄이는 쪽으로 생각이 바뀌었고, 이것이 Script를 거쳐 Web UI까지 만든 계기가 됐습니다.</p>
         <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/50" target="_blank" rel="noopener">관련 글: 1년간 GPU 서버 관리자로 일하며 배운 것 <ExportOutlined /></Typography.Link>
       </div>
     </>

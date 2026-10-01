@@ -100,12 +100,6 @@ type Phase = 'clearing' | 'empty' | 'dropping' | 'settled'
 // 가장 늦게 떨어지는 조각의 지연에 그 조각이 떨어지는 시간을 더한 값
 const DROP_MS = Math.max(...BLOCKS.map((b) => b.delay + b.fall * ROW_MS))
 const CLEAR_MS = (N - 1) * CLEAR_STAGGER_MS + CLEAR_ROW_MS
-const STATE_LABEL: Record<Phase, string> = {
-  clearing: 'clearing…',
-  empty: 'empty',
-  dropping: 'structuring…',
-  settled: 'structured',
-}
 
 export default function HeroStage() {
   const reduced = prefersReducedMotion()
@@ -126,6 +120,10 @@ export default function HeroStage() {
     const t = window.setTimeout(() => setPhase(step[0]), step[1])
     return () => window.clearTimeout(t)
   }, [phase, reduced])
+
+  // 그림을 눌러도 다시 쌓는다. 키보드로는 아래 "다시 쌓기" 버튼을 쓴다
+  const canReplay = !reduced && phase === 'settled'
+  const replay = () => setPhase('clearing')
 
   // 완성된 뒤 커서 근처 블록이 조금 밝아진다. 커서에 가까울수록 밝다
   useEffect(() => {
@@ -176,7 +174,12 @@ export default function HeroStage() {
 
   return (
     <div className="hero-stage-wrap">
-      <div ref={stageRef} className={`hero-stage is-${phase}`} aria-hidden="true">
+      <div
+        ref={stageRef}
+        className={`hero-stage is-${phase}${canReplay ? ' can-replay' : ''}`}
+        aria-hidden="true"
+        onClick={canReplay ? replay : undefined}
+      >
         {/* 블록이 들어갈 자리. 블록이 쌓이면 그 아래에 가려진다 */}
         {CELLS.map((c) => (
           <span key={`slot-${c.key}`} className="px-slot" style={{ gridRow: c.row + 1, gridColumn: c.col + 1 }} />
@@ -207,21 +210,20 @@ export default function HeroStage() {
           </span>
         ))}
       </div>
-      <div className="hero-stage-bar">
-        <span className={`stage-state${phase === 'settled' ? ' is-on' : ''}`}>{STATE_LABEL[phase]}</span>
-        {!reduced && (
+      {!reduced && (
+        <div className="hero-stage-bar">
           <Button
             className="stage-replay"
             type="text"
             size="small"
             icon={<ReloadOutlined />}
-            disabled={phase !== 'settled'}
-            onClick={() => setPhase('clearing')}
+            disabled={!canReplay}
+            onClick={replay}
           >
             다시 쌓기
           </Button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

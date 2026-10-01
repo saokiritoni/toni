@@ -2,7 +2,7 @@
 :root{
   --bg:#f2f1ed;
   --surface-100:#f7f7f4; --surface-300:#ebeae5; --surface-400:#e6e5e0; --surface-500:#e1e0db;
-  --text:#26251e; --text-dim:rgba(38,37,30,.68);
+  --text:#26251e; --text-dim:rgba(38,37,30,.78);
   /* 사과 팔레트: 껍질 빨강 두 단계와 잎 초록 두 단계. 카드 커버처럼 테마와 상관없이 같은 면에 쓴다 */
   --apple:#d42a2a; --apple-deep:#9e1b2c; --leaf-bright:#5a9a3a; --leaf-deep:#2f6424;
   --accent:var(--apple); --hover:#a8182e; --leaf:#3f7a26; --stem:#6b4a2b; --gold:#c08532; --success:#1f8a65;
@@ -41,7 +41,7 @@
 :root[data-theme="dark"]{
   --bg:#15140f;
   --surface-100:#1b1a15; --surface-300:#24231d; --surface-400:#29281f; --surface-500:#302f27;
-  --text:#edebe3; --text-dim:rgba(237,235,227,.7);
+  --text:#edebe3; --text-dim:rgba(237,235,227,.76);
   --accent:#ff4d4f; --hover:#ff8f8a; --leaf:#86c25f; --stem:#9a7148;
   --border:rgba(237,235,227,.1); --border-med:rgba(237,235,227,.2); --border-strong:rgba(237,235,227,.55);
   --sh-ambient:rgba(0,0,0,.3) 0 0 16px;
@@ -87,11 +87,12 @@ ul{list-style:none}
 .container-inner{width:100%;max-width:1120px;margin:0 auto;padding:0 24px}
 
 /* ============================= REVEAL (failsafe safety net) ============================= */
-@keyframes failsafeReveal{to{opacity:1;transform:none}}
-[data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+@keyframes failsafeReveal{to{opacity:1}}
+/* 메뉴로 이동한 내용이 비어 보이지 않도록 위치 이동 없이 짧게 페이드만 한다 */
+[data-reveal]{opacity:0;transition:opacity .3s var(--ease)}
 [data-reveal]{animation:failsafeReveal .01s ease 2s forwards} /* JS 없으면 2s 뒤 강제 노출 */
 html.js-ready [data-reveal]{animation:none}                    /* JS 살아있으면 IO가 제어 */
-.is-revealed{opacity:1 !important;transform:none !important}
+.is-revealed{opacity:1 !important}
 
 /* ============================= HEADER ============================= */
 .site-header{
@@ -141,15 +142,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   font-size:clamp(38px,5.6vw,68px);margin:0;word-break:keep-all;
 }
 .hero-title em{font-style:normal;color:var(--accent);white-space:nowrap}
-.hero-typed{
-  font-family:var(--f-mono);font-size:clamp(15px,2.4vw,20px);color:var(--text-dim);
-  margin-top:26px;min-height:1.6em;display:flex;align-items:center;gap:2px;
-}
-.hero-typed .prompt{color:var(--success)}
-.hero-typed #typed{color:var(--text)}
-.caret{display:inline-block;width:9px;height:1.15em;background:var(--accent);margin-left:2px;transform:translateY(2px)}
-.caret.blink{animation:caretBlink var(--m-blink) step-end infinite}
-@keyframes caretBlink{50%{opacity:0}}
+.hero-role{font-family:var(--f-mono);font-size:clamp(15px,2.4vw,20px);color:var(--text);margin-top:26px}
+.hero-role .prompt{color:var(--success)}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
 /* antd Button (히어로 CTA). 기본 그림자를 끄고 hover 는 색·그림자 전환만 */
 .hero-ctas .hero-cta{font-family:var(--f-display);font-size:15px;padding-inline:22px;height:46px}
@@ -194,11 +188,9 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .hero-stage.is-clearing .px-in::after{animation:pxClearFlash .32s linear var(--cd) both}
 @keyframes pxClear{0%,40%{transform:scaleY(1);opacity:1}100%{transform:scaleY(0);opacity:0}}
 @keyframes pxClearFlash{0%{opacity:0}25%,40%{opacity:.75}100%{opacity:.75}}
-.hero-stage-bar{display:flex;align-items:center;justify-content:space-between;margin-top:18px;min-height:28px}
-.stage-state{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);display:inline-flex;align-items:center;gap:8px}
-.stage-state::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);transition:transform var(--m-standard) var(--ease)}
-.stage-state.is-on::before{background:var(--leaf)}
-.hero-stage-bar .stage-replay.ant-btn{font-size:13px;color:var(--text-dim)}
+.hero-stage.can-replay{cursor:pointer}
+.hero-stage-bar{display:flex;justify-content:flex-end;margin-top:12px}
+.hero-stage-bar .stage-replay.ant-btn{font-size:12px;color:var(--text-dim)}
 .hero-stage-bar .stage-replay.ant-btn:not(:disabled):hover{color:var(--hover);background:transparent}
 
 
@@ -235,10 +227,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 /* 옅은 배경 패널 섹션 (Skills·Experience). 기존 인라인 style 을 클래스로 옮겼다 */
 .section-panel{background:var(--surface-100);border-block:1px solid var(--border)}
 .section-head{margin-bottom:44px;display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-items:center}
-.section-head .section-sub{grid-column:2}
 .section-mark{align-self:center}
 .section-title{font-family:var(--f-display);font-weight:500;font-size:clamp(26px,4vw,36px);letter-spacing:-.02em;line-height:1.2}
-.section-sub{color:var(--text-dim);margin-top:12px;font-size:16px;max-width:56ch}
 
 /* ============================= ABOUT ============================= */
 .about-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:4px}
@@ -259,12 +249,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .skill-group .ant-card-head{min-height:0;padding:18px 20px 0;border-bottom:none}
 .skill-group .ant-card-head-title{font-family:var(--f-mono);font-size:12px;font-weight:400;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em}
 .skill-group .ant-card-body{padding:14px 20px 20px}
-/* 기술 이름을 키보드 키캡처럼 보여 준다. 아래 두께는 그림자로 고정하고, 누르는 느낌은 transform 으로만 낸다 */
 .skill-group .skill-tag{font-family:var(--f-mono);font-size:12px;line-height:24px;padding:2px 12px;margin:0;border-radius:6px}
-.skill-group .skill-tag.ant-tag{color:var(--text);background:var(--surface-100);border-color:var(--border-med);
-  box-shadow:0 3px 0 var(--border-med);transition:transform var(--m-fast) var(--ease)}
-.skill-group .skill-tag.ant-tag:hover{transform:translateY(-2px);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
-.skill-group .skill-tag.ant-tag:active{transform:translateY(2px)}
+.skill-group .skill-tag.ant-tag{color:var(--text);background:var(--surface-300);border-color:transparent}
 
 /* ============================= PROJECTS ============================= */
 .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -297,7 +283,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .feat-points li{position:relative;padding-left:20px;word-break:keep-all;counter-increment:fp}
 .feat-points li::before{content:counter(fp) ".";position:absolute;left:0;color:var(--accent);font-weight:700;font-family:var(--f-mono)}
 /* 기술 스택 Tag (카드 하단) */
-.tech-tag.ant-tag{font-family:var(--f-mono);font-size:11px;line-height:18px;margin:0;padding:1px 8px;color:var(--text-dim);background:var(--surface-100);border:1px solid var(--border);border-radius:var(--r-compact)}
+.tech-tag.ant-tag{font-family:var(--f-mono);font-size:11px;line-height:18px;margin:0;padding:1px 8px;color:var(--text);background:var(--surface-100);border:1px solid var(--border);border-radius:var(--r-compact)}
 
 /* featured project (AdOnChat · NHN AD, 링크 없음) */
 .ant-card.card-featured{
@@ -380,26 +366,11 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pm-pop-leave{animation-duration:.2s;animation-fill-mode:both;animation-timing-function:var(--ease);animation-play-state:paused}
 .pm-pop-enter.pm-pop-enter-active,.pm-pop-appear.pm-pop-appear-active{animation-name:pmPopIn;animation-play-state:running}
 .pm-pop-leave.pm-pop-leave-active{animation-name:pmPopOut;animation-play-state:running;pointer-events:none}
-/* 본문 블록이 위에서부터 차례로 떠오른다. destroyOnHidden 이라 열 때마다 다시 재생된다 */
-@keyframes pmRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.project-modal .modal-body > *{animation:pmRise .5s var(--ease) both;animation-delay:.36s}
-.project-modal .modal-body > :nth-child(1){animation-delay:.12s}
-.project-modal .modal-body > :nth-child(2){animation-delay:.18s}
-.project-modal .modal-body > :nth-child(3){animation-delay:.24s}
-.project-modal .modal-body > :nth-child(4){animation-delay:.3s}
-/* Part 를 펼치면 문제 칸이 먼저, 해결 칸이 조금 늦게 튀어 오른다 */
-@keyframes baPop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
-.work-parts .ant-collapse-item-active .ba-col{animation:baPop .45s cubic-bezier(.2,.8,.2,1) both}
-.work-parts .ant-collapse-item-active .ba-col.after{animation-delay:.12s}
 
-/* ============================= CURSOR LABEL ============================= */
-/* 카드 위에서 포인터를 따라다니는 "click!" 라벨. 위치는 즉시 따라가고, 나타날 때만 opacity·scale 로 부드럽게 바꾼다 */
-.card-cursor{position:absolute;left:0;top:0;z-index:3;pointer-events:none;white-space:nowrap;
-  padding:3px 9px;border-radius:var(--r-pill);background:var(--text);color:var(--bg);font-family:var(--f-mono);font-size:11px;letter-spacing:.02em;
-  transform:translate(calc(var(--mx,-200px) + 12px),calc(var(--my,-200px) + 14px));scale:.9;opacity:0;transform-origin:0 0;
-  transition:opacity var(--m-fast) var(--ease),scale var(--m-fast) var(--ease)}
-.ant-card:hover .card-cursor{opacity:.85;scale:1}
-@media (hover:none){.card-cursor{display:none}}
+/* ============================= CARD MORE LABEL ============================= */
+/* 카드 아래쪽의 "자세히 보기 ↗". 카드 전체가 버튼이라 링크 모양만 낸다 */
+.card-more{margin-top:auto;padding-top:6px;align-self:flex-start;font-size:13px;font-weight:500;color:var(--accent);transition:color var(--m-fast) var(--ease)}
+.ant-card:hover .card-more{color:var(--hover)}
 
 /* ============================= LANDING INTERACTIONS ============================= */
 /* 브랜드 톤 유지: transform/opacity만 애니메이트, 기존 토큰만 사용 (신규 hex 없음) */
@@ -461,7 +432,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 
 /* detail content — 장식 최소화, 여백과 타이포 위계로 구조화 (Toss idiom) */
 .pd-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-.pd-meta .ant-tag,.pd-tech .ant-tag{font-family:var(--f-mono);font-size:12px;line-height:18px;margin:0;padding:3px 12px;color:var(--text-dim);background:var(--surface-300);border:none;border-radius:var(--r-pill)}
+.pd-meta .ant-tag,.pd-tech .ant-tag{font-family:var(--f-mono);font-size:12px;line-height:18px;margin:0;padding:3px 12px;color:var(--text);background:var(--surface-300);border:none;border-radius:var(--r-pill)}
 .pd-catch{font-family:var(--f-serif);font-size:20px;line-height:1.45;color:var(--text);margin-bottom:32px}
 /* 모달 내부 탭 (AdOnChat: Backend / Frontend). underline 탭, 모달 스크롤 시 상단 고정 */
 .pd-tabs-root{margin-top:-8px}
@@ -482,11 +453,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pd-link{display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:14px;color:var(--accent);transition:color var(--m-fast) var(--ease)}
 .pd-link:hover{color:var(--hover)}
 .pd-link .anticon{font-size:12px}
-/* Why/How/Result: flat surface + 라벨-값 담백하게 (보더·edge 제거) */
-.pd-whr{background:var(--surface-100);border-radius:var(--r-feat);padding:6px 20px;margin-top:6px}
-.pd-whr li{display:flex;gap:18px;font-size:15px;line-height:1.6;padding:13px 0;margin:0;border-bottom:1px solid var(--border)}
-.pd-whr li:last-child{border-bottom:none}
-.pd-whr .k{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);flex:0 0 52px;padding-top:2px}
 .pd-tech{display:flex;flex-wrap:wrap;gap:7px}
 .pd-tech span{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);background:var(--surface-300);border-radius:var(--r-pill);padding:5px 12px}
 /* 진행한 일 Part 토글 (antd Collapse): 헤더에 Part 번호(accent mono)와 제목, 펼친 본문은 모달 배경색 */
@@ -502,15 +468,17 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pd-work-item:last-child{margin-bottom:0}
 .pd-work-item h5{font-family:var(--f-display);font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:12px}
 .pd-work-item h5 em{font-style:normal;font-weight:400;font-size:12.5px;color:var(--text-dim)}
-.pd-sublist li{position:relative;padding-left:16px;font-size:15px;line-height:1.65;color:var(--text-dim);margin-bottom:10px}
+.pd-sublist li{position:relative;padding-left:16px;font-size:15px;line-height:1.65;color:var(--text);margin-bottom:10px}
 .pd-sublist li::before{content:"";position:absolute;left:3px;top:10px;width:4px;height:4px;border-radius:50%;background:var(--accent)}
 .pd-sublist li b{color:var(--text);font-weight:600}
 .pd-sublist code,.pd-p code,.ba-col code,.flow-step code{font-family:var(--f-mono);font-size:.88em;background:var(--surface-300);padding:1px 5px;border-radius:var(--r-compact);color:var(--text)}
-/* Before/After: flat 카드, 라벨 색 한 포인트 (좌측 rule·edge·보더 제거) */
-.pd-ba{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:12px;margin-top:4px}
-.ba-col{position:relative;border-radius:var(--r-feat);padding:16px 18px;background:var(--surface-100)}
-/* 문제 → 해결 사이의 화살표. 두 칸 사이 간격(12px) 가운데에 둔다 */
-.ba-col + .ba-col.after::before{content:"→";position:absolute;left:-18px;top:50%;width:24px;height:24px;margin-top:-12px;z-index:1;
+/* 문제/해결: Part 안에서 상자를 한 겹 더 두지 않고 라벨 색으로만 구분한다.
+   짧은 비교는 두 열, 긴 사례(.stack)는 위에서 아래로 한 열로 읽는다 */
+.pd-ba{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:32px;margin-top:4px}
+.pd-ba.stack{grid-template-columns:1fr;gap:18px}
+.ba-col{position:relative}
+/* 두 열일 때 문제 → 해결 사이의 화살표. 두 칸 사이 간격(32px) 가운데에 둔다 */
+.pd-ba:not(.stack) .ba-col + .ba-col.after::before{content:"→";position:absolute;left:-28px;top:50%;width:24px;height:24px;margin-top:-12px;z-index:1;
   display:grid;place-items:center;border-radius:50%;background:var(--bg);border:1px solid var(--border-med);font-size:12px;line-height:1;color:var(--leaf)}
 .ba-label{font-family:var(--f-mono);font-size:11px;letter-spacing:.03em;padding:3px 10px;border-radius:var(--r-pill);display:inline-block;margin-bottom:11px}
 .ba-col.before .ba-label{background:var(--surface-400);color:var(--text-dim)}
@@ -534,21 +502,10 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .flow-step.miss{border-color:color-mix(in srgb,var(--accent) 45%,transparent);background:color-mix(in srgb,var(--accent) 7%,var(--bg))}
 .flow-step.key{border-color:color-mix(in srgb,var(--leaf) 50%,transparent);background:color-mix(in srgb,var(--leaf) 8%,var(--bg))}
 .flow-note{margin-top:10px;font-size:13.5px;line-height:1.6;color:var(--text-dim);word-break:keep-all}
-.pd-impl{margin-top:12px}
-.pd-impl>summary{display:inline-flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font-size:13.5px;color:var(--text-dim);padding:4px 0}
-.pd-impl>summary::-webkit-details-marker{display:none}
-.pd-impl>summary::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .2s ease}
-.pd-impl[open]>summary::before{transform:rotate(45deg)}
-.pd-impl>summary:hover{color:var(--text)}
-.pd-impl>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r-compact)}
-.pd-impl>.pd-sublist{margin-top:10px}
-/* 회고 블록: flat surface, 태그 색 한 포인트 (좌측 rule·edge 제거) */
-.pd-growth-item{padding:18px 20px;margin-bottom:12px;background:var(--surface-100);border-radius:var(--r-feat)}
-.pd-growth-item:last-of-type{margin-bottom:0}
-.pd-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:11px}
-.pd-tags span{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
-.pd-growth-item p{font-size:15px;line-height:1.68;color:var(--text-dim)}
-.pd-growth-item p b{color:var(--text);font-weight:600}
+/* 구현 상세: 문제/해결 아래에 구분선 하나를 두고 바로 보여 준다 */
+.pd-impl{margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.pd-impl-label{display:block;font-size:13px;font-weight:600;color:var(--text-dim);margin-bottom:10px}
+.pd-impl .pd-sublist li:last-child{margin-bottom:0}
 .cred-list .yr{white-space:nowrap}
 
 /* ============================= RESPONSIVE ============================= */
@@ -574,8 +531,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .project-modal .ant-modal-wrap-centered .ant-modal{top:0}
   .project-modal .ant-modal-container{border-radius:0;border:none;height:100dvh;display:flex;flex-direction:column}
   .project-modal .modal-body{max-height:none;flex:1}
-  .pd-ba{grid-template-columns:1fr}
-  .ba-col + .ba-col.after::before{content:"↓";left:50%;top:-18px;margin:0 0 0 -12px}
+  .pd-ba{grid-template-columns:1fr;gap:18px}
+  .pd-ba:not(.stack) .ba-col + .ba-col.after::before{display:none}
   .flow-steps{grid-template-columns:1fr;gap:18px}
   .flow-step + .flow-step::before{content:"↓";left:50%;top:-18px;margin:0 0 0 -6px}
   .pm-head{padding:22px 72px 20px 22px}
@@ -591,15 +548,11 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
-  [data-reveal]{opacity:1;transform:none;animation:none}
-  .caret{animation:none}
+  [data-reveal]{opacity:1;animation:none}
   .hero-ornament::before,.hero-ornament::after{animation:none}
   .hero-stage .px,.px-in,.px-in::before,.px-in::after{transition:none;animation:none}
   .pa-px{transform:none;opacity:1;animation:none !important}
-  .project-modal .modal-body > *,.work-parts .ant-collapse-item-active .ba-col{animation:none}
-  .card-cursor{display:none}
   .exp-timeline .is-now .ant-timeline-item-icon::after{animation:none;opacity:0}
   .card-thumb::after{display:none}
   .card::before,.card-featured::before{display:none}
-  .pd-impl>summary::before{transition:none}
 }
