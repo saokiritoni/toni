@@ -1,5 +1,6 @@
 import { Tag } from 'antd'
 import DetailTabs from '../components/DetailTabs'
+import FlowDiagram from '../components/FlowDiagram'
 import ImplDetail from '../components/ImplDetail'
 import WorkParts from '../components/WorkParts'
 
@@ -9,7 +10,7 @@ export default function AdOnChatDetail() {
       <div className="pd-meta">
         <Tag variant="filled">2026.05 – 현재</Tag>
         <Tag variant="filled">NHN AD</Tag>
-        <Tag variant="filled">Frontend, Backend · 기여 20%</Tag>
+        <Tag variant="filled">Frontend, Backend</Tag>
       </div>
       <p className="pd-catch">AI Agent 기반 검색광고 운영 솔루션</p>
 
@@ -48,7 +49,7 @@ export default function AdOnChatDetail() {
                               </div>
                               <ImplDetail>
                                 <li>PostgreSQL은 <code>COUNT</code>와 <code>FOR UPDATE</code>를 함께 쓸 수 없어서, 대상 행을 먼저 잠근 뒤 개수를 셉니다.</li>
-                                <li>잠금 순서를 <code>id</code> 순으로 통일해 교착 상태를 예방했습니다.</li>
+                                <li>잠금 순서를 <code>id</code> 순으로 통일해 교착 상태 위험을 줄였습니다.</li>
                                 <li>일괄 강등에서는 같은 배치의 강등 대상까지 빼고 남는 운영자 수를 계산합니다.</li>
                               </ImplDetail>
                             </div>
@@ -77,6 +78,37 @@ export default function AdOnChatDetail() {
                                 <div className="ba-col problem"><span className="ba-label">문제</span><p>업무 데이터와 감사로그를 따로 저장하면, 변경은 성공했는데 <b>기록은 남지 않는 상태</b>가 생길 수 있습니다.</p></div>
                                 <div className="ba-col after"><span className="ba-label">해결</span><p><b>감사로그도 업무 변경과 함께 성공하거나 함께 실패해야 하는 데이터</b>라고 판단했습니다. 초기 설계부터 같은 트랜잭션에서 Outbox를 저장하고, 스케줄러가 감사 테이블로 옮기도록 구성했습니다.</p><p>운영 중에는 일부 변경 이력이 빠지는 문제를 발견했습니다. 추적해 보니 JPA <code>@PreUpdate</code>가 flush 시점에 실행되면서, 이벤트가 <code>BEFORE_COMMIT</code> 처리보다 늦게 만들어지는 경로가 있었습니다. 특정 서비스에 <code>flush()</code>를 넣는 대신 <code>TransactionSynchronization.beforeCommit</code>에서 flush한 뒤 Outbox를 저장하도록 바꿔, <b>모든 경로에서 같은 순서를 보장</b>했습니다.</p></div>
                               </div>
+                              <FlowDiagram
+                                label="감사로그가 Outbox를 거쳐 감사 테이블에 쌓이는 순서"
+                                lanes={[
+                                  {
+                                    label: '고치기 전: 커밋 직전 리스너(BEFORE_COMMIT)가 이벤트를 모읍니다',
+                                    steps: [
+                                      { title: '업무 엔티티 변경', sub: '뒤에 쿼리가 없어 flush가 미뤄짐' },
+                                      { title: 'BEFORE_COMMIT 리스너', sub: '아직 이벤트가 없어 Outbox에 저장할 것이 없음' },
+                                      { title: '커밋 시점 flush', sub: <><code>@PreUpdate</code>가 이제야 이벤트를 만듦</>, tone: 'miss' },
+                                      { title: '커밋', sub: '감사로그 없이 업무 변경만 저장', tone: 'miss' },
+                                    ],
+                                  },
+                                  {
+                                    label: '고친 뒤: 커밋 직전(beforeCommit)에 먼저 flush 합니다',
+                                    steps: [
+                                      { title: '업무 엔티티 변경' },
+                                      { title: 'beforeCommit에서 flush', sub: <><code>@PreUpdate</code>가 이벤트를 만듦</>, tone: 'key' },
+                                      { title: 'Outbox 저장', sub: '모인 이벤트를 같은 트랜잭션에서 저장' },
+                                      { title: '커밋', sub: '업무 변경과 Outbox를 함께 저장', tone: 'key' },
+                                    ],
+                                  },
+                                  {
+                                    label: '커밋 뒤: 스케줄러가 10초마다 옮깁니다',
+                                    steps: [
+                                      { title: 'Outbox 조회' },
+                                      { title: '감사 테이블 적재', sub: <><code>ON CONFLICT DO NOTHING</code>으로 같은 이벤트는 한 번만</> },
+                                      { title: 'Outbox 삭제' },
+                                    ],
+                                  },
+                                ]}
+                              />
                               <ImplDetail>
                                 <li>옮기는 단계는 실패하면 다시 시도하므로 같은 이벤트가 두 번 들어올 수 있습니다. 감사 테이블의 <code>outbox_id</code>에 유니크 제약을 두고 <code>ON CONFLICT DO NOTHING</code>으로 적재해 <b>멱등하게</b> 만들었습니다.</li>
                               </ImplDetail>
@@ -92,6 +124,21 @@ export default function AdOnChatDetail() {
                                 <li>APPLIED 작업을 다시 처리할 때는 모든 행을 다시 적용하지만, JPA 변경 감지는 값이 같으면 UPDATE를 보내지 않아 <b>재적용이 멱등</b>합니다.</li>
                               </ImplDetail>
                             </div>
+                          </>
+                        ),
+                      },
+                      {
+                        title: 'AI 에이전트 호출의 시간 제한',
+                        content: (
+                          <>
+                            <div className="pd-ba">
+                              <div className="ba-col problem"><span className="ba-label">문제</span><p>채팅 한 번은 백엔드 → 에이전트 런타임 → 조회 도구(Lambda·Athena)를 거치고, 층마다 시간 제한이 따로 있습니다. 백엔드는 480초에 호출을 포기하고 세션 잠금을 풀지만, 런타임은 취소할 경로가 없어 자기 제한인 900초까지 계속 실행됐습니다. 그 사이 답이 끝나면 사용자는 오류를 봤는데 답은 대화 기억(AgentCore Memory)에 남아, 다음 턴의 모델이 <b>이미 답한 것으로 알았습니다</b>. 잠금이 풀린 세션에 새 질문이 겹치기도 했습니다.</p></div>
+                              <div className="ba-col after"><span className="ba-label">해결</span><p>바깥 층이 포기한 뒤에 나온 안쪽 층의 결과는 사용자에게 전달되지 않으므로, <b>안쪽 층이 항상 바깥 층보다 먼저 끝나야 한다</b>고 판단했습니다. 런타임 제한을 450초(480초에서 응답을 돌려줄 여유 30초를 뺀 값)로, 조회 도구 예산을 390초(450초에서 모델 호출 여유 60초를 뺀 값)로 내렸습니다.</p><p>원인은 한 층의 값을 올리면서 위층의 값을 함께 보지 않은 데 있었습니다. 그래서 값을 고치는 데서 끝내지 않고 <b>층 사이의 순서를 테스트로 고정</b>해, 어느 한 층의 값만 바뀌어도 테스트가 실패하게 했습니다.</p></div>
+                            </div>
+                            <ImplDetail>
+                              <li>테스트는 백엔드 <code>application.yml</code> 기본값까지 읽어 <b>Athena 대기 &lt; 도구 예산 + 모델 여유 ≤ 런타임 제한 + 반환 여유 ≤ 백엔드 호출 &lt; SSE 연결 ≤ 세션 잠금 유지 시간</b> 순서를 확인합니다. 모델 여유 60초는 실측한 LLM 해석 단계 47초를 근거로 잡았습니다.</li>
+                              <li>시간 제한은 호출한 쪽만 먼저 돌려보낼 뿐, 파이썬 워커 스레드는 밖에서 멈출 수 없어 끝까지 실행됩니다. 그래서 예산을 넘겨 「완료하지 못했습니다」라고 답한 조회가 뒤늦게 파일을 등록했습니다. 예산을 넘기는 순간 워커에 포기 표시(<code>threading.Event</code>)를 남기고, 파일 등록 직전에 이 표시를 확인해 사용자에게 보이는 결과를 남기지 않게 했습니다. 이미 시작된 쿼리와 S3 작업은 끝까지 실행됩니다.</li>
+                            </ImplDetail>
                           </>
                         ),
                       },
