@@ -1,12 +1,9 @@
 import { ArrowDownOutlined, MailOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import { EMAIL, HERO_PHRASES } from '../data/profile'
-import { useTypewriter } from '../hooks/useTypewriter'
+import { EMAIL, HERO_ROLE } from '../data/profile'
 import HeroStage from './HeroStage'
 
 export default function Hero() {
-  const typed = useTypewriter(HERO_PHRASES)
-
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-ornament" aria-hidden="true" />
@@ -19,10 +16,9 @@ export default function Hero() {
             <br />
             만드는 개발자
           </h1>
-          <p className="hero-typed" data-reveal aria-live="polite">
+          <p className="hero-role" data-reveal>
             <span className="prompt">$&nbsp;</span>
-            <span id="typed">{typed}</span>
-            <span className="caret blink" aria-hidden="true" />
+            {HERO_ROLE}
           </p>
           <div className="hero-ctas" data-reveal>
             <Button className="hero-cta" type="primary" size="large" href="#projects" icon={<ArrowDownOutlined />} iconPlacement="end">

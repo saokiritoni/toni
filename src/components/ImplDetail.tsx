@@ -1,14 +1,13 @@
 import type { ReactNode } from 'react'
 
 /**
- * 상세 모달 사례의 "구현 상세"를 접어 둔다 (네이티브 details).
- * 문제·해결 칸은 핵심 판단만 보여 주고, 구현 근거는 펼쳐서 읽게 한다.
+ * 상세 모달 사례의 "구현 상세" 목록. 모달 → Part → 구현 상세로 세 번 열어야 읽히지 않도록 접지 않고 바로 보여 준다.
  */
 export default function ImplDetail({ children }: { children: ReactNode }) {
   return (
-    <details className="pd-impl">
-      <summary>구현 상세</summary>
+    <div className="pd-impl">
+      <span className="pd-impl-label">구현 상세</span>
       <ul className="pd-sublist">{children}</ul>
-    </details>
+    </div>
   )
 }

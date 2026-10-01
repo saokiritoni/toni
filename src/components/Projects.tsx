@@ -55,11 +55,11 @@ function useTilt() {
   return enabled ? { onPointerMove, onPointerLeave } : { onPointerMove: trackSpotlight }
 }
 
-/** 포인터를 따라다니는 "click!" 라벨. 위치는 스포트라이트와 같은 --mx·--my 를 쓴다 */
-function CursorLabel() {
+/** 카드를 누르면 상세 모달이 열린다는 표시. 카드 전체가 버튼이라 글자만 보여 준다 */
+function MoreLabel() {
   return (
-    <span className="card-cursor" aria-hidden="true">
-      click!
+    <span className="card-more" aria-hidden="true">
+      자세히 보기 ↗
     </span>
   )
 }
@@ -111,9 +111,9 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
               <li key={i}>{pt}</li>
             ))}
           </ol>
+          <MoreLabel />
         </div>
       </div>
-      <CursorLabel />
     </Card>
   )
 }
@@ -147,7 +147,7 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
           <li key={pt}>{pt}</li>
         ))}
       </ul>
-      <CursorLabel />
+      <MoreLabel />
     </Card>
   )
 }
@@ -161,7 +161,6 @@ export default function Projects({ onOpen }: { onOpen: OpenHandler }) {
           <h2 className="section-title" id="projects-title">
             Projects
           </h2>
-          <p className="section-sub">카드를 눌러 자세히 확인하세요.</p>
         </div>
         <FeaturedCard onOpen={onOpen} />
         <div className="projects-grid">
