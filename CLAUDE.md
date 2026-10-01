@@ -63,7 +63,7 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 
 포트폴리오 문장은 면접에서 질문을 받는다. 확인하지 않은 내용을 쓰지 않는다.
 
-- AdOnChat(AOC)은 aoc 저장소(`~/IdeaProjects/aoc`)의 코드와 git 기록으로 확인한다. 본인 커밋은 `saokiritori` 또는 `이소은`(이메일 `soeun-lee@nhnad.com`)이다. 다른 사람이 만든 것을 본인 설계로 쓰지 않는다.
+- AdOnChat(AOC)은 aoc 저장소의 코드와 git 기록으로 확인한다. aoc 저장소는 이 컴퓨터에 없고 사용자의 다른 컴퓨터에 있다. 직접 찾지 말고, 확인할 것이 있으면 사용자에게 확인 항목으로 정리해 요청한다. 본인 커밋은 `saokiritori` 또는 `이소은`(이메일 `soeun-lee@nhnad.com`)이다. 다른 사람이 만든 것을 본인 설계로 쓰지 않는다.
 - AOC-Memo vault 는 정본이 아니다. vault 와 aoc 코드가 어긋나면 코드를 믿는다.
 - 인턴 과제(AI 광고 분석 서비스)는 GitHub 저장소 세 개를 클론해서 확인한다. 인프라 [soeun-cdk](https://github.com/hyper-rookies/soeun-cdk)(README·계획서 PDF 포함), 백엔드 [soeun-chat](https://github.com/hyper-rookies/soeun-chat), 프론트엔드 [soeun-report-frontend](https://github.com/hyper-rookies/soeun-report-frontend).
   - 저장소에 없는 수치(대시보드 응답 99.58% 감소, S3 저장 단가 $0.023 → $0.004, 리포트 전환 시점과 광고 계약 주기)는 사용자가 발표 때 확인한 값이므로 그대로 믿는다.
@@ -108,7 +108,7 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 ### 모션
 
 - `transform`·`opacity` 만 애니메이트한다. `prefers-reduced-motion` 에서는 `global.css` 맨 아래 가드가 모두 끈다. 새 효과를 넣으면 가드에도 추가한다.
-- 스크롤 등장은 `[data-reveal]` 속성과 `useRevealOnScroll` 이 맡는다. 메뉴로 이동한 내용이 비어 보이지 않도록 위치 이동 없이 짧은 페이드만 쓴다. JS 가 없으면 2초 뒤 강제로 보인다.
+- 스크롤 등장은 `[data-reveal]` 속성과 `useRevealOnScroll` 이 맡는다. 위치 이동 없이 짧은 페이드만 쓰고, 화면에 들어오기 전에 미리 드러낸다. 메뉴·버튼(#링크)으로 이동한 섹션은 페이드 없이 바로 보인다. JS 가 없으면 2초 뒤 강제로 보인다.
 - 히어로 이름 줄은 타이핑 효과 없이 고정한다(`HERO_NAME`). 블록 무대에는 상태 문구를 두지 않고, 그림을 누르거나 작은 "다시 쌓기" 버튼으로 다시 재생한다.
 - 상세 모달 본문은 순서대로 떠오르는 효과 없이 바로 보인다.
 - 카드를 누를 수 있다는 표시는 카드 아래의 "자세히 보기 ↗" 하나다. 커서 라벨이나 안내 문구를 더하지 않는다.
@@ -118,3 +118,13 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 - 수정한 뒤 라이트·다크 두 테마와 모바일 폭(390px)을 확인한다.
 - 헤드리스 Chrome 의 `--virtual-time-budget` 캡처에서는 CSS 전환과 antd 애니메이션이 멈춰, 요소가 투명하게 찍히거나 모달이 안 보일 수 있다. 실제 버그가 아니다. `--run-all-compositor-stages-before-draw` 를 함께 쓰거나, DevTools 프로토콜(CDP)로 실제 시간 흐름에서 조작·캡처한다.
 - 모달 내용을 크게 고치면 이전 커밋과 텍스트를 비교해서 빠진 문장이 없는지 확인한다.
+
+## 사용자 확인 대기 (2026-10-02 확인 예정)
+
+사용자가 다른 컴퓨터의 aoc 저장소에서 확인한 뒤 답을 주기로 한 항목이다. 답을 받으면 해당 문장을 고치고 이 항목을 지운다.
+
+- [ ] **회원 일괄 변경 재처리** (`src/details/AdOnChatDetail.tsx` 의 "회원 일괄 변경의 실패 경계"). 지금 문장: "재처리 시 같은 값을 다시 적용하고 결과 파일을 생성하며, 값이 달라지지 않은 엔티티에는 UPDATE가 발생하지 않습니다."
+  1. APPLIED 작업을 재처리할 때 CSV 값을 그대로 다시 적용하는가, 현재 DB 값을 다시 읽는가?
+  2. 첫 처리와 재처리 사이에 다른 사람이 같은 회원의 값을 바꿨다면, 재처리가 그 변경을 옛 CSV 값으로 덮어쓰는가?
+  3. 덮어쓴다면 막는 장치(버전 확인, 재처리 가능 시간 제한, 권한 확인 등)가 있는가? 없다면 사례에 그 동작을 사실대로 적는다.
+- [ ] **실제 서비스 화면**: 공개 가능한 GPU 관리 화면, Farm System 화면을 한 장씩 받아 카드나 상세 모달 위쪽에 넣는다. AdOnChat 스크린샷은 여전히 비공개다.
