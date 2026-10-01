@@ -24,10 +24,10 @@ export default function AdAnalyticsDetail() {
       <div className="pd-block">
         <h4>아키텍처 (AWS)</h4>
         <ul className="pd-sublist">
-          <li><b>데이터 수집</b>: EventBridge → SQS → Lambda → S3로 Google Ads·Kakao Moment 성과 수집 파이프라인을 구성했습니다. 매체별 작업을 큐로 나눠, 한 매체의 수집이 실패해도 다른 매체의 수집에 영향을 주지 않게 했습니다</li>
-          <li><b>AI 분석</b>: Bedrock이 자연어 질문을 SQL로 바꿔 Athena를 조회하고, 결과를 텍스트·표·차트로 구성해 SSE로 전달합니다</li>
-          <li><b>캐싱</b>: 반복 조회되는 대시보드 결과를 Redis에 1시간 캐시해 Athena 재조회를 줄였고, 응답 시간을 99.58% 단축했습니다</li>
-          <li><b>리포트</b>: 주간 성과 리포트를 자동으로 만들고, 읽기 전용 공유 링크와 Excel 다운로드를 제공했습니다</li>
+          <li><b>데이터 수집</b>: EventBridge → SQS → Lambda → S3로 Google Ads·Kakao Moment 성과 수집 파이프라인을 구성했습니다. 매체별 작업을 큐로 나눠, 한 매체의 수집이 실패해도 다른 매체의 수집에 영향을 주지 않게 했습니다.</li>
+          <li><b>AI 분석</b>: Bedrock이 자연어 질문을 SQL로 바꿔 Athena를 조회하고, 결과를 텍스트·표·차트로 구성해 SSE로 전달합니다.</li>
+          <li><b>캐싱</b>: 반복 조회되는 대시보드 결과를 Redis에 1시간 캐시해 Athena 재조회를 줄였고, 응답 시간을 99.58% 단축했습니다.</li>
+          <li><b>리포트</b>: 주간 성과 리포트를 자동으로 만들고, 읽기 전용 공유 링크와 Excel 다운로드를 제공했습니다.</li>
         </ul>
         <p className="pd-note">※ 과제 기간 중 광고 API 사용 승인이 끝나지 않아 제공받은 데이터로 분석 기능을 먼저 개발했고, 발표 전 Kakao Moment API 연동을 마쳤습니다.</p>
       </div>
@@ -41,8 +41,8 @@ export default function AdAnalyticsDetail() {
               content: (
                 <>
                   <ul className="pd-sublist">
-                    <li>사용자가 자연어로 광고 성과를 물으면 Bedrock이 질문을 분석해 SQL을 만들고, Athena 조회 도구를 호출하도록 구성했습니다(Tool Use). 조회 결과는 다시 AI에 전달해 자연어 답변으로 만들고 SSE로 스트리밍했습니다</li>
-                    <li>한 번의 조회로 답하기 어려운 질문은 결과를 바탕으로 추가 조회할 수 있도록 반복 구조를 만들었습니다. 다만 <b>불필요한 반복과 호출 비용 증가를 막기 위해</b> 반복은 최대 5회로 제한했습니다</li>
+                    <li>사용자가 자연어로 광고 성과를 물으면 Bedrock이 질문을 분석해 SQL을 만들고, Athena 조회 도구를 호출하도록 구성했습니다(Tool Use). 조회 결과는 다시 AI에 전달해 자연어 답변으로 만들고 SSE로 스트리밍했습니다.</li>
+                    <li>한 번의 조회로 답하기 어려운 질문은 결과를 바탕으로 추가 조회할 수 있도록 반복 구조를 만들었습니다. 다만 <b>불필요한 반복과 호출 비용 증가를 막기 위해</b> 반복은 최대 5회로 제한했습니다.</li>
                   </ul>
                 </>
               ),
@@ -52,8 +52,8 @@ export default function AdAnalyticsDetail() {
               content: (
                 <>
                   <ul className="pd-sublist">
-                    <li>Excel 다운로드 파일·Athena 조회 결과·주간 리포트는 다시 쓰는 빈도와 필요한 보관 기간이 달랐습니다. Excel은 1일, Athena 결과는 7일 뒤 삭제하고, 오래 보관해야 하는 리포트는 Standard → IA → Glacier IR로 옮기도록 수명 주기 규칙을 구성했습니다</li>
-                    <li>데이터를 한꺼번에 같은 방식으로 보관하지 않고, <b>실제로 쓰이는 방식에 맞춰 저장 비용과 조회 가능성을 함께 고려</b>했습니다</li>
+                    <li>Excel 다운로드 파일·Athena 조회 결과·주간 리포트는 다시 쓰는 빈도와 필요한 보관 기간이 달랐습니다. Excel은 1일, Athena 결과는 7일 뒤 삭제하고, 오래 보관해야 하는 리포트는 Standard → IA → Glacier IR로 옮기도록 수명 주기 규칙을 구성했습니다.</li>
+                    <li>데이터를 한꺼번에 같은 방식으로 보관하지 않고, <b>실제로 쓰이는 방식에 맞춰 저장 비용과 조회 가능성을 함께 고려</b>했습니다.</li>
                   </ul>
                 </>
               ),

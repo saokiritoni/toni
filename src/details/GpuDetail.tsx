@@ -27,9 +27,9 @@ export default function GpuDetail() {
       <div className="pd-block">
         <h4>핵심 기능</h4>
         <ul className="pd-sublist">
-          <li><b>자원 프로비저닝</b>: Linux 서버 계정을 만들고 Kubernetes 자원을 할당합니다</li>
-          <li><b>자원 수명 관리</b>: 만료 기한이 지난 Pod·웹 계정을 찾아 회수하고, 만료 예정·삭제 알림을 Slack·Email로 보냅니다</li>
-          <li><b>운영 자동화</b>: 신청 정보부터 자원 생성·회수까지 Web UI에서 관리합니다</li>
+          <li><b>자원 프로비저닝</b>: Linux 서버 계정을 만들고 Kubernetes 자원을 할당합니다.</li>
+          <li><b>자원 수명 관리</b>: 만료 기한이 지난 Pod·웹 계정을 찾아 회수하고, 만료 예정·삭제 알림을 Slack·Email로 보냅니다.</li>
+          <li><b>운영 자동화</b>: 신청 정보부터 자원 생성·회수까지 Web UI에서 관리합니다.</li>
         </ul>
       </div>
 
@@ -47,9 +47,9 @@ export default function GpuDetail() {
               content: (
                 <>
                   <div className="pd-ba">
-                    <div className="ba-col before"><span className="ba-label">Before</span><p>Google Sheet의 신청 정보를 보고 SSH로 서버에 접속해 컨테이너 생성과 권한 부여를 직접 수행했습니다. 실수를 막으려고 명령어를 여러 번 확인해야 했고, Sheet와 실제 서버 상태가 어긋나기도 했습니다</p></div>
-                    <div className="ba-col problem"><span className="ba-label">1단계 · Script</span><p>Docker 생성·권한 부여 같은 반복 명령을 Script로 묶어 직접 입력을 줄였습니다. 다만 사람이 신청 정보를 보고 인자를 넘기는 이상, 잘못된 인자를 넘길 가능성은 그대로 남았습니다</p></div>
-                    <div className="ba-col after"><span className="ba-label">2단계 · Web UI</span><p>신청 정보를 입력으로 받아 <b>Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성·할당, 만료 자원 탐지·회수</b>까지 이어지게 했습니다. 사람이 명령을 옮겨 입력하던 과정을 시스템의 흐름으로 바꿔, 약 30분 걸리던 관리 작업을 5분 안으로 줄였습니다</p></div>
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>Google Sheet의 신청 정보를 보고 SSH로 서버에 접속해 컨테이너 생성과 권한 부여를 직접 수행했습니다. 실수를 막으려고 명령어를 여러 번 확인해야 했고, Sheet와 실제 서버 상태가 어긋나기도 했습니다.</p></div>
+                    <div className="ba-col problem"><span className="ba-label">1단계 · Script</span><p>Docker 생성·권한 부여 같은 반복 명령을 Script로 묶어 직접 입력을 줄였습니다. 다만 사람이 신청 정보를 보고 인자를 넘기는 이상, 잘못된 인자를 넘길 가능성은 그대로 남았습니다.</p></div>
+                    <div className="ba-col after"><span className="ba-label">2단계 · Web UI</span><p>신청 정보를 입력으로 받아 <b>Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성·할당, 만료 자원 탐지·회수</b>까지 이어지게 했습니다. 사람이 명령을 옮겨 입력하던 과정을 시스템의 흐름으로 바꿔, 약 30분 걸리던 관리 작업을 5분 안으로 줄였습니다.</p></div>
                   </div>
                 </>
               ),
@@ -59,12 +59,12 @@ export default function GpuDetail() {
               content: (
                 <>
                   <div className="pd-ba">
-                    <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리와 Slack 알림이 같은 흐름에 있어, 알림이 몰려 Rate Limit(429)이 나면 <b>부가 기능인 알림의 실패 때문에 핵심 작업인 정리까지 멈췄습니다</b></p></div>
-                    <div className="ba-col after"><span className="ba-label">After</span><p><b>자원 정리는 반드시 성공해야 하지만 알림은 나중에 보내도 된다</b>고 판단해, Redis List 기반 Producer-Consumer로 두 작업의 실패 범위를 분리했습니다. 알림은 정리가 커밋된 뒤에만 큐에 넣도록 <code>AFTER_COMMIT</code> 이벤트를 써서, 롤백된 작업에 "정리됐습니다" 알림이 나가지 않게 했습니다</p></div>
+                    <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정·컨테이너 정리와 Slack 알림이 같은 흐름에 있어, 알림이 몰려 Rate Limit(429)이 나면 <b>부가 기능인 알림의 실패 때문에 핵심 작업인 정리까지 멈췄습니다</b>.</p></div>
+                    <div className="ba-col after"><span className="ba-label">After</span><p><b>자원 정리는 반드시 성공해야 하지만 알림은 나중에 보내도 된다</b>고 판단해, Redis List 기반 Producer-Consumer로 두 작업의 실패 범위를 분리했습니다. 알림은 정리가 커밋된 뒤에만 큐에 넣도록 <code>AFTER_COMMIT</code> 이벤트를 써서, 롤백된 작업에 "정리됐습니다" 알림이 나가지 않게 했습니다.</p></div>
                   </div>
                   <ImplDetail>
-                    <li>Consumer는 <code>BRPOP</code>으로 메시지를 하나씩 꺼내 Slack이 허용하는 속도로 보냅니다</li>
-                    <li>메모리 큐로 옮기면 서버가 재시작될 때 대기 중인 알림이 사라지므로, 메시지를 Redis에 두어 재시작에도 남게 했습니다</li>
+                    <li>Consumer는 <code>BRPOP</code>으로 메시지를 하나씩 꺼내 Slack이 허용하는 속도로 보냅니다.</li>
+                    <li>메모리 큐로 옮기면 서버가 재시작될 때 대기 중인 알림이 사라지므로, 메시지를 Redis에 두어 재시작에도 남게 했습니다.</li>
                   </ImplDetail>
                   <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/52" target="_blank" rel="noopener">관련 글: Slack Rate Limit을 Redis 메시지 큐로 해결하기 <ExportOutlined /></Typography.Link>
                 </>
