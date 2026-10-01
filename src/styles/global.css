@@ -157,21 +157,43 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .hero-ctas .hero-cta.ant-btn-primary:hover{background:var(--accent);color:#fff;box-shadow:var(--sh-focus)}
 .hero-ctas .hero-cta.ant-btn-default{background:var(--surface-400);color:var(--text-dim);border-color:var(--border)}
 .hero-ctas .hero-cta.ant-btn-default:hover{color:var(--hover);border-color:var(--border-med);box-shadow:var(--sh-focus)}
-/* 블록 무대: 흩어진 블록(문제)이 11×11 격자(구조)로 모여 픽셀 사과가 된다.
-   블록은 transform·opacity 만 움직이고, 커서·스크롤 반응은 HeroStage 가 --rx/--ry 로 넘긴다 */
-.hero-stage-wrap{width:100%;max-width:400px;justify-self:end}
-.hero-stage{position:relative;display:grid;grid-template-columns:repeat(11,1fr);grid-template-rows:repeat(11,1fr);gap:3px;aspect-ratio:1;touch-action:pan-y}
+/* 블록 무대: 테트리스처럼 조각이 위에서 한 칸씩 떨어져 아래부터 쌓이고, 11×11 격자(구조)를 채워 픽셀 사과가 된다.
+   블록은 transform·opacity 만 움직이고, 커서 반응은 HeroStage 가 --lift 로 넘긴다 */
+.hero-stage-wrap{width:100%;max-width:400px;justify-self:end;container-type:inline-size}
+/* 조각은 무대 위 가장자리 밖에서 출발하므로, 무대 밖은 잘라 우물 안으로 들어오는 것처럼 보이게 한다.
+   --pitch 는 한 칸과 칸 사이 틈(3px)을 더한 거리로, 블록을 몇 칸 옮길지 곱해 쓴다 */
+.hero-stage{position:relative;display:grid;grid-template-columns:repeat(11,1fr);grid-template-rows:repeat(11,1fr);gap:3px;aspect-ratio:1;touch-action:pan-y;
+  overflow:hidden;--pitch:calc((100cqw + 3px) / 11)}
 /* 블록이 들어갈 자리를 옅은 격자로 먼저 보여 준다 */
 .hero-stage::before{content:"";position:absolute;inset:-1px;pointer-events:none;border-radius:var(--r);
   background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
   background-size:calc(100% / 11) calc(100% / 11);opacity:.7;
   -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 45%,transparent 75%);mask-image:radial-gradient(circle at 50% 50%,#000 45%,transparent 75%)}
-.px{position:relative;pointer-events:none;border-radius:var(--r-compact);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),var(--sh-soft);will-change:transform}
-.hero-stage.is-scattered .px{transform:translate(var(--sx),var(--sy)) rotate(var(--sr)) scale(.55);opacity:.35;
-  transition:transform .8s var(--ease),opacity .8s var(--ease)}
-.hero-stage.is-assembling .px{transform:none;opacity:1;
-  transition:transform 1.1s cubic-bezier(.16,1,.3,1) var(--d),opacity .6s var(--ease) var(--d)}
-.hero-stage.is-settled .px{transform:translate(var(--rx,0px),var(--ry,0px));opacity:1;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+/* 블록이 들어갈 자리: 사과 윤곽만 옅은 빈칸으로 남겨, 빈 판에서도 어디까지 쌓일지 보여 준다 */
+.px-slot{border-radius:1px;background:color-mix(in srgb,var(--text) 6%,transparent)}
+/* 블록 하나. 테트리스 블록처럼 위·왼쪽 가장자리는 밝고 아래·오른쪽 가장자리는 어둡게 깎아 입체로 보이게 한다 */
+.px{position:relative;pointer-events:none;will-change:transform}
+.px-in{position:absolute;inset:0;border-radius:1px;will-change:transform;
+  box-shadow:inset 3px 3px 0 color-mix(in srgb,white 30%,transparent),inset -3px -3px 0 color-mix(in srgb,black 24%,transparent)}
+/* ::before 는 커서가 다가오면 밝아지는 막, ::after 는 조각이 자리에 박히거나 줄이 지워질 때 번쩍이는 막이다 */
+.px-in::before,.px-in::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:white;opacity:0}
+.px-in::before{opacity:calc(var(--lift,0) * .35);transition:opacity .3s var(--ease)}
+
+/* 빈 판: 블록은 무대 위 가장자리 밖(잘린 곳)에서 자기 조각이 떨어지기를 기다린다 */
+.hero-stage.is-empty .px{transform:translateX(calc(var(--dx) * var(--pitch)))}
+.hero-stage.is-empty .px-in{transform:translateY(calc(var(--fr) * -1 * var(--pitch)))}
+/* 떨어지기: 안쪽은 한 칸씩 끊어 내려오고(steps), 바깥은 처음 몇 줄 동안 한 칸씩 옆으로 미끄러진다. 자리에 닿으면 한 번 번쩍인다 */
+.hero-stage.is-dropping .px{animation:pxSlide var(--sd) steps(var(--sn)) var(--d) both}
+.hero-stage.is-dropping .px-in{animation:pxFall var(--fd) steps(var(--fr)) var(--d) both}
+.hero-stage.is-dropping .px-in::after{animation:pxLock .24s ease-out calc(var(--d) + var(--fd)) both}
+@keyframes pxSlide{from{transform:translateX(calc(var(--dx) * var(--pitch)))}to{transform:translateX(0)}}
+@keyframes pxFall{from{transform:translateY(calc(var(--fr) * -1 * var(--pitch)))}to{transform:translateY(0)}}
+@keyframes pxLock{0%,100%{opacity:0}30%{opacity:.55}}
+/* 줄 지우기(다시 쌓기): 맨 아래 줄부터 한 줄씩 번쩍인 뒤 납작해지며 사라진다 */
+.hero-stage.is-clearing .px-in{animation:pxClear .32s ease-in var(--cd) both}
+.hero-stage.is-clearing .px-in::after{animation:pxClearFlash .32s linear var(--cd) both}
+@keyframes pxClear{0%,40%{transform:scaleY(1);opacity:1}100%{transform:scaleY(0);opacity:0}}
+@keyframes pxClearFlash{0%{opacity:0}25%,40%{opacity:.75}100%{opacity:.75}}
 .hero-stage-bar{display:flex;align-items:center;justify-content:space-between;margin-top:18px;min-height:28px}
 .stage-state{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);display:inline-flex;align-items:center;gap:8px}
 .stage-state::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);transition:transform var(--m-standard) var(--ease)}
@@ -555,7 +577,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   [data-reveal]{opacity:1;transform:none;animation:none}
   .caret{animation:none}
   .hero-ornament::before,.hero-ornament::after{animation:none}
-  .hero-stage .px{transition:none}
+  .hero-stage .px,.px-in,.px-in::before,.px-in::after{transition:none;animation:none}
   .pa-px{transform:none;opacity:1;animation:none !important}
   .project-modal .modal-body > *,.work-parts .ant-collapse-item-active .ba-col{animation:none}
   .card-cursor{display:none}
