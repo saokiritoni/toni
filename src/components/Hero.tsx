@@ -1,6 +1,6 @@
 import { ArrowDownOutlined, MailOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import { EMAIL, HERO_ROLE } from '../data/profile'
+import { EMAIL, HERO_NAME } from '../data/profile'
 import HeroStage from './HeroStage'
 
 export default function Hero() {
@@ -14,11 +14,10 @@ export default function Hero() {
             <br />
             <em>더 나은 구조</em>를
             <br />
-            만드는 개발자
+            만듭니다
           </h1>
-          <p className="hero-role" data-reveal>
-            <span className="prompt">$&nbsp;</span>
-            {HERO_ROLE}
+          <p className="hero-name" data-reveal>
+            {HERO_NAME}
           </p>
           <div className="hero-ctas" data-reveal>
             <Button className="hero-cta" type="primary" size="large" href="#projects" icon={<ArrowDownOutlined />} iconPlacement="end">

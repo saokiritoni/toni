@@ -22,7 +22,7 @@ export default function Footer() {
                 Soeun Lee<span className="dot">.</span>
               </div>
               <p className="footer-meta">
-                Software Engineer · Seoul, KR
+                Seoul, KR
                 <br />
                 <a href={`mailto:${EMAIL}`} className="footer-mail">
                   {EMAIL}

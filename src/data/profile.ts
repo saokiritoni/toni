@@ -4,7 +4,7 @@ export const EMAIL = 'leesoeun2746@naver.com'
 export const GITHUB_URL = 'https://github.com/saokiritoni'
 export const BLOG_URL = 'https://kiritoni.tistory.com/'
 
-export const HERO_ROLE = 'Software Engineer · Backend · Frontend'
+export const HERO_NAME = '이소은 · Soeun Lee'
 
 export const NAV_SECTIONS = [
   { id: 'about', label: 'About' },
