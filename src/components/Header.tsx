@@ -36,7 +36,7 @@ export default function Header() {
               items={ANCHOR_ITEMS}
             />
             <Button className="nav-ext" type="text" href={BLOG_URL} target="_blank" rel="noopener" icon={<ExportOutlined />} iconPlacement="end">
-              블로그
+              Blog
             </Button>
             <Button className="nav-ext" type="primary" href={GITHUB_URL} target="_blank" rel="noopener" icon={<GithubOutlined />}>
               GitHub
@@ -69,7 +69,7 @@ export default function Header() {
         />
         <div className="nav-drawer-actions">
           <Button block href={BLOG_URL} target="_blank" rel="noopener" icon={<ExportOutlined />} iconPlacement="end">
-            블로그
+            Blog
           </Button>
           <Button block type="primary" href={GITHUB_URL} target="_blank" rel="noopener" icon={<GithubOutlined />}>
             GitHub
