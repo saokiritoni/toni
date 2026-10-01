@@ -54,7 +54,7 @@ export default function ProjectModal({ openKey, onClose }: Props) {
       onCancel={onClose}
       afterClose={() => setShownKey(null)}
       footer={null}
-      width={720}
+      width={840}
       centered
       destroyOnHidden
       classNames={{ body: 'modal-body' }}

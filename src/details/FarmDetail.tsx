@@ -8,7 +8,7 @@ export default function FarmDetail() {
       <div className="pd-meta">
         <Tag variant="filled">2025.01 – 2026.02 (1년)</Tag>
         <Tag variant="filled">동아리</Tag>
-        <Tag variant="filled">Leader · Backend 30%</Tag>
+        <Tag variant="filled">Leader · Backend</Tag>
       </div>
       <p className="pd-catch">"20명이 함께 만들고 170명이 사용한 동아리 서비스."</p>
 
@@ -32,7 +32,7 @@ export default function FarmDetail() {
                 <>
                   <div className="pd-ba">
                     <div className="ba-col problem"><span className="ba-label">문제</span><p>Google Analytics·MS Clarity로 모니터링하던 중 해외에서 들어오는 비정상 트래픽을 발견했습니다. 실제 사용자가 이용 중인 서비스라 <b>운영을 멈추지 않고</b> 대응해야 했습니다.</p></div>
-                    <div className="ba-col after"><span className="ba-label">해결</span><p>ALB에 AWS WAF를 적용해 해외 트래픽을 막아, 서비스를 멈추지 않고 비정상 트래픽 <b>14,000건</b>을 차단했습니다. 이후 팀 회고에서는 트래픽이 ALB까지 들어온 뒤에야 걸러진다는 점을 짚고, CloudFront처럼 더 앞단에서 차단하는 구조와 비교했습니다.</p></div>
+                    <div className="ba-col after"><span className="ba-label">해결</span><p>서비스 이용자가 Farm System 회원과 신규 지원자로 한정되므로, ALB에 AWS WAF를 적용해 <b>한국에서 오는 접속만 허용</b>했습니다. 서비스를 멈추지 않고 비정상 트래픽 <b>14,000건</b>을 차단했습니다. 이후 팀 회고에서는 트래픽이 ALB까지 들어온 뒤에야 걸러진다는 점을 짚고, CloudFront처럼 더 앞단에서 차단하는 구조와 비교했습니다.</p></div>
                   </div>
                 </>
               ),

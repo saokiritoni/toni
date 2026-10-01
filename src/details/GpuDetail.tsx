@@ -7,20 +7,20 @@ export default function GpuDetail() {
   return (
     <>
       <div className="pd-meta">
-        <Tag variant="filled">2025.07 – 2026.02 (6개월)</Tag>
+        <Tag variant="filled">2025.07 – 2026.02 (8개월)</Tag>
         <Tag variant="filled">동국대 서버실</Tag>
-        <Tag variant="filled">Backend · 기여 30%</Tag>
+        <Tag variant="filled">Backend</Tag>
         <Tag variant="filled">서버 15대 · GPU 81개+</Tag>
       </div>
       <p className="pd-catch">"30분의 GPU 관리 시간을 5분 안으로 단축하다."</p>
 
       <div className="pd-block">
         <h4>개요</h4>
-        <p className="pd-p">GPU 서버 관리자로 일하며 직접 겪은 반복 업무를 자동화한, Kubernetes 기반 GPU 자원 관리 시스템입니다. 서버 15대와 GPU 81개 이상을 운영하면서 Google Sheet의 신청 정보를 확인하고 SSH로 접속해 컨테이너 생성과 권한 부여를 직접 수행했습니다. 처음에는 반복 명령을 Script로 줄였고, 이후 신청 정보가 실제 자원 생성과 회수까지 이어지는 Web UI로 확장했습니다.</p>
+        <p className="pd-p">2025년 3월부터 GPU 서버 관리자로 일하며 직접 겪은 반복 업무를 자동화한, Kubernetes 기반 GPU 자원 관리 시스템입니다. 서버 15대와 GPU 81개 이상을 운영하면서 Google Sheet의 신청 정보를 확인하고 SSH로 접속해 컨테이너 생성과 권한 부여를 직접 수행했습니다. 처음에는 반복 명령을 Script로 줄였고, 이후 신청 정보가 실제 자원 생성과 회수까지 이어지는 Web UI로 확장했습니다.</p>
         <ul className="pd-whr">
           <li><span className="k">Why</span><span>Google Sheet로 신청을 확인하고 SSH로 접속해 직접 작업하는 수작업. 연구자 데이터를 다루기에 명령어 하나의 실수도 큰 부담</span></li>
           <li><span className="k">How</span><span>반복 작업을 Script로, 이어서 신청 정보가 실제 자원 생성까지 이어지는 Web UI로 단계적 자동화</span></li>
-          <li><span className="k">Result</span><span>관리 업무 약 <b>30분 → 5분</b> · 신청부터 자원 생성까지 하나의 흐름으로 연결</span></li>
+          <li><span className="k">Result</span><span>신청 1건을 처리해 사용자에게 안내하기까지 약 <b>30분 → 5분</b> · 신청부터 자원 생성까지 하나의 흐름으로 연결</span></li>
         </ul>
       </div>
 
@@ -49,7 +49,7 @@ export default function GpuDetail() {
                   <div className="pd-ba">
                     <div className="ba-col before"><span className="ba-label">Before</span><p>Google Sheet의 신청 정보를 보고 SSH로 서버에 접속해 컨테이너 생성과 권한 부여를 직접 수행했습니다. 실수를 막으려고 명령어를 여러 번 확인해야 했고, Sheet와 실제 서버 상태가 어긋나기도 했습니다.</p></div>
                     <div className="ba-col problem"><span className="ba-label">1단계 · Script</span><p>Docker 생성·권한 부여 같은 반복 명령을 Script로 묶어 직접 입력을 줄였습니다. 다만 사람이 신청 정보를 보고 인자를 넘기는 이상, 잘못된 인자를 넘길 가능성은 그대로 남았습니다.</p></div>
-                    <div className="ba-col after"><span className="ba-label">2단계 · Web UI</span><p>신청 정보를 입력으로 받아 <b>Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성·할당, 만료 자원 탐지·회수</b>까지 이어지게 했습니다. 사람이 명령을 옮겨 입력하던 과정을 시스템의 흐름으로 바꿔, 약 30분 걸리던 관리 작업을 5분 안으로 줄였습니다.</p></div>
+                    <div className="ba-col after"><span className="ba-label">2단계 · Web UI</span><p>신청 정보를 입력으로 받아 <b>Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성·할당, 만료 자원 탐지·회수</b>까지 이어지게 했습니다. 사람이 명령을 옮겨 입력하던 과정을 시스템의 흐름으로 바꿔, 신청 1건을 처리해 사용자에게 완료 안내를 보내기까지 약 30분 걸리던 시간을 5분 안으로 줄였습니다.</p></div>
                   </div>
                 </>
               ),
@@ -78,7 +78,7 @@ export default function GpuDetail() {
         <h4>돌아보며</h4>
         <div className="pd-growth-item">
           <div className="pd-tags"><span>#서버관리자</span><span>#반복_확인</span></div>
-          <p>처음에는 실수하지 않기 위해 명령어와 입력값을 여러 번 확인하는 것이 최선이라고 생각했습니다. 하지만 같은 작업을 반복하면서 생각이 바뀌었습니다. <b>반복해서 확인해야 하는 일이 있다면 더 꼼꼼하게 확인하는 것보다, 그 확인 자체가 필요 없는 구조를 만드는 것이 엔지니어의 역할</b>이라고 배웠습니다. 이 생각이 Script를 거쳐 Web UI까지 자동화하는 계기가 됐습니다.</p>
+          <p>처음에는 실수하지 않기 위해 명령어와 입력값을 여러 번 확인하는 것이 최선이라고 생각했습니다. 하지만 같은 작업을 반복하면서 생각이 바뀌었습니다. <b>반복해서 확인해야 하는 일이 있다면 더 꼼꼼하게 확인하는 것보다, 사람이 반복해서 확인해야 하는 지점을 줄이는 구조를 만드는 것이 엔지니어의 역할</b>이라고 배웠습니다. 이 생각이 Script를 거쳐 Web UI까지 자동화하는 계기가 됐습니다.</p>
         </div>
         <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/50" target="_blank" rel="noopener">관련 글: 1년간 GPU 서버 관리자로 일하며 배운 것 <ExportOutlined /></Typography.Link>
       </div>

@@ -1,4 +1,5 @@
 import { Tag } from 'antd'
+import FlowDiagram from '../components/FlowDiagram'
 import WorkParts from '../components/WorkParts'
 
 export default function AdAnalyticsDetail() {
@@ -7,7 +8,7 @@ export default function AdAnalyticsDetail() {
       <div className="pd-meta">
         <Tag variant="filled">2026.02 – 2026.03 (2주)</Tag>
         <Tag variant="filled">NHN AD</Tag>
-        <Tag variant="filled">Frontend, Backend · 기여 100%</Tag>
+        <Tag variant="filled">Frontend, Backend</Tag>
       </div>
       <p className="pd-catch">"대시보드를 보지 말고, 대화하세요."</p>
 
@@ -17,16 +18,43 @@ export default function AdAnalyticsDetail() {
         <ul className="pd-whr">
           <li><span className="k">Why</span><span>매체마다 대시보드를 조작하고 엑셀로 정리하는 반복 리포트 업무</span></li>
           <li><span className="k">How</span><span>Bedrock Tool Use로 자연어 질문을 Athena 조회로 연결, 데이터 수집·리포트 생성은 서버리스로 구성</span></li>
-          <li><span className="k">Result</span><span>자연어 기반 광고 데이터 분석 · 대시보드 응답 시간 <b>99.58%</b> 단축 · 2주 MVP 완성</span></li>
+          <li><span className="k">Result</span><span>자연어 기반 광고 데이터 분석 · 2주 MVP 완성</span></li>
         </ul>
       </div>
 
       <div className="pd-block">
         <h4>아키텍처 (AWS)</h4>
+        <FlowDiagram
+          label="광고 데이터 수집과 자연어 조회 흐름"
+          lanes={[
+            {
+              label: '데이터 수집: 매일 03:00',
+              steps: [
+                { title: 'EventBridge Scheduler', sub: '매체마다 일정을 따로 둠' },
+                { title: 'SQS', sub: '매체별 메시지 1건' },
+                { title: 'Lambda', sub: 'Google Ads·Kakao Moment API 호출' },
+                { title: 'S3', sub: 'Parquet로 저장' },
+                { title: 'Glue', sub: '파티션 등록, Athena로 조회 가능' },
+              ],
+              note: '매체마다 메시지를 따로 보내기 때문에, 한 매체의 수집이 실패해도 다른 매체의 수집은 그대로 진행됩니다.',
+            },
+            {
+              label: '자연어 조회',
+              steps: [
+                { title: '사용자 질문', sub: '채팅 화면' },
+                { title: 'Spring Boot', sub: '질문과 조회 도구를 Bedrock에 전달' },
+                { title: 'Bedrock (Claude)', sub: '질문을 해석해 SQL을 만들고 조회 도구 호출', tone: 'key' },
+                { title: 'Athena', sub: 'S3의 광고 데이터 조회' },
+                { title: 'SSE', sub: '조회 결과로 만든 답변을 스트리밍' },
+              ],
+              note: 'Bedrock은 조회 결과를 보고 추가 조회가 필요하면 Athena를 다시 호출합니다. 반복은 최대 5회입니다.',
+            },
+          ]}
+        />
         <ul className="pd-sublist">
           <li><b>데이터 수집</b>: EventBridge → SQS → Lambda → S3로 Google Ads·Kakao Moment 성과 수집 파이프라인을 구성했습니다. 매체별 작업을 큐로 나눠, 한 매체의 수집이 실패해도 다른 매체의 수집에 영향을 주지 않게 했습니다.</li>
           <li><b>AI 분석</b>: Bedrock이 자연어 질문을 SQL로 바꿔 Athena를 조회하고, 결과를 텍스트·표·차트로 구성해 SSE로 전달합니다.</li>
-          <li><b>캐싱</b>: 반복 조회되는 대시보드 결과를 Redis에 1시간 캐시해 Athena 재조회를 줄였고, 응답 시간을 99.58% 단축했습니다.</li>
+          <li><b>캐싱</b>: 반복 조회되는 대시보드 결과를 Redis에 1시간 캐시해, 같은 조회가 다시 들어오면 Athena를 조회하지 않고 캐시된 결과를 돌려줍니다.</li>
           <li><b>리포트</b>: 주간 성과 리포트를 자동으로 만들고, 읽기 전용 공유 링크와 Excel 다운로드를 제공했습니다.</li>
         </ul>
         <p className="pd-note">※ 과제 기간 중 광고 API 사용 승인이 끝나지 않아 제공받은 데이터로 분석 기능을 먼저 개발했고, 발표 전 Kakao Moment API 연동을 마쳤습니다.</p>
