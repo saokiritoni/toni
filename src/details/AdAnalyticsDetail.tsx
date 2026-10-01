@@ -14,7 +14,7 @@ export default function AdAnalyticsDetail() {
 
       <div className="pd-block">
         <h4>개요</h4>
-        <p className="pd-p">광고 성과를 보려면 매체마다 대시보드를 조작하고 엑셀로 다시 정리해야 하는 마케터의 반복 업무를 줄이기 위해, 자연어로 광고 성과를 조회·분석하는 AI 서비스를 2주 동안 설계하고 개발했습니다.</p>
+        <p className="pd-p">광고 성과를 보려면 매체마다 대시보드를 조작하고 엑셀로 다시 정리해야 하는 마케터의 반복 업무를 줄이기 위해, 자연어로 광고 성과를 조회하고 분석하는 AI 서비스를 2주 동안 설계하고 개발했습니다.</p>
       </div>
 
       <div className="pd-block">
@@ -27,7 +27,7 @@ export default function AdAnalyticsDetail() {
               steps: [
                 { title: 'EventBridge Scheduler', sub: '매체마다 일정을 따로 둠' },
                 { title: 'SQS', sub: '매체별 메시지 1건' },
-                { title: 'Lambda', sub: 'Google Ads·Kakao Moment API 호출' },
+                { title: 'Lambda', sub: 'Google Ads / Kakao Moment API 호출' },
                 { title: 'S3', sub: 'Parquet로 저장' },
                 { title: 'Glue', sub: '파티션 등록, Athena로 조회 가능' },
               ],
@@ -65,7 +65,7 @@ export default function AdAnalyticsDetail() {
             {
               title: '데이터 특성에 따른 S3 보관 정책',
               content: (
-                <p className="pd-p">Excel 다운로드 파일·Athena 조회 결과·주간 리포트는 다시 쓰는 빈도와 필요한 보관 기간이 달랐습니다. Excel은 1일, Athena 결과는 7일 뒤 삭제하고, 오래 보관해야 하는 리포트는 Standard → IA → Glacier IR로 옮기도록 수명 주기 규칙을 구성했습니다.</p>
+                <p className="pd-p">Excel 다운로드 파일, Athena 조회 결과, 주간 리포트는 다시 쓰는 빈도와 필요한 보관 기간이 달랐습니다. Excel은 1일, Athena 결과는 7일 뒤 삭제하고, 오래 보관해야 하는 리포트는 Standard → IA → Glacier IR로 옮기도록 수명 주기 규칙을 구성했습니다.</p>
               ),
             },
           ]}
@@ -74,8 +74,8 @@ export default function AdAnalyticsDetail() {
 
       <div className="pd-block">
         <h4>리포트를 PDF에서 Excel로</h4>
-        <p className="pd-p">처음에는 주간 성과 리포트를 자동으로 만들어 PDF로 제공했지만, 사내 마케터에게 실제 업무를 여쭤보니 일·주·월간 리포트를 Excel로 가공하는 일이 많았습니다. 제 기준에서 편한 방식을 사용자의 방식이라고 생각했던 것입니다.</p>
-        <p className="pd-p">다음 날 Excel 다운로드로 바꾸고 요약·일별 추이·매체별 상세 시트를 구성해, 받은 리포트를 다시 가공하는 작업을 줄였습니다. 리포트는 읽기 전용 공유 링크로도 볼 수 있습니다.</p>
+        <p className="pd-p">처음에는 주간 성과 리포트를 자동으로 만들어 PDF로 제공했지만, 사내 마케터에게 실제 업무를 여쭤보니 일간 / 주간 / 월간 리포트를 Excel로 가공하는 일이 많았습니다. 제 기준에서 편한 방식을 사용자의 방식이라고 생각했던 것입니다.</p>
+        <p className="pd-p">다음 날 Excel 다운로드로 바꾸고 요약 / 일별 추이 / 매체별 상세 시트를 구성해, 받은 리포트를 다시 가공하는 작업을 줄였습니다. 리포트는 읽기 전용 공유 링크로도 볼 수 있습니다.</p>
       </div>
     </>
   )

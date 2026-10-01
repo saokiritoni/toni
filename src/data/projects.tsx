@@ -51,14 +51,14 @@ export const FEATURED: FeaturedProject = {
 export const GRID_PROJECTS: GridProject[] = [
   {
     key: 'ad-analytics',
-    modalTitle: 'AI 기반 광고 분석 서비스 · NHN AD 인턴 과제',
+    modalTitle: 'AI 기반 광고 분석 서비스 / NHN AD 인턴 과제',
     org: 'NHN AD',
     thumb: { tone: 'g1' },
     role: 'Frontend, Backend',
     title: '[인턴 과제] 자연어 광고 분석 서비스',
     points: [
       '자연어로 물으면 광고 데이터를 조회해 답하는 AI 분석 서비스 개발',
-      '데이터 수집부터 분석·리포트까지 2주 만에 MVP로 완성',
+      '데이터 수집부터 분석과 리포트까지 2주 만에 MVP로 완성',
       '마케터의 실제 업무를 듣고 PDF 리포트를 Excel 다운로드로 변경',
     ],
     stack: ['EventBridge', 'Lambda', 'Athena', 'Bedrock', 'Redis'],
@@ -82,10 +82,10 @@ export const GRID_PROJECTS: GridProject[] = [
     modalTitle: 'Farm System 동아리 홈페이지',
     org: '동국대학교 Farm System',
     thumb: { tone: 'g3' },
-    role: 'Leader · Backend',
+    role: 'Leader / Backend',
     title: 'Farm System 동아리 홈페이지',
     points: [
-      '디자이너·개발자 약 20명의 팀을 이끌며 동아리 홈페이지 개발·운영',
+      '디자이너와 개발자 약 20명의 팀을 이끌며 동아리 홈페이지 개발과 운영',
       '진행 보고만 하던 주간회의를 고민을 나누는 자리로 바꾸고 역할과 일정 재조정',
       '170명 이상이 쓰는 서비스를 운영하며 비정상 트래픽 차단과 RDS 계정 이전 처리',
     ],

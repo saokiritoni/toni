@@ -23,7 +23,7 @@ export default function Header() {
       <div className="container-inner">
         <div className="header-row">
           <a className="wordmark" href="#top" aria-label="Soeun Lee 홈">
-            Soeun Lee<span className="dot">.</span>
+            Soeun Lee<span className="dot" aria-hidden="true" />
           </a>
           <div className="header-right">
             {/* antd Anchor 가 스크롤 위치에 맞춰 현재 섹션을 표시하고, 고정 헤더 높이만큼 비켜서 스크롤한다 */}
