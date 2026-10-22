@@ -22,7 +22,6 @@ export const SKILL_GROUPS: SkillGroup[] = [
     title: '// language & framework',
     items: [
       { name: 'Java' },
-      { name: 'Kotlin' },
       { name: 'Spring Boot' },
     ],
   },
@@ -60,13 +59,13 @@ export const EXPERIENCE: TimelineItem[] = [
   },
   {
     period: '2025.03 – 2026.02',
-    company: '동국대학교 서버실',
-    role: 'GPU 서버 관리자 (학생연구자)',
+    company: '동국대학교 GPU 서버실',
+    role: '서버 관리자 / 학생 연구자',
   },
   {
     period: '2024.03 – 2026.02',
     company: 'Farm System (동국대학교 개발 동아리)',
-    role: '보안/웹 트랙장, 개발팀 리더',
+    role: '보안/웹 트랙장, 동아리 홈페이지 개발팀 리더',
   },
   {
     period: '2021.03 – 2026.02',
