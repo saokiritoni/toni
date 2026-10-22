@@ -43,7 +43,7 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
                 label="감사로그가 Outbox를 거쳐 감사 테이블에 쌓이는 순서"
                 lanes={[
                   {
-                    label: '고치기 전',
+                    label: 'Before',
                     steps: [
                       { title: '업무 엔티티 변경', sub: '뒤에 쿼리가 없어 flush가 미뤄짐' },
                       { title: 'BEFORE_COMMIT 리스너', sub: '아직 이벤트가 없어 Outbox에 저장할 것이 없음' },
@@ -52,7 +52,7 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
                     ],
                   },
                   {
-                    label: '고친 뒤',
+                    label: 'After',
                     steps: [
                       { title: '업무 엔티티 변경' },
                       { title: 'beforeCommit에서 flush', sub: <><code>@PreUpdate</code>가 이벤트를 만듦</>, tone: 'key' },
