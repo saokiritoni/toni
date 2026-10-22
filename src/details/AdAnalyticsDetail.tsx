@@ -46,7 +46,6 @@ export default function AdAnalyticsDetail() {
             },
           ]}
         />
-        <p className="pd-note">※ 과제 기간 중 광고 API 사용 승인이 끝나지 않아 제공받은 데이터로 분석 기능을 먼저 개발했고, 발표 전 Kakao Moment API 연동을 마쳤습니다.</p>
       </div>
 
       <div className="pd-block">
@@ -70,12 +69,6 @@ export default function AdAnalyticsDetail() {
             },
           ]}
         />
-      </div>
-
-      <div className="pd-block">
-        <h4>리포트를 PDF에서 Excel로</h4>
-        <p className="pd-p">처음에는 주간 성과 리포트를 자동으로 만들어 PDF로 제공했지만, 사내 마케터에게 실제 업무를 여쭤보니 일간 / 주간 / 월간 리포트를 Excel로 가공하는 일이 많았습니다. 제 기준에서 편한 방식을 사용자의 방식이라고 생각했던 것입니다.</p>
-        <p className="pd-p">다음 날 Excel 다운로드로 바꾸고 요약 / 일별 추이 / 매체별 상세 시트를 구성해, 받은 리포트를 다시 가공하는 작업을 줄였습니다. 리포트는 읽기 전용 공유 링크로도 볼 수 있습니다.</p>
       </div>
     </>
   )

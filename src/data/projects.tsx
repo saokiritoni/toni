@@ -59,7 +59,7 @@ export const GRID_PROJECTS: GridProject[] = [
     points: [
       '자연어 질문으로 광고 데이터를 조회하고 분석하는 AI 서비스 개발',
       '데이터 수집부터 분석과 리포트까지 2주 만에 MVP로 완성',
-      '마케터의 업무 방식을 확인하고 PDF 리포트를 Excel 다운로드로 변경',
+      '쓰임새와 보관 기간에 따라 데이터 보관 정책을 나눠 구성',
     ],
     stack: ['EventBridge', 'Lambda', 'Athena', 'Bedrock', 'Redis'],
   },
