@@ -92,7 +92,7 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
             </div>
             <div className="pd-work-item">
               <h5>2. 인증정보 중복 등록 방지</h5>
-              <p className="pd-p">"이미 등록했는지 조회한 뒤 등록"하면, 동시에 온 두 요청이 모두 "없음"을 읽고 통과할 수 있습니다(check-then-act 경쟁). 동시 등록은 DB 유니크 인덱스로 막고, 애플리케이션의 사전 조회는 오류 안내에만 사용했습니다.</p>
+              <p className="pd-p">이미 등록했는지 조회한 뒤 등록하면, 동시에 온 두 요청이 모두 "없음"을 읽고 함께 통과할 수 있습니다(경쟁 조건). 동시 등록은 DB 유니크 인덱스로 막고, 애플리케이션의 사전 조회는 오류 안내에만 사용했습니다.</p>
               <ImplDetail fold>
                 <li>soft delete를 쓰기 때문에, 삭제되지 않은 행에만 적용되는 Partial Unique Index를 걸었습니다.</li>
                 <li>인증정보는 KMS로 암호화되어 매번 다른 암호문이 나오므로, 평문의 SHA-256 해시를 별도 컬럼에 저장하고 (회원, 매체, 해시)에 인덱스를 걸었습니다.</li>
