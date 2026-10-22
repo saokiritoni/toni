@@ -60,7 +60,7 @@
   color-scheme:dark;
 }
 /* 어두운 카드 위에서 AdOnChat 왼쪽 패널이 묻히지 않도록 accent 쪽으로 따뜻하게 띄운다 */
-:root[data-theme="dark"] .feat-panel,:root[data-theme="dark"] .pm-head.tone-feat,:root[data-theme="dark"] .pp-head{background:linear-gradient(150deg,#2b1a18,#4a2522)}
+:root[data-theme="dark"] .feat-panel,:root[data-theme="dark"] .pm-head.tone-feat{background:linear-gradient(150deg,#2b1a18,#4a2522)}
 /* 테마 전환 순간에만 색을 부드럽게 바꾼다 (평소 hover 트랜지션과 겹치지 않도록 클래스로 한정) */
 html.theme-switching *,html.theme-switching *::before,html.theme-switching *::after{
   transition:background-color .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease) !important}
@@ -267,7 +267,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .card-thumb{aspect-ratio:16/10;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:16px;color:rgba(255,255,255,.92)}
 /* brand-color gradient placeholder box (실제 스크린샷 준비되면 <img>로 교체) */
 .card-thumb.g1,.pm-head.tone-g1{background:linear-gradient(135deg,var(--apple),var(--apple-deep))}
-.card-thumb.g2,.pm-head.tone-g2,.pm-head.tone-feat,.pp-head{background:linear-gradient(135deg,var(--charcoal),var(--charcoal-2))}
+.card-thumb.g2,.pm-head.tone-g2,.pm-head.tone-feat{background:linear-gradient(135deg,var(--charcoal),var(--charcoal-2))}
 .card-thumb.g3,.pm-head.tone-g3{background:linear-gradient(135deg,var(--leaf-bright),var(--leaf-deep))}
 /* 커버의 흰색 픽셀 아이콘은 제목 줄 오른쪽에 둔다. 문서 흐름 안에 있어서 제목이 길면 아이콘 옆에서 줄바꿈되고, 태그와 겹치지 않는다 */
 .thumb-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
@@ -472,53 +472,53 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pd-ba:not(.stack) .ba-col + .ba-col.after::before{content:"→";position:absolute;left:-28px;top:50%;width:24px;height:24px;margin-top:-12px;z-index:1;
   display:grid;place-items:center;border-radius:50%;background:var(--bg);border:1px solid var(--border-med);font-size:12px;line-height:1;color:var(--leaf)}
 .ba-label{display:block;font-size:13px;font-weight:600;color:var(--text-dim);margin-bottom:6px}
+/* 단계가 이어지는 비교(.stages, GPU 단계적 자동화)는 흐름도와 같은 면으로 칸을 나누고 칸 사이에 화살표를 둔다 */
+.pd-ba.stages{gap:22px}
+.pd-ba.stages .ba-col{border-radius:var(--r);padding:14px 16px 16px;background:var(--surface-300)}
+.pd-ba.stages .ba-col.after{background:color-mix(in srgb,var(--leaf) 10%,var(--surface-100))}
+.pd-ba.stages .ba-col.after .ba-label{color:var(--leaf)}
+.pd-ba.stages .ba-col + .ba-col::before,.pd-ba.stages:not(.stack) .ba-col + .ba-col.after::before{content:"→";position:absolute;left:-17px;top:50%;width:12px;height:auto;margin-top:-9px;
+  display:block;border:none;border-radius:0;background:none;text-align:center;font-size:12px;line-height:18px;color:var(--text-dim)}
 .ba-col p{font-size:15px;line-height:1.6;color:var(--text-body)}
 .ba-col p b{font-weight:600}
 .ba-col p+p{margin-top:10px}
 .ba-col p+.pd-sublist{margin-top:10px}
 .ba-col .pd-sublist li{color:var(--text-body)}
 .ba-col .pd-sublist li:last-child{margin-bottom:0}
-/* 처리 흐름 그림 (FlowDiagram). 내용에 맞춰 세 모양을 쓴다: boxes(상자와 화살표), timeline(한 줄 위의 점), numbered(번호와 맡는 구성 요소) */
+/* 처리 흐름 그림 (FlowDiagram): 번호와 맡는 구성 요소를 위에 두고, 테두리 없는 면으로 단계를 나눈다 */
 .pd-flow{display:flex;flex-direction:column;gap:10px;margin:12px 0 4px}
 /* 그림 뒤에 본문이 이어지면 문단 간격만큼 띄운다 */
 .pd-flow + .pd-p{margin-top:16px}
 .flow-lane{border:1px solid var(--border);border-radius:var(--r-feat);padding:14px 16px 16px;background:var(--surface-100)}
 .flow-lane-label{display:block;font-size:13px;font-weight:600;color:var(--text-dim);margin-bottom:12px;word-break:keep-all}
 .flow-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:22px}
-.flow-step{position:relative;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:10px 11px;font-size:13.5px;line-height:1.45;color:var(--text);word-break:keep-all}
+.flow-step{position:relative;border-radius:var(--r);padding:12px 13px 13px;background:var(--surface-300);font-size:13.5px;line-height:1.45;color:var(--text);word-break:keep-all}
 .flow-step strong{display:block;font-weight:600}
+.flow-no{display:inline-grid;place-items:center;width:22px;height:22px;margin-bottom:8px;border-radius:50%;background:var(--text);color:var(--bg);font-family:var(--f-mono);font-size:12px;font-weight:500}
+.flow-actor{display:block;margin-bottom:2px;font-size:12px;font-weight:600;color:var(--text-dim)}
 .flow-sub{display:block;margin-top:4px;font-size:12.5px;color:var(--text-dim)}
 .flow-step + .flow-step::before{content:"→";position:absolute;left:-17px;top:50%;width:12px;margin-top:-9px;text-align:center;font-size:12px;line-height:18px;color:var(--text-dim)}
-.flow-step.miss{border-color:color-mix(in srgb,var(--accent) 45%,transparent);background:color-mix(in srgb,var(--accent) 7%,var(--bg))}
-.flow-step.key{border-color:color-mix(in srgb,var(--leaf) 50%,transparent);background:color-mix(in srgb,var(--leaf) 8%,var(--bg))}
+/* 문제가 생기는 단계는 빨강, 해결의 핵심 단계는 초록 면으로 구분하고 번호 원도 같은 색으로 칠한다 */
+.flow-step.miss{background:color-mix(in srgb,var(--accent) 9%,var(--surface-100))}
+.flow-step.miss .flow-no{background:var(--accent);color:#fff}
+.flow-step.miss strong{color:var(--accent)}
+.flow-step.key{background:color-mix(in srgb,var(--leaf) 10%,var(--surface-100))}
+.flow-step.key .flow-no{background:var(--leaf);color:#fff}
 .flow-note{margin-top:10px;font-size:13.5px;line-height:1.6;color:var(--text-dim);word-break:keep-all}
-/* boxes 의 되돌아가는 흐름: 상자 아래에 ㄷ자 선을 긋고, 왼쪽 끝에 위로 향하는 화살촉을 둔다 */
+/* 되돌아가는 흐름: 단계 아래에 ㄷ자 선을 긋고, 왼쪽 끝에 위로 향하는 화살촉을 둔다 */
 .flow-loop{list-style:none;grid-row:2;grid-column:var(--loop-start) / var(--loop-end);position:relative;height:18px;margin:-12px 12% 26px;
   border:1.5px solid color-mix(in srgb,var(--accent) 60%,transparent);border-top:none;border-radius:0 0 10px 10px}
 .flow-loop::before{content:"";position:absolute;left:-6px;top:-8px;border:5px solid transparent;border-bottom:7px solid color-mix(in srgb,var(--accent) 60%,transparent);border-top:none}
 .flow-loop span{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:5px;white-space:nowrap;font-size:12.5px;color:var(--accent)}
-/* timeline: 상자 없이 한 줄 위의 점으로 순서를 보여 준다. 고치기 전과 뒤를 위아래로 놓고 비교한다 */
-.is-timeline .flow-steps{gap:0}
-.is-timeline .flow-step{background:none;border:none;border-radius:0;padding:24px 14px 0 0}
-.is-timeline .flow-step::before,.is-timeline .flow-step + .flow-step::before{content:"";position:absolute;left:0;top:0;z-index:1;width:14px;height:14px;margin:0;border-radius:50%;
-  background:var(--surface-100);border:2px solid var(--border-strong)}
-.is-timeline .flow-step::after{content:"";position:absolute;left:0;right:0;top:6px;height:2px;background:var(--border-med)}
-.is-timeline .flow-step:last-child::after{display:none}
-.is-timeline .flow-step.miss::before{background:var(--accent);border-color:var(--accent)}
-.is-timeline .flow-step.key::before{background:var(--leaf);border-color:var(--leaf)}
-.is-timeline .flow-step.miss strong{color:var(--accent)}
-.is-timeline .flow-step.key strong{color:var(--leaf)}
-/* numbered: 번호와 맡는 구성 요소를 위에 두고, 테두리 없는 면으로 단계를 나눈다 */
-.is-numbered .flow-step{border:none;background:var(--surface-300);padding:12px 13px 13px}
-.is-numbered .flow-step.key{background:color-mix(in srgb,var(--leaf) 10%,var(--surface-100))}
-.flow-no{display:inline-grid;place-items:center;width:22px;height:22px;margin-bottom:8px;border-radius:50%;background:var(--text);color:var(--bg);font-family:var(--f-mono);font-size:12px;font-weight:500}
-.flow-actor{display:block;margin-bottom:2px;font-size:12px;font-weight:600;color:var(--text-dim)}
 /* 성과 지표: 칸에는 개선 후 숫자와 기존 값만 두고, 측정 조건은 칸 아래에 진입과 입력으로 나눠 적는다.
    초록은 개선 후 숫자에만 쓴다 */
-.pd-metrics{list-style:none;margin:0 0 12px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.pd-metric{display:flex;flex-direction:column;border-radius:var(--r-feat);padding:14px 16px 16px;border:1px solid var(--border)}
+.pd-metrics{list-style:none;margin:0 0 12px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--text);border-bottom:1px solid var(--border)}
+/* 상자 대신 위아래 선과 칸 사이 세로선만 두는 지표 줄 */
+.pd-metric{display:flex;flex-direction:column;padding:14px 18px 16px}
+.pd-metric:first-child{padding-left:0}
+.pd-metric + .pd-metric{border-left:1px solid var(--border)}
 .pd-metric-k{font-size:13px;font-weight:600;color:var(--text-dim)}
-.pd-metric-v{margin:4px 0 2px;font-style:normal;font-family:var(--f-display);font-size:30px;font-weight:700;line-height:1.2;letter-spacing:-.02em;color:var(--leaf)}
+.pd-metric-v{margin:6px 0 2px;font-style:normal;font-family:var(--f-display);font-size:30px;font-weight:700;line-height:1.2;letter-spacing:-.02em;color:var(--leaf)}
 .pd-metric-was{font-size:13px;color:var(--text-dim)}
 .pd-metric-notes{margin:0 0 6px;display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:1.6;color:var(--text-dim);word-break:keep-all}
 .pd-metric-notes div{display:flex;gap:10px}
@@ -535,6 +535,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pd-impl-label{display:block;font-size:13px;font-weight:600;color:var(--text-dim);margin-bottom:10px}
 .pd-impl .pd-sublist li:last-child{margin-bottom:0}
 /* 접히는 구현 상세 (AdOnChat 상세 페이지). 머리글을 눌러 펼친다 */
+.pd-impl.is-fold{border-top:none;padding-top:0}
 .pd-impl.is-fold>summary{display:inline-flex;align-items:center;gap:8px;margin-bottom:0;cursor:pointer;list-style:none}
 .pd-impl.is-fold>summary::-webkit-details-marker{display:none}
 .pd-impl.is-fold>summary::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform var(--m-fast) var(--ease)}
@@ -548,12 +549,18 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pp{padding:96px 0;min-height:100vh}
 .pp-back{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--text-dim);margin-bottom:18px}
 .pp-back:hover{color:var(--text)}
-.pp-head{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:34px 36px;border-radius:var(--r-feat);color:#fff;margin-bottom:22px}
-.pp-title{font-family:var(--f-display);font-size:clamp(30px,5vw,42px);font-weight:600;letter-spacing:-.02em;line-height:1.15;color:#fff;margin-bottom:8px}
-.pp-catch{font-family:var(--f-display);font-size:17px;font-weight:500;line-height:1.45;color:rgba(255,255,255,.82);word-break:keep-all}
 /* 페이지 배경 위에서는 모달보다 태그 바탕이 흐려 보여 테두리를 더한다 */
-.pp .pd-meta .ant-tag,.pp .pd-tech .ant-tag{box-shadow:inset 0 0 0 1px var(--border)}
-.pp-overview{margin-bottom:48px}
+.pp .pd-tech .ant-tag{box-shadow:inset 0 0 0 1px var(--border)}
+/* 머리: 색 띠 없이 픽셀 아이콘, 개발한 곳, 제목, 부제, 기간과 역할, 소개를 글자 위계로만 나눈다 */
+.pp-intro{padding-bottom:40px;margin-bottom:48px;border-bottom:1px solid var(--border)}
+.pp-hero{display:flex;align-items:center;gap:22px;margin:10px 0 14px}
+.pp-hero .pk-W{background:var(--accent)}
+.pp-hero .pk-w{background:var(--border-strong)}
+.pp-org{display:block;margin-bottom:2px;font-size:14px;font-weight:600;color:var(--accent)}
+.pp-title{font-family:var(--f-display);font-size:clamp(36px,6vw,52px);font-weight:600;letter-spacing:-.03em;line-height:1.08;color:var(--text)}
+.pp-catch{font-size:19px;line-height:1.5;color:var(--text);margin-bottom:6px;word-break:keep-all}
+.pp-meta{font-size:14px;color:var(--text-dim);margin-bottom:20px}
+.pp-intro .pp-overview{max-width:760px;margin:0;font-size:16px;line-height:1.75}
 .pp-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px;align-items:start}
 .pp-toc{position:sticky;top:96px;display:flex;flex-direction:column;gap:22px;font-size:14px}
 .pp-toc-group{display:block;font-family:var(--f-display);font-weight:600;color:var(--text);margin-bottom:8px}
@@ -614,22 +621,18 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .project-modal .modal-body{max-height:none;flex:1}
   .pd-ba{grid-template-columns:1fr;gap:18px}
   .pd-ba:not(.stack) .ba-col + .ba-col.after::before{display:none}
+  .pd-ba.stages .ba-col + .ba-col::before,.pd-ba.stages:not(.stack) .ba-col + .ba-col.after::before{display:block;content:"↓";left:50%;top:-18px;margin:0 0 0 -6px}
   .flow-steps{grid-template-columns:1fr;gap:18px}
-  .pd-metrics{grid-template-columns:1fr}
+  .pd-metric{padding:12px 10px 14px}
+  .pd-metric-v{font-size:22px}
   .pd-metric-notes div{flex-direction:column;gap:0}
-    .flow-step + .flow-step::before{content:"↓";left:50%;top:-18px;margin:0 0 0 -6px}
+  .flow-step + .flow-step::before{content:"↓";left:50%;top:-18px;margin:0 0 0 -6px}
   .flow-loop{grid-row:auto;grid-column:auto;height:auto;margin:0;border:none}
   .flow-loop::before{display:none}
   .flow-loop span{position:static;transform:none;margin:0;white-space:normal}
   .flow-loop span::before{content:"↩ "}
-  .is-timeline .flow-steps{gap:18px}
-  .is-timeline .flow-step{padding:0 0 0 26px}
-  .is-timeline .flow-step::before,.is-timeline .flow-step + .flow-step::before{top:2px;left:0}
-  .is-timeline .flow-step::after{left:6px;right:auto;top:16px;bottom:-20px;width:2px;height:auto}
   .pm-head{padding:22px 72px 20px 22px}
   .pp{padding-top:84px}
-  .pp-head{padding:24px 22px}
-  .pp-pixel{display:none}
   .pm-pop-enter.pm-pop-enter-active,.pm-pop-appear.pm-pop-appear-active{animation-name:pmSheetIn}
   .pm-pop-leave.pm-pop-leave-active{animation-name:pmSheetOut}
 }

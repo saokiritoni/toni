@@ -39,25 +39,24 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
                 <div className="ba-col after"><span className="ba-label">해결</span><p>처음부터 업무 변경과 같은 트랜잭션에서 Outbox에 감사 이벤트를 저장하고, 스케줄러가 감사 테이블로 옮기도록 구성했습니다. 감사 이벤트는 업무 변경과 함께 커밋되거나 함께 롤백됩니다.</p><p>운영 중 일부 변경 이력이 빠지는 원인을 추적해 보니, JPA <code>@PreUpdate</code>가 flush 시점에 실행되면서, 이벤트가 <code>BEFORE_COMMIT</code> 처리보다 늦게 만들어지는 경로가 있었습니다. 특정 서비스에 <code>flush()</code>를 넣는 대신, <code>TransactionSynchronization.beforeCommit</code>에서 flush한 뒤 Outbox를 저장하도록 바꿔 모든 경로에 같은 순서를 적용했습니다.</p></div>
               </div>
               <FlowDiagram
-                variant="timeline"
                 label="감사로그가 Outbox를 거쳐 감사 테이블에 쌓이는 순서"
                 lanes={[
                   {
                     label: 'Before',
                     steps: [
-                      { title: '업무 엔티티 변경', sub: '뒤에 쿼리가 없어 flush가 미뤄짐' },
-                      { title: 'BEFORE_COMMIT 리스너', sub: '아직 이벤트가 없어 Outbox에 저장할 것이 없음' },
-                      { title: '커밋 시점 flush', sub: <><code>@PreUpdate</code>가 이제야 이벤트를 만듦</>, tone: 'miss' },
-                      { title: '커밋', sub: '감사로그 없이 업무 변경만 저장', tone: 'miss' },
+                      { actor: '업무 서비스', title: '업무 엔티티 변경', sub: '뒤에 쿼리가 없어 flush가 미뤄짐' },
+                      { actor: '이벤트 리스너', title: 'BEFORE_COMMIT 리스너', sub: '아직 이벤트가 없어 Outbox에 저장할 것이 없음' },
+                      { actor: 'JPA', title: '커밋 시점 flush', sub: <><code>@PreUpdate</code>가 이제야 이벤트를 만듦</>, tone: 'miss' },
+                      { actor: '트랜잭션', title: '커밋', sub: '감사로그 없이 업무 변경만 저장', tone: 'miss' },
                     ],
                   },
                   {
                     label: 'After',
                     steps: [
-                      { title: '업무 엔티티 변경' },
-                      { title: 'beforeCommit에서 flush', sub: <><code>@PreUpdate</code>가 이벤트를 만듦</>, tone: 'key' },
-                      { title: 'Outbox 저장', sub: '모인 이벤트를 같은 트랜잭션에서 저장' },
-                      { title: '커밋', sub: '업무 변경과 Outbox를 함께 저장', tone: 'key' },
+                      { actor: '업무 서비스', title: '업무 엔티티 변경' },
+                      { actor: '트랜잭션 동기화', title: 'beforeCommit에서 flush', sub: <><code>@PreUpdate</code>가 이벤트를 만듦</>, tone: 'key' },
+                      { actor: '트랜잭션 동기화', title: 'Outbox 저장', sub: '모인 이벤트를 같은 트랜잭션에서 저장' },
+                      { actor: '트랜잭션', title: '커밋', sub: '업무 변경과 Outbox를 함께 저장', tone: 'key' },
                     ],
                   },
                 ]}
@@ -189,10 +188,10 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
                 {
                   label: '조회 명세 검증 → 쿼리 조립 → 실행',
                   steps: [
-                    { title: '조회 명세', sub: '모델이 리소스, 항목, 조건, 정렬과 개수를 전달' },
-                    { title: '검증', sub: '필드와 허용 범위 확인', tone: 'key' },
-                    { title: '쿼리 조립', sub: '통과한 명세로만 쿼리 생성' },
-                    { title: '실행', sub: '모델에는 미리보기와 열별 요약 전달' },
+                    { actor: '모델', title: '조회 명세', sub: '리소스, 항목, 조건, 정렬과 개수를 전달' },
+                    { actor: '검증 계층', title: '검증', sub: '필드와 허용 범위 확인', tone: 'key' },
+                    { actor: '조회 도구', title: '쿼리 조립', sub: '통과한 명세로만 쿼리 생성' },
+                    { actor: 'Google Ads API', title: '실행', sub: '모델에는 미리보기와 열별 요약 전달' },
                   ],
                   loop: { from: 1, to: 0, label: '통과하지 못하면 항목별 사유를 모델에 돌려줘 명세를 고치게 함' },
                 },
@@ -222,7 +221,6 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
             <p className="pd-p">검증을 마친 실행 내용을 요청 ID와 함께 런타임에 보관하고, 백엔드가 사용자의 승인 여부와 선택한 요청 ID를 전달하도록 했습니다.</p>
             <p className="pd-p">공통 실행 도구는 별도 실행 인자를 받지 않고, 선택된 요청의 보관본을 꺼내 실행합니다. 모델이 승인 이후 실행 내용을 다시 구성하는 경로를 없앴습니다.</p>
             <FlowDiagram
-              variant="numbered"
               label="승인 대상을 보관하고 사용자가 고른 요청의 보관본만 실행하는 순서"
               lanes={[
                 {

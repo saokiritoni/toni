@@ -59,23 +59,21 @@ export default function AdOnChatPage({ onBack }: { onBack: () => void }) {
           <ArrowLeftOutlined /> 프로젝트 목록
         </a>
 
-        <header className="pp-head">
-          <div>
-            <span className="project-org">{p.org}</span>
-            <h1 className="pp-title">{p.title}</h1>
-            <p className="pp-catch">{p.catch}</p>
+        {/* 색 띠 배너 대신 페이지 글자로 머리를 세운다. 픽셀 아이콘의 흰 블록은 밝은 바탕에서 보이도록 CSS 에서 다시 칠한다 */}
+        <header className="pp-intro">
+          <div className="pp-hero">
+            <PixelArt pattern={PROJECT_PIXELS[p.key]} cell={8} static className="pp-pixel" />
+            <div>
+              <span className="pp-org">{p.org}</span>
+              <h1 className="pp-title">{p.title}</h1>
+            </div>
           </div>
-          <PixelArt pattern={PROJECT_PIXELS[p.key]} cell={8} static className="pp-pixel" />
+          <p className="pp-catch">{p.catch}</p>
+          <p className="pp-meta">
+            {p.period} / {p.role}
+          </p>
+          <p className="pd-p pp-overview">{ADONCHAT_OVERVIEW}</p>
         </header>
-
-        <div className="pd-meta">
-          {[p.period, p.org, p.role].map((t) => (
-            <Tag key={t} variant="filled">
-              {t}
-            </Tag>
-          ))}
-        </div>
-        <p className="pd-p pp-overview">{ADONCHAT_OVERVIEW}</p>
 
         <div className="pp-layout">
           <nav className="pp-toc" aria-label="사례 목차">
