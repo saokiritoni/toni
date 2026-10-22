@@ -105,6 +105,7 @@ export default function AdOnChatPage({ onBack }: { onBack: () => void }) {
                 <h2 className="pp-group-title" id={`${g.key}-title`}>
                   {g.label}
                 </h2>
+                {g.intro && <div className="pp-group-intro">{g.intro}</div>}
                 <div className="pd-tech">
                   {g.tech.map((t) => (
                     <Tag key={t} variant="filled">
@@ -118,6 +119,12 @@ export default function AdOnChatPage({ onBack }: { onBack: () => void }) {
                     {part.content}
                   </article>
                 ))}
+                {g.more && (
+                  <section className="pp-more" aria-label={g.more.title}>
+                    <h3 className="pp-more-title">{g.more.title}</h3>
+                    {g.more.content}
+                  </section>
+                )}
               </section>
             ))}
           </div>

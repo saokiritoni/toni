@@ -39,7 +39,7 @@ AdOnChat 은 사례가 많아 모달이 아니라 `/projects/adonchat` 페이지
 - **카드**: 프로젝트 카드의 색 영역. AdOnChat 은 왼쪽 어두운 패널, 나머지는 위쪽 그라데이션 영역이다.
 - **미리보기**: 카드 옆(AdOnChat) 또는 아래(나머지)의 본문 영역.
 - **상세 모달**: 인턴 과제·GPU·Farm System 카드를 누르면 열리는 창.
-- **상세 페이지**: AdOnChat 카드를 누르면 옮겨 가는 페이지(`/projects/adonchat`). 왼쪽에 사례 목차, 오른쪽에 Backend·Frontend 사례를 접지 않고 모두 펼친다.
+- **상세 페이지**: AdOnChat 카드를 누르면 옮겨 가는 페이지(`/projects/adonchat`). 왼쪽에 사례 목차, 오른쪽에 Backend·Frontend·AI Agent 사례를 둔다.
 
 ## 콘텐츠 규칙
 
@@ -60,7 +60,10 @@ AdOnChat 은 사례가 많아 모달이 아니라 `/projects/adonchat` 페이지
 - 같은 내용을 개요·그림·Part 에서 반복하지 않는다. 배경은 개요에서 한 번, 흐름은 그림에서 한 번만 설명한다.
 - 모든 모달의 형식을 똑같이 맞추지 않는다. 프로젝트 성격에 맞게 블록을 고른다.
 - 상세 모달의 "진행한 일"은 `WorkParts`(antd Collapse)로 Part 를 나눈다. AdOnChat 상세 페이지는 Part 대신 사례 제목(`pp-case-title`)으로 나누고 접지 않는다. 주제 묶음이 있으면 묶음이 Part 이고 항목 번호는 Part 마다 1부터 센다. 묶음이 없으면 항목 하나가 Part 하나다.
-- 접는 단계는 Part 하나뿐이다. `ImplDetail`(구현 상세)은 접지 않고 구분선 아래에 바로 보여 준다.
+- 상세 모달에서 접는 단계는 Part 하나뿐이다. `ImplDetail`(구현 상세)은 접지 않고 구분선 아래에 바로 보여 준다. AdOnChat 상세 페이지는 사례가 많아 `ImplDetail fold` 로 접어 둔다.
+- AdOnChat 상세 페이지는 묶음(Backend, Frontend, AI Agent)마다 대표 사례 한두 개만 자세히 쓰고, 나머지는 목차에 오르지 않는 짧은 보조 경험(`more`)으로 둔다. 같은 수치를 지표, 단계, 본문, 검증에서 되풀이하지 않는다. 공동 작업의 인원수나 진행 상태 같은 문구 없이 맡은 부분만 쓴다.
+- 흐름 그림(`FlowDiagram`)은 내용에 맞게 모양을 고른다. 같은 단계의 순서 차이는 `timeline`, 되돌아가는 흐름이 있으면 `boxes` 와 `loop`, 누가 무엇을 하는지가 중요하면 `numbered` 다.
+- AdOnChat 상세 페이지의 글자 크기 위계는 묶음 제목 32 > 사례 제목 24 > 항목 제목 19 > 본문 16 > 구분 라벨과 측정 조건 13 이다.
 - 문제/해결(`pd-ba`)은 짧은 비교만 두 열로 둔다. 긴 사례는 `pd-ba stack` 으로 한 열에 읽게 한다. 칸마다 배경 상자를 두지 않는다. AdOnChat 상세 페이지에서는 모두 한 열로 읽고, 문제/해결 라벨은 배지가 아니라 작은 소제목으로 둔다. 페이지 본문은 16px, 폭 720px 이다.
 
 ### 사실 확인
@@ -87,7 +90,8 @@ AdOnChat 은 사례가 많아 모달이 아니라 `/projects/adonchat` 페이지
 - 색은 `global.css` 의 `:root` 토큰(`--bg`, `--surface-*`, `--text`, `--text-dim`, `--accent`, `--hover`, `--border*` 등)만 쓴다. 새 hex 를 쓰지 않는다. 테마마다 달라지는 반투명 색도 토큰으로 만든다.
 - 다크 모드는 `:root[data-theme="dark"]` 에서 토큰을 다시 정의한다. 새 색을 추가하면 두 테마 값을 모두 정한다.
 - antd 는 CSS 변수를 토큰으로 받지 못하는 곳이 있어서 `AntdTheme.tsx` 의 `PALETTE` 에 hex 로 같은 값을 적는다. `global.css` 토큰을 바꾸면 `PALETTE` 도 같이 바꾼다.
-- 포인트 색은 사과 팔레트다. 강조색 `--accent` 는 사과 빨강(라이트 #d42a2a, 다크 #ff4d4f), hover 는 `--hover`, 보조색 `--leaf` 는 잎 초록이다. 카드 커버 그라데이션은 테마와 상관없는 `--apple*`·`--leaf-*` 토큰을 쓴다. 반투명 강조색은 rgba 대신 `color-mix(in srgb,var(--accent) N%,transparent)` 로 만든다. 헤더 GitHub·히어로 "프로젝트 보기" 같은 주 버튼은 antd primary 의 주황이 아니라 어두운 색(`--text` 배경)으로 덮어쓴다.
+- 바탕은 노란 기 없는 중립 회색이다(라이트 배경 #fafafa, 카드·헤더 #ffffff, 제목 `--text` #202124, 긴 본문 `--text-body` #3f434a, 보조 설명 `--text-dim` #686d75, 구분선 #e3e5e8). 아이보리 바탕과 종이 질감은 쓰지 않는다.
+- 포인트 색은 사과 팔레트다. 강조색 `--accent` 는 빨강(라이트 #c92a32, 다크 #ff4d4f), hover 는 `--hover`, 보조색 `--leaf` 는 초록(라이트 #287546)이고 성과 숫자와 현재 상태 표시에만 쓴다. 카드 커버 그라데이션은 테마와 상관없는 `--apple*`·`--leaf-*`·`--charcoal*` 토큰을 쓴다. 문제/해결 라벨에 색 배지를 쓰지 않는다. 반투명 강조색은 rgba 대신 `color-mix(in srgb,var(--accent) N%,transparent)` 로 만든다. 헤더 GitHub·히어로 "프로젝트 보기" 같은 주 버튼은 antd primary 의 주황이 아니라 어두운 색(`--text` 배경)으로 덮어쓴다.
 
 ### 글꼴
 

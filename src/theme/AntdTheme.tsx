@@ -6,8 +6,8 @@ import { useThemeMode } from './ThemeContext'
 // global.css 의 :root / [data-theme="dark"] 토큰과 같은 값을 antd 토큰으로 옮긴다.
 // antd 는 CSS 변수를 토큰 값으로 받지 못하는 곳(색 파생 계산)이 있어서 hex 로 적는다.
 const PALETTE = {
-  light: { bg: '#f2f1ed', container: '#f7f7f4', elevated: '#f2f1ed', text: '#26251e', border: 'rgba(38,37,30,0.1)', fill: '#ebeae5', accent: '#d42a2a', hover: '#a8182e' },
-  dark: { bg: '#15140f', container: '#1b1a15', elevated: '#15140f', text: '#edebe3', border: 'rgba(237,235,227,0.1)', fill: '#24231d', accent: '#ff4d4f', hover: '#ff8f8a' },
+  light: { bg: '#fafafa', container: '#ffffff', elevated: '#fafafa', text: '#202124', border: '#e3e5e8', fill: '#f1f2f4', accent: '#c92a32', hover: '#a51f27' },
+  dark: { bg: '#141517', container: '#1b1c1f', elevated: '#141517', text: '#e8eaed', border: 'rgba(232,234,237,0.1)', fill: '#232428', accent: '#ff4d4f', hover: '#ff8f8a' },
 } as const
 
 const FONT_BODY = "'Pretendard','Space Grotesk',system-ui,sans-serif"
