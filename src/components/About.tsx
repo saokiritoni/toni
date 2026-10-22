@@ -29,14 +29,12 @@ export default function About() {
         <div className="about-cols">
           {ABOUT_ITEMS.map(({ title, body }, i) => (
             <div className="about-col" data-reveal key={i}>
-              <div className="about-card">
-                <div className="about-card-top">
-                  <PixelArt pattern={ABOUT_PIXELS[i]} cell={7} />
-                  <span className="about-idx">{String(i + 1).padStart(2, '0')}</span>
-                </div>
-                <h3 className="about-title">{title}</h3>
-                <p>{body}</p>
+              <div className="about-card-top">
+                <PixelArt pattern={ABOUT_PIXELS[i]} cell={7} />
+                <span className="about-idx">{String(i + 1).padStart(2, '0')}</span>
               </div>
+              <h3 className="about-title">{title}</h3>
+              <p>{body}</p>
             </div>
           ))}
         </div>

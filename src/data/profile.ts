@@ -10,8 +10,8 @@ export const NAME_HANJA = '李炤垠'
 
 export const NAV_SECTIONS = [
   { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
+  { id: 'skills', label: 'Skills' },
   { id: 'experience', label: 'Experience' },
 ] as const
 
@@ -19,22 +19,22 @@ export type SkillGroup = { title: string; items: { name: string }[] }
 
 export const SKILL_GROUPS: SkillGroup[] = [
   {
-    title: '// language & framework',
+    title: 'language & framework',
     items: [
       { name: 'Java' },
       { name: 'Spring Boot' },
     ],
   },
   {
-    title: '// database & storage',
+    title: 'database & storage',
     items: [{ name: 'PostgreSQL' }, { name: 'DynamoDB' }],
   },
   {
-    title: '// devops & infra',
+    title: 'devops & infra',
     items: [{ name: 'AWS' }, { name: 'Docker' }, { name: 'Ubuntu Linux' }],
   },
   {
-    title: '// collaboration & ai',
+    title: 'collaboration & ai',
     items: [{ name: 'Git' }, { name: 'Claude Code' }],
   },
 ]

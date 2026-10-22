@@ -59,7 +59,7 @@
 /* 밝은 면 기준으로 만든 grain 이 어두운 면에서는 거칠게 보여서, 배경색과 soft-light 로 섞어 질감만 남긴다 */
 :root[data-theme="dark"] body{background-blend-mode:soft-light}
 /* 어두운 카드 위에서 AdOnChat 왼쪽 패널이 묻히지 않도록 accent 쪽으로 따뜻하게 띄운다 */
-:root[data-theme="dark"] .feat-panel,:root[data-theme="dark"] .pm-head.tone-feat{background:linear-gradient(150deg,#2b1a18,#4a2522)}
+:root[data-theme="dark"] .feat-panel,:root[data-theme="dark"] .pm-head.tone-feat,:root[data-theme="dark"] .pp-head{background:linear-gradient(150deg,#2b1a18,#4a2522)}
 /* 테마 전환 순간에만 색을 부드럽게 바꾼다 (평소 hover 트랜지션과 겹치지 않도록 클래스로 한정) */
 html.theme-switching *,html.theme-switching *::before,html.theme-switching *::after{
   transition:background-color .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease) !important}
@@ -223,7 +223,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .is-revealed .pa-px,.pixel-art.is-static .pa-px{transform:none;opacity:1}
 /* 카드에 마우스를 올리면 블록이 왼쪽부터 한 번씩 튀어 오른다 */
 @keyframes paHop{40%{transform:translateY(calc(var(--cell) * -.7))}}
-.about-card:hover .pa-px,.ant-card:hover .thumb-pixel .pa-px,.footer-brand:hover .pa-px,.section-head:hover .section-mark .pa-px{
+.about-col:hover .pa-px,.ant-card:hover .thumb-pixel .pa-px,.footer-brand:hover .pa-px,.section-head:hover .section-mark .pa-px{
   animation:paHop .42s var(--ease) calc(var(--i) * 22ms)}
 
 /* ============================= SECTION SHELL ============================= */
@@ -240,27 +240,20 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .section-title{font-family:var(--f-display);font-weight:500;font-size:clamp(26px,4vw,36px);letter-spacing:-.02em;line-height:1.2}
 
 /* ============================= ABOUT ============================= */
-.about-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:4px}
-.about-col{display:flex}
-/* 등장(data-reveal)은 바깥 .about-col 이, hover 이동은 안쪽 .about-card 가 맡아서 두 transform 이 겹치지 않는다 */
-.about-card{flex:1;padding:26px 26px 28px;border-radius:var(--r-feat);background:var(--surface-100);border:1px solid var(--border);
-  box-shadow:var(--edge-top),var(--sh-soft);transition:transform var(--m-standard) var(--ease)}
-.about-card:hover{transform:translateY(-3px)}
-.about-card-top{display:flex;align-items:flex-end;justify-content:space-between;min-height:71px;margin-bottom:22px}
+.about-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:4px}
+/* 상자 없이 픽셀 아이콘, 번호, 제목, 본문만 둔다. 클릭할 수 있는 프로젝트 카드와 구분하려는 것이다 */
+.about-card-top{display:flex;align-items:flex-end;justify-content:space-between;min-height:71px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .about-idx{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);letter-spacing:.04em}
 .about-title{font-family:var(--f-display);font-size:18px;font-weight:600;letter-spacing:-.02em;line-height:1.45;color:var(--text);margin-bottom:10px;word-break:keep-all}
-.about-card p{font-size:15.5px;line-height:1.75;color:var(--text-dim);word-break:keep-all}
+.about-col p{font-size:15.5px;line-height:1.75;color:var(--text-dim);word-break:keep-all}
 
 /* ============================= SKILLS ============================= */
-.skills-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px}
-/* antd Card (size small) + Tag */
-.skill-group.ant-card{background:var(--surface-100);box-shadow:var(--edge-top),var(--sh-soft)}
-.skill-group .ant-card-head{min-height:0;padding:18px 20px 0;border-bottom:none}
-.skill-group .ant-card-head-title{font-family:var(--f-mono);font-size:12px;font-weight:400;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em}
-.skill-group .ant-card-body{padding:14px 20px 20px}
-.skill-group .skill-tag{font-family:var(--f-mono);font-size:12px;line-height:24px;padding:2px 12px;margin:0;border-radius:6px}
-.skill-group .skill-tag.ant-tag{color:var(--text);background:var(--surface-300);border-color:transparent}
-
+/* 분류마다 한 줄. 분류 이름(왼쪽)과 기술 이름(오른쪽)만 둔다 */
+.skills-rows{margin:0;max-width:760px}
+.skills-row{display:grid;grid-template-columns:220px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--border)}
+.skills-row:first-child{border-top:1px solid var(--border)}
+.skills-row dt{font-family:var(--f-mono);font-size:12px;line-height:24px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em}
+.skills-row dd{margin:0;font-size:16px;line-height:24px;color:var(--text)}
 /* ============================= PROJECTS ============================= */
 .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 /* antd Card (hoverable). antd 기본 hover 그림자 대신 기존 elevation 토큰을 쓴다 */
@@ -276,7 +269,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .card-thumb{aspect-ratio:16/10;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:16px;color:rgba(255,255,255,.92)}
 /* brand-color gradient placeholder box (실제 스크린샷 준비되면 <img>로 교체) */
 .card-thumb.g1,.pm-head.tone-g1{background:linear-gradient(135deg,var(--apple),var(--apple-deep))}
-.card-thumb.g2,.pm-head.tone-g2,.pm-head.tone-feat{background:linear-gradient(135deg,#26251e,#4a4736)}
+.card-thumb.g2,.pm-head.tone-g2,.pm-head.tone-feat,.pp-head{background:linear-gradient(135deg,#26251e,#4a4736)}
 .card-thumb.g3,.pm-head.tone-g3{background:linear-gradient(135deg,var(--leaf-bright),var(--leaf-deep))}
 /* 커버의 흰색 픽셀 아이콘은 제목 줄 오른쪽에 둔다. 문서 흐름 안에 있어서 제목이 길면 아이콘 옆에서 줄바꿈되고, 태그와 겹치지 않는다 */
 .thumb-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
@@ -443,15 +436,6 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pd-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
 .pd-meta .ant-tag,.pd-tech .ant-tag{font-family:var(--f-mono);font-size:12px;line-height:18px;margin:0;padding:3px 12px;color:var(--text);background:var(--surface-300);border:none;border-radius:var(--r-pill)}
 .pd-catch{font-family:var(--f-serif);font-size:20px;line-height:1.45;color:var(--text);margin-bottom:32px}
-/* 모달 내부 탭 (AdOnChat: Backend / Frontend). underline 탭, 모달 스크롤 시 상단 고정 */
-.pd-tabs-root{margin-top:-8px}
-.pd-tabs .ant-tabs-nav{position:sticky;top:-26px;z-index:2;margin:0 0 28px;padding-top:8px;background:var(--bg)}
-.pd-tabs .ant-tabs-nav::before{border-bottom-color:var(--border)}
-.pd-tabs .ant-tabs-tab{font-family:var(--f-display);font-weight:500}
-.pd-tabs .ant-tabs-tab .ant-tabs-tab-btn{color:var(--text-dim)}
-.pd-tabs .ant-tabs-tab:hover .ant-tabs-tab-btn{color:var(--hover)}
-.pd-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{color:var(--text)}
-.pd-tabs .ant-tabs-tabpane .pd-block:last-child{margin-bottom:0}
 .pd-block{margin-bottom:36px}
 .pd-block > h4{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-bottom:16px}
 /* 블록 제목 앞의 네모 블록: 사이트 전체의 픽셀 블록과 같은 모양이다 */
@@ -511,19 +495,22 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .flow-step.miss{border-color:color-mix(in srgb,var(--accent) 45%,transparent);background:color-mix(in srgb,var(--accent) 7%,var(--bg))}
 .flow-step.key{border-color:color-mix(in srgb,var(--leaf) 50%,transparent);background:color-mix(in srgb,var(--leaf) 8%,var(--bg))}
 .flow-note{margin-top:10px;font-size:13.5px;line-height:1.6;color:var(--text-dim);word-break:keep-all}
-/* 성과 지표: 지표마다 측정 조건을 함께 적는다 */
-.pd-metrics{list-style:none;margin:0 0 22px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.pd-metric{display:flex;flex-direction:column;border-radius:var(--r-feat);padding:14px 16px;background:var(--surface-100);border:1px solid var(--border)}
+/* 성과 지표: 칸에는 개선 후 숫자와 기존 값만 두고, 측정 조건은 칸 아래에 진입과 입력으로 나눠 적는다.
+   초록은 개선 후 숫자에만 쓴다 */
+.pd-metrics{list-style:none;margin:0 0 12px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.pd-metric{display:flex;flex-direction:column;border-radius:var(--r-feat);padding:14px 16px 16px;border:1px solid var(--border)}
 .pd-metric-k{font-size:13px;font-weight:600;color:var(--text-dim)}
-.pd-metric-v{margin:6px 0 8px;font-size:18px;line-height:1.35;color:var(--text);word-break:keep-all}
-.pd-metric-v s{font-size:14px;color:var(--text-dim)}
-.pd-metric-v em{font-style:normal;font-family:var(--f-display);font-weight:700;color:var(--leaf)}
-.pd-metric-c{font-size:12.5px;line-height:1.5;color:var(--text-dim);word-break:keep-all}
-/* 사례 안의 소제목(문제, 개선 과정, 검증)과 단계 목록 */
-.pd-sub-h{font-size:14px;font-weight:700;color:var(--text);margin:18px 0 8px}
-.pd-steps{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-direction:column;gap:14px}
-.pd-steps li{padding-left:14px;border-left:2px solid var(--border-med)}
-.pd-steps strong{display:block;font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
+.pd-metric-v{margin:4px 0 2px;font-style:normal;font-family:var(--f-display);font-size:30px;font-weight:700;line-height:1.2;letter-spacing:-.02em;color:var(--leaf)}
+.pd-metric-was{font-size:13px;color:var(--text-dim)}
+.pd-metric-notes{margin:0 0 6px;display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:1.6;color:var(--text-dim);word-break:keep-all}
+.pd-metric-notes div{display:flex;gap:10px}
+.pd-metric-notes dt{flex:none;font-weight:600}
+.pd-metric-notes dd{margin:0}
+/* 사례 안의 구분(문제, 개선 과정, 검증)은 작은 글씨로 두고, 단계 제목을 더 크게 둔다 */
+.pd-sub-h{font-size:12.5px;font-weight:600;color:var(--text-dim);margin:24px 0 8px}
+.pd-steps{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-direction:column;gap:20px}
+.pd-steps strong{display:block;font-family:var(--f-display);font-size:16px;font-weight:600;letter-spacing:-.01em;color:var(--text)}
+.pd-step-result{display:block;margin:2px 0 6px;font-size:13.5px;color:var(--text-dim)}
 .pd-steps p{font-size:15px;line-height:1.65;color:var(--text)}
 /* 구현 상세: 문제/해결 아래에 구분선 하나를 두고 바로 보여 준다 */
 .pd-impl{margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
@@ -531,15 +518,41 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pd-impl .pd-sublist li:last-child{margin-bottom:0}
 .cred-list .yr{white-space:nowrap}
 
+/* ============================= ADONCHAT PAGE ============================= */
+/* 상세 페이지: 왼쪽에 사례 목차를 고정하고 본문은 한 열로 읽는다 */
+.pp{padding:96px 0;min-height:100vh}
+.pp-back{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--text-dim);margin-bottom:18px}
+.pp-back:hover{color:var(--text)}
+.pp-head{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:34px 36px;border-radius:var(--r-feat);color:#fff;margin-bottom:22px}
+.pp-title{font-family:var(--f-display);font-size:clamp(30px,5vw,42px);font-weight:600;letter-spacing:-.02em;line-height:1.15;color:#fff;margin-bottom:8px}
+.pp-catch{font-family:var(--f-display);font-size:17px;font-weight:500;line-height:1.45;color:rgba(255,255,255,.82);word-break:keep-all}
+/* 페이지 배경 위에서는 모달보다 태그 바탕이 흐려 보여 테두리를 더한다 */
+.pp .pd-meta .ant-tag,.pp .pd-tech .ant-tag{box-shadow:inset 0 0 0 1px var(--border)}
+.pp-overview{max-width:760px;margin-bottom:48px}
+.pp-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px;align-items:start}
+.pp-toc{position:sticky;top:96px;display:flex;flex-direction:column;gap:22px;font-size:14px}
+.pp-toc-group{display:block;font-family:var(--f-display);font-weight:600;color:var(--text);margin-bottom:8px}
+.pp-toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--border)}
+.pp-toc a{display:block;margin-left:-1px;padding:5px 0 5px 12px;border-left:2px solid transparent;line-height:1.45;color:var(--text-dim);word-break:keep-all}
+.pp-toc a:hover{color:var(--text)}
+.pp-toc a.is-current{color:var(--text);border-left-color:var(--accent)}
+.pp-body{max-width:760px}
+.pp-group + .pp-group{margin-top:80px}
+.pp-group-title{font-family:var(--f-display);font-size:30px;font-weight:600;letter-spacing:-.02em;margin-bottom:12px}
+.pp-case{margin-top:40px;padding-top:36px;border-top:1px solid var(--border);scroll-margin-top:84px}
+.pp-case-title{font-family:var(--f-display);font-size:22px;font-weight:600;letter-spacing:-.02em;line-height:1.35;margin-bottom:20px;word-break:keep-all}
+
 /* ============================= RESPONSIVE ============================= */
 @media (max-width:900px){
   .hero .hero-grid{grid-template-columns:1fr;gap:44px}
   .hero-stage-wrap{justify-self:center;max-width:320px}
-  .about-cols{grid-template-columns:1fr;gap:26px}
+  .about-cols{grid-template-columns:1fr;gap:32px}
   .feat-grid{grid-template-columns:1fr}
-  .skills-groups{grid-template-columns:1fr;gap:16px}
+  .skills-row{grid-template-columns:1fr;gap:2px}
   .projects-grid{grid-template-columns:1fr 1fr}
   .creds-grid{grid-template-columns:1fr}
+  .pp-layout{grid-template-columns:1fr;gap:36px}
+  .pp-toc{position:static;padding:18px 20px;border:1px solid var(--border);border-radius:var(--r-feat)}
 }
 @media (max-width:768px){
   .hero{padding:120px 0 64px}
@@ -558,8 +571,12 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .pd-ba:not(.stack) .ba-col + .ba-col.after::before{display:none}
   .flow-steps{grid-template-columns:1fr;gap:18px}
   .pd-metrics{grid-template-columns:1fr}
-  .flow-step + .flow-step::before{content:"↓";left:50%;top:-18px;margin:0 0 0 -6px}
+  .pd-metric-notes div{flex-direction:column;gap:0}
+    .flow-step + .flow-step::before{content:"↓";left:50%;top:-18px;margin:0 0 0 -6px}
   .pm-head{padding:22px 72px 20px 22px}
+  .pp{padding-top:84px}
+  .pp-head{padding:24px 22px}
+  .pp-pixel{display:none}
   .pm-pop-enter.pm-pop-enter-active,.pm-pop-appear.pm-pop-appear-active{animation-name:pmSheetIn}
   .pm-pop-leave.pm-pop-leave-active{animation-name:pmSheetOut}
 }

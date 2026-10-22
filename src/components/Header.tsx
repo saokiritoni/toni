@@ -7,7 +7,10 @@ import ThemeToggle from './ThemeToggle'
 const HEADER_HEIGHT = 64
 const ANCHOR_ITEMS = NAV_SECTIONS.map((s) => ({ key: s.id, href: `#${s.id}`, title: s.label }))
 
-export default function Header() {
+/**
+ * 고정 헤더. page 이면(AdOnChat 상세 페이지) 섹션 메뉴 대신 로고가 첫 화면으로 돌아가는 링크가 된다.
+ */
+export default function Header({ page = false, onHome }: { page?: boolean; onHome?: () => void }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -22,19 +25,33 @@ export default function Header() {
     <header className={`site-header${scrolled ? ' scrolled' : ''}`}>
       <div className="container-inner">
         <div className="header-row">
-          <a className="wordmark" href="#top" aria-label="Soeun Lee 홈">
+          <a
+            className="wordmark"
+            href={page ? '/' : '#top'}
+            aria-label="Soeun Lee 홈"
+            onClick={
+              page
+                ? (e) => {
+                    e.preventDefault()
+                    onHome?.()
+                  }
+                : undefined
+            }
+          >
             Soeun Lee<span className="dot" aria-hidden="true" />
           </a>
           <div className="header-right">
             {/* antd Anchor 가 스크롤 위치에 맞춰 현재 섹션을 표시하고, 고정 헤더 높이만큼 비켜서 스크롤한다 */}
-            <Anchor
-              className="nav-anchor"
-              direction="horizontal"
-              affix={false}
-              targetOffset={HEADER_HEIGHT + 8}
-              bounds={HEADER_HEIGHT}
-              items={ANCHOR_ITEMS}
-            />
+            {!page && (
+              <Anchor
+                className="nav-anchor"
+                direction="horizontal"
+                affix={false}
+                targetOffset={HEADER_HEIGHT + 8}
+                bounds={HEADER_HEIGHT}
+                items={ANCHOR_ITEMS}
+              />
+            )}
             <Button className="nav-ext" type="text" href={BLOG_URL} target="_blank" rel="noopener" icon={<ExportOutlined />} iconPlacement="end">
               Blog
             </Button>
@@ -42,13 +59,15 @@ export default function Header() {
               GitHub
             </Button>
             <ThemeToggle />
-            <Button
-              className="nav-toggle"
-              icon={<MenuOutlined />}
-              aria-label="메뉴 열기"
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen(true)}
-            />
+            {!page && (
+              <Button
+                className="nav-toggle"
+                icon={<MenuOutlined />}
+                aria-label="메뉴 열기"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen(true)}
+              />
+            )}
           </div>
         </div>
       </div>

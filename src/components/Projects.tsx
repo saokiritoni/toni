@@ -7,12 +7,15 @@ import PixelArt from './PixelArt'
 
 type OpenHandler = (key: ProjectKey) => void
 
-/** 카드 전체를 버튼처럼 쓴다. <button> 안에는 제목·목록 같은 블록 요소를 넣을 수 없어서 role="button" 을 준다. */
-function clickable(key: ProjectKey, onOpen: OpenHandler) {
+/**
+ * 카드 전체를 버튼처럼 쓴다. <button> 안에는 제목·목록 같은 블록 요소를 넣을 수 없어서 role 을 준다.
+ * 모달을 여는 카드는 button, 상세 페이지로 옮겨 가는 AdOnChat 카드는 link 다.
+ */
+function clickable(key: ProjectKey, onOpen: OpenHandler, opens: 'dialog' | 'page' = 'dialog') {
   return {
-    role: 'button',
+    role: opens === 'page' ? 'link' : 'button',
     tabIndex: 0,
-    'aria-haspopup': 'dialog' as const,
+    'aria-haspopup': opens === 'dialog' ? ('dialog' as const) : undefined,
     onClick: () => onOpen(key),
     onKeyDown: (e: KeyboardEvent<HTMLElement>) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -55,7 +58,7 @@ function useTilt() {
   return enabled ? { onPointerMove, onPointerLeave } : { onPointerMove: trackSpotlight }
 }
 
-/** 카드를 누르면 상세 모달이 열린다는 표시. 카드 전체가 버튼이라 글자만 보여 준다 */
+/** 카드를 누르면 상세가 열린다는 표시. 카드 전체가 버튼이라 글자만 보여 준다 */
 function MoreLabel() {
   return (
     <span className="card-more" aria-hidden="true">
@@ -85,7 +88,7 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
       data-reveal
       styles={{ body: { padding: 0 } }}
       onPointerMove={trackSpotlight}
-      {...clickable(p.key, onOpen)}
+      {...clickable(p.key, onOpen, 'page')}
     >
       <div className="feat-grid">
         <div className="feat-panel">

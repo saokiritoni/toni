@@ -20,7 +20,8 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 |---|---|
 | 스킬·경력·수상·자격증·연락처 | `src/data/profile.ts` |
 | 프로젝트 카드 (제목·개발한 곳·기술 스택·미리보기 항목) | `src/data/projects.tsx` |
-| 상세 모달 내용 | `src/details/{프로젝트}Detail.tsx`, 연결은 `src/details/index.ts` |
+| 상세 모달 내용 (인턴 과제·GPU·Farm System) | `src/details/{프로젝트}Detail.tsx`, 연결은 `src/details/index.ts` |
+| AdOnChat 상세 페이지 | 사례 내용은 `src/details/adonchatCases.tsx`, 페이지 틀과 목차는 `src/pages/AdOnChatPage.tsx` |
 | 섹션 컴포넌트 | `src/components/` |
 | 픽셀 그림 (히어로 사과·섹션 아이콘·카드 아이콘) | `src/data/pixels.ts`, 그리는 부품은 `src/components/PixelArt.tsx` |
 | antd 테마 토큰 | `src/theme/AntdTheme.tsx` |
@@ -29,13 +30,16 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 
 상세 모달(`ProjectModal`과 `src/details/`)은 `React.lazy` 로 따로 떼어 낸 청크다. 첫 화면 코드(`Projects.tsx`, `data/projects.tsx`)에서 `src/details/` 를 import 하지 않는다. import 하면 모달 코드가 첫 화면 번들로 다시 들어간다.
 
+AdOnChat 은 사례가 많아 모달이 아니라 `/projects/adonchat` 페이지로 연다. 주소 전환은 `App.tsx` 가 History API 로 직접 하고(라우터 라이브러리 없음), `vercel.json` 의 rewrites 가 이 주소를 `index.html` 로 돌려준다. 페이지도 `React.lazy` 청크이므로 첫 화면 코드에서 `src/pages/` 를 import 하지 않는다.
+
 ## 용어
 
 사용자와 이야기할 때 아래 이름을 쓴다.
 
 - **카드**: 프로젝트 카드의 색 영역. AdOnChat 은 왼쪽 어두운 패널, 나머지는 위쪽 그라데이션 영역이다.
 - **미리보기**: 카드 옆(AdOnChat) 또는 아래(나머지)의 본문 영역.
-- **상세 모달**: 카드를 누르면 열리는 창.
+- **상세 모달**: 인턴 과제·GPU·Farm System 카드를 누르면 열리는 창.
+- **상세 페이지**: AdOnChat 카드를 누르면 옮겨 가는 페이지(`/projects/adonchat`). 왼쪽에 사례 목차, 오른쪽에 Backend·Frontend 사례를 접지 않고 모두 펼친다.
 
 ## 콘텐츠 규칙
 
@@ -55,7 +59,7 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 - 화면에 보이는 문구에는 가운뎃점(·)을 쓰지 않는다. 짧은 항목 구분은 양옆에 띄어쓰기를 둔 ` / `, 문장 속 나열은 쉼표나 "와/과", 동사는 "하고"로 쓴다(예: 개발하고 운영했습니다). "보안/웹"처럼 원래 이름에 붙은 빗금은 그대로 둔다.
 - 같은 내용을 개요·그림·Part 에서 반복하지 않는다. 배경은 개요에서 한 번, 흐름은 그림에서 한 번만 설명한다.
 - 모든 모달의 형식을 똑같이 맞추지 않는다. 프로젝트 성격에 맞게 블록을 고른다.
-- 상세 모달의 "진행한 일"은 `WorkParts`(antd Collapse)로 Part 를 나눈다. 주제 묶음이 있으면 묶음이 Part 이고 항목 번호는 Part 마다 1부터 센다. 묶음이 없으면 항목 하나가 Part 하나다.
+- 상세 모달의 "진행한 일"은 `WorkParts`(antd Collapse)로 Part 를 나눈다. AdOnChat 상세 페이지는 Part 대신 사례 제목(`pp-case-title`)으로 나누고 접지 않는다. 주제 묶음이 있으면 묶음이 Part 이고 항목 번호는 Part 마다 1부터 센다. 묶음이 없으면 항목 하나가 Part 하나다.
 - 접는 단계는 Part 하나뿐이다. `ImplDetail`(구현 상세)은 접지 않고 구분선 아래에 바로 보여 준다.
 - 문제/해결(`pd-ba`)은 짧은 비교만 두 열로 둔다. 긴 사례는 `pd-ba stack` 으로 한 열에 읽게 한다. 칸마다 배경 상자를 두지 않는다.
 
@@ -74,7 +78,7 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 
 - 카드: 개발한 곳(`org`) → 제목 → 기술 스택 순서. 캐치프레이즈(따옴표 문구)와 지표 숫자는 넣지 않는다.
 - 미리보기: 제목을 다시 쓰지 않는다. 날짜를 넣지 않는다. 미리보기 항목은 프로젝트마다 3줄로, 모달 요약이 아니라 이 프로젝트를 눌러 볼 이유를 쓴다. 역할·기여도·기술 스택은 카드에 이미 보이므로 항목에서 기술명을 나열하지 않는다. 네 프로젝트가 서로 다른 인상으로 기억되게 한다(AdOnChat: 실무·안정성, 인턴 과제: AI·빠른 MVP·사용자 업무 이해, GPU: 자동화·30분→5분, Farm System: 협업·실사용자).
-- 카드와 상세 모달 상단의 기간·소속·기여도·부제는 서로 같아야 한다. 한쪽을 고치면 다른 쪽도 고친다.
+- 카드와 상세 모달 상단의 기간·소속·기여도·부제는 서로 같아야 한다. 한쪽을 고치면 다른 쪽도 고친다. AdOnChat 상세 페이지는 카드 데이터(`FEATURED`)를 그대로 읽는다.
 
 ## 디자인 규칙
 
@@ -100,10 +104,11 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 
 ### 픽셀 블록
 
-- 히어로의 "흩어진 블록이 구조로 모인다"는 장면이 사이트 전체의 공통 요소다. 섹션 제목 옆·About 카드·프로젝트 카드 커버·푸터의 아이콘을 모두 `PixelArt` 로 그린다. 헤더·푸터 로고(Soeun Lee)의 온점 자리도 같은 모양의 빨간 블록(`.wordmark .dot`)이다.
+- 히어로의 "흩어진 블록이 구조로 모인다"는 장면이 사이트 전체의 공통 요소다. 섹션 제목 옆·About 항목·프로젝트 카드 커버·푸터의 아이콘을 모두 `PixelArt` 로 그린다. 헤더·푸터 로고(Soeun Lee)의 온점 자리도 같은 모양의 빨간 블록(`.wordmark .dot`)이다.
 - 그림은 `pixels.ts` 에 문자열 배열로 적는다. 한 글자가 블록 하나이고, 글자와 색의 대응은 `global.css` 의 `.pk-*` 에 있다. 새 글자를 쓰면 `.pk-*` 도 추가한다.
 - `PixelArt` 는 `[data-reveal]` 조상이 드러날 때 모인다. 조상이 없는 곳(푸터 등)에는 `static` 을 준다.
 - Awards & Licenses 목록은 장식을 줄이라는 교정을 받은 곳이다. 제목 옆 아이콘 말고는 장식을 더하지 않는다.
+- 첫 화면 섹션 순서는 About → Projects → Skills → Experience → Awards & Licenses 다. 클릭할 수 있는 프로젝트 카드만 상자로 두고, About 과 Skills 는 상자 없이 글자와 구분선으로 둔다.
 
 ### 모션
 
@@ -123,7 +128,7 @@ npm run preview   # 빌드 결과 확인 (http://localhost:4173)
 
 사용자가 다른 컴퓨터의 aoc 저장소에서 확인한 뒤 답을 주기로 한 항목이다. 답을 받으면 해당 문장을 고치고 이 항목을 지운다.
 
-- [ ] **회원 일괄 변경 재처리** (`src/details/AdOnChatDetail.tsx` 의 "회원 일괄 변경의 실패 경계"). 지금 문장: "재처리 시 같은 값을 다시 적용하고 결과 파일을 생성하며, 값이 달라지지 않은 엔티티에는 UPDATE가 발생하지 않습니다."
+- [ ] **회원 일괄 변경 재처리** (`src/details/adonchatCases.tsx` 의 "회원 일괄 변경의 실패 경계"). 지금 문장: "재처리 시 같은 값을 다시 적용하고 결과 파일을 생성하며, 값이 달라지지 않은 엔티티에는 UPDATE가 발생하지 않습니다."
   1. APPLIED 작업을 재처리할 때 CSV 값을 그대로 다시 적용하는가, 현재 DB 값을 다시 읽는가?
   2. 첫 처리와 재처리 사이에 다른 사람이 같은 회원의 값을 바꿨다면, 재처리가 그 변경을 옛 CSV 값으로 덮어쓰는가?
   3. 덮어쓴다면 막는 장치(버전 확인, 재처리 가능 시간 제한, 권한 확인 등)가 있는가? 없다면 사례에 그 동작을 사실대로 적는다.
