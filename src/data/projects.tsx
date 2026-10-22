@@ -86,8 +86,8 @@ export const GRID_PROJECTS: GridProject[] = [
     title: 'Farm System 동아리 홈페이지',
     points: [
       '디자이너와 개발자 약 20명의 팀을 이끌며 동아리 홈페이지 개발과 운영',
-      '주간회의에서 어려움을 공유하고 역할과 일정을 재조정',
-      '170명 이상이 사용하는 서비스를 운영하며 비정상 트래픽 차단과 RDS 계정 이전 처리',
+      '170명 이상의 회원이 실제로 사용하는 서비스 운영',
+      '운영 중 비정상 트래픽 차단과 암호화된 RDS의 계정 간 이전 처리',
     ],
     stack: ['Spring Boot', 'AWS WAF', 'RDS', 'Docker'],
   },
