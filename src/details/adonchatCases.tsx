@@ -80,14 +80,6 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
                       { title: '커밋', sub: '업무 변경과 Outbox를 함께 저장', tone: 'key' },
                     ],
                   },
-                  {
-                    label: '커밋 뒤: 스케줄러가 10초마다 옮깁니다',
-                    steps: [
-                      { title: 'Outbox 조회' },
-                      { title: '감사 테이블 적재', sub: <><code>ON CONFLICT DO NOTHING</code>으로 같은 이벤트는 한 번만</> },
-                      { title: 'Outbox 삭제' },
-                    ],
-                  },
                 ]}
               />
               <ImplDetail>
