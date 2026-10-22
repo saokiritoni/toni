@@ -16,7 +16,7 @@ export type CaseGroup = {
 }
 
 /** AdOnChat 상세 페이지 본문 소개. 카드의 overview 보다 한 문장 더 쓴다 */
-export const ADONCHAT_OVERVIEW = '광고 매체 계정을 연동해 대량 광고 작업을 처리하고, 자연어 대화로 광고 데이터를 분석하는 B2B 광고 운영 솔루션입니다. 백엔드를 중심으로 프론트엔드와 인프라까지 맡고 있습니다.'
+export const ADONCHAT_OVERVIEW = '광고 매체 계정을 연동해 대량 광고 작업을 처리하고, 자연어 대화로 광고 데이터를 분석하는 B2B 광고 운영 솔루션입니다.'
 
 /**
  * AdOnChat 상세 페이지(src/pages/AdOnChatPage.tsx)의 사례. 묶음(Backend, Frontend, AI Agent)마다 기술과 사례 목록을 둔다.
@@ -36,14 +36,14 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
               <h5>1. 감사로그 누락 원인 추적과 개선</h5>
               <div className="pd-ba stack">
                 <div className="ba-col problem"><span className="ba-label">문제</span><p>업무 데이터와 감사로그를 따로 저장하면, 변경은 성공했는데 기록은 남지 않는 상태가 생길 수 있습니다.</p></div>
-                <div className="ba-col after"><span className="ba-label">해결</span><p>처음부터 업무 변경과 같은 트랜잭션에서 Outbox에 감사 이벤트를 저장하고, 스케줄러가 감사 테이블로 옮기도록 구성했습니다. 감사 이벤트는 업무 변경과 함께 커밋되거나 함께 롤백됩니다.</p><p>운영 중에는 일부 변경 이력이 빠지는 문제를 발견했습니다. 추적해 보니 JPA <code>@PreUpdate</code>가 flush 시점에 실행되면서, 이벤트가 <code>BEFORE_COMMIT</code> 처리보다 늦게 만들어지는 경로가 있었습니다. 특정 서비스에 <code>flush()</code>를 넣는 대신, <code>TransactionSynchronization.beforeCommit</code>에서 flush한 뒤 Outbox를 저장하도록 바꿔 모든 경로에 같은 순서를 적용했습니다.</p></div>
+                <div className="ba-col after"><span className="ba-label">해결</span><p>처음부터 업무 변경과 같은 트랜잭션에서 Outbox에 감사 이벤트를 저장하고, 스케줄러가 감사 테이블로 옮기도록 구성했습니다. 감사 이벤트는 업무 변경과 함께 커밋되거나 함께 롤백됩니다.</p><p>운영 중 일부 변경 이력이 빠지는 원인을 추적해 보니, JPA <code>@PreUpdate</code>가 flush 시점에 실행되면서, 이벤트가 <code>BEFORE_COMMIT</code> 처리보다 늦게 만들어지는 경로가 있었습니다. 특정 서비스에 <code>flush()</code>를 넣는 대신, <code>TransactionSynchronization.beforeCommit</code>에서 flush한 뒤 Outbox를 저장하도록 바꿔 모든 경로에 같은 순서를 적용했습니다.</p></div>
               </div>
               <FlowDiagram
                 variant="timeline"
                 label="감사로그가 Outbox를 거쳐 감사 테이블에 쌓이는 순서"
                 lanes={[
                   {
-                    label: '고치기 전: 커밋 직전 리스너(BEFORE_COMMIT)가 이벤트를 모읍니다',
+                    label: '고치기 전',
                     steps: [
                       { title: '업무 엔티티 변경', sub: '뒤에 쿼리가 없어 flush가 미뤄짐' },
                       { title: 'BEFORE_COMMIT 리스너', sub: '아직 이벤트가 없어 Outbox에 저장할 것이 없음' },
@@ -52,7 +52,7 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
                     ],
                   },
                   {
-                    label: '고친 뒤: 커밋 직전(beforeCommit)에 먼저 flush 합니다',
+                    label: '고친 뒤',
                     steps: [
                       { title: '업무 엔티티 변경' },
                       { title: 'beforeCommit에서 flush', sub: <><code>@PreUpdate</code>가 이벤트를 만듦</>, tone: 'key' },
@@ -71,7 +71,6 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
               <p className="pd-p">CSV로 회원 정보를 일괄 변경한 뒤 결과 파일을 S3에 올립니다. 업로드를 트랜잭션 밖으로 빼자 DB 변경은 커밋됐는데 결과 파일만 실패한 상태가 생겼고, 이를 FAILED로 표시하면 이미 바뀐 데이터를 실패라고 알리게 됩니다. DB 변경이 커밋된 상태를 <code>APPLIED</code>로 기록해 결과 파일 실패와 구분했습니다.</p>
               <ImplDetail fold>
                 <li>업로드를 트랜잭션 안에 두면 업로드가 끝날 때까지 DB 커넥션과 잠금을 붙잡고, 업로드가 실패하면 이미 끝난 회원 변경까지 롤백됩니다. 그래서 트랜잭션 밖으로 뺐습니다.</li>
-                <li>재처리 시 같은 값을 다시 적용하고 결과 파일을 생성하며, 값이 달라지지 않은 엔티티에는 UPDATE가 발생하지 않습니다.</li>
                 <li>재처리는 CSV의 모든 행을 다시 적용합니다. JPA 변경 감지는 값이 같으면 UPDATE를 보내지 않으므로, 이미 적용된 행은 DB에 다시 쓰이지 않습니다.</li>
               </ImplDetail>
             </div>
@@ -95,7 +94,6 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
               <h5>2. 인증정보 중복 등록 방지</h5>
               <p className="pd-p">"이미 등록했는지 조회한 뒤 등록"하면, 동시에 온 두 요청이 모두 "없음"을 읽고 통과할 수 있습니다(check-then-act 경쟁). 동시 등록은 DB 유니크 인덱스로 막고, 애플리케이션의 사전 조회는 오류 안내에만 사용했습니다.</p>
               <ImplDetail fold>
-                <li>인덱스가 막은 동시 등록도 같은 409 오류로 바꿔 사용자에게 일관되게 보여 줍니다.</li>
                 <li>soft delete를 쓰기 때문에, 삭제되지 않은 행에만 적용되는 Partial Unique Index를 걸었습니다.</li>
                 <li>인증정보는 KMS로 암호화되어 매번 다른 암호문이 나오므로, 평문의 SHA-256 해시를 별도 컬럼에 저장하고 (회원, 매체, 해시)에 인덱스를 걸었습니다.</li>
               </ImplDetail>
@@ -132,8 +130,8 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
               </li>
             </ul>
             <dl className="pd-metric-notes">
-              <div><dt>진입 측정</dt><dd>최신 메시지 표시와 초기 API 응답 크기. 메시지가 200개 이상인 같은 채팅에서 브라우저 캐시를 끄고, 조회 요청부터 최신 메시지 첫 페인트까지 측정했습니다. 최신 메시지 표시의 개선 후 값은 3회 측정의 중앙값입니다.</dd></div>
-              <div><dt>입력 측정</dt><dd>타이핑 롱태스크. 이전 기록까지 모두 불러와 전체 메시지가 200개 이상인 상태에서, CPU 4배 제한을 적용하고 26글자를 입력했습니다.</dd></div>
+              <div><dt>진입 지표</dt><dd>메시지가 200개 이상인 같은 채팅에서 브라우저 캐시를 끄고, 조회 요청부터 최신 메시지 첫 페인트까지 쟀습니다. 개선 후 값은 3회 측정의 중앙값입니다.</dd></div>
+              <div><dt>타이핑 지표</dt><dd>이전 기록까지 모두 불러와 메시지가 200개 이상인 상태에서, CPU 4배 제한을 걸고 26글자를 입력했습니다.</dd></div>
             </dl>
 
             <h6 className="pd-sub-h">문제</h6>
@@ -158,23 +156,12 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
             <ImplDetail fold label="측정 및 구현 상세">
               <li>단계별 측정값: 1단계 뒤 진입 중 말풍선 반복 렌더링은 약 20회에서 0회로, 최신 메시지 표시는 3.58초에서 0.65초로 줄었습니다. 2단계 뒤 첫 렌더는 511ms에서 117ms로 줄었습니다.</li>
               <li>Chrome Performance 기록과 Playwright로 진입, 타이핑, 스크롤을 측정했고, 배포한 뒤에도 같은 시나리오로 다시 확인했습니다.</li>
-              <li>이전 메시지를 앞에 붙일 때 애플리케이션의 스크롤 보정과 Chrome의 스크롤 앵커링이 두 번 겹쳐 적용되는 문제도 발견했습니다. 보던 메시지가 실제로 움직인 만큼만 보정하도록 고쳤습니다.</li>
               <li>가상 스크롤도 검토했지만, 메시지 200개 이상을 모두 불러온 상태에서도 스크롤 중 롱태스크는 관찰되지 않았습니다. 그래서 남은 병목인 타이핑 시 레이아웃 계산을 줄이는 방식을 골랐습니다.</li>
             </ImplDetail>
           </>
         ),
       },
     ],
-    more: {
-      title: '그 밖의 화면 개선',
-      content: (
-        <ul className="pd-sublist">
-          <li>광고계정 선택 목록은 열 때마다 새로 조회하고, 광고계정을 등록하거나 삭제하면 관련 라이선스 캐시도 갱신했습니다.</li>
-          <li>라이선스 연결 ID를 행 key로 사용해, 필터를 바꾼 뒤 이전 행이 남는 오류를 고쳤습니다.</li>
-          <li>로딩이 200ms를 넘을 때만 스켈레톤을 표시하고, 준비된 화면 영역부터 보여 주도록 바꿨습니다.</li>
-        </ul>
-      ),
-    },
   },
   {
     key: 'ai',
@@ -212,13 +199,12 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
               ]}
             />
             <p className="pd-p">광고 설정과 구조 조회에 허용한 리소스 30종을 대상으로 하며, 노출, 클릭, 비용 같은 성과 지표가 섞이지 않도록 AI 도구와 백엔드 양쪽에서 범위를 확인합니다. 두 곳의 허용 목록이 일치하는지도 테스트합니다.</p>
-            <p className="pd-p">API 규격에서 생성한 카탈로그, 실제 API로 확인한 메타데이터, 수동 보정값은 구분해 관리했습니다. 규격에 정의된 필드라도 조회 메타데이터에서 확인되지 않는 경우가 있어, 규격만으로 조회 가능 여부를 판단하지 않았습니다.</p>
 
             <h6 className="pd-sub-h">확인한 결과</h6>
-            <p className="pd-p">반응형 검색광고의 제목과 설명 연결 정보를 조회하는 요청을 지원 범위에 추가할 때, 별도 기능별 클라이언트를 작성하지 않고 리소스 목록과 조회 계획 코드를 확장했습니다. 이 시나리오는 개발 서버 재테스트에서 통과했습니다.</p>
+            <p className="pd-p">반응형 검색광고의 제목과 설명 연결 정보를 조회하는 요청을 지원 범위에 추가할 때, 별도 기능별 클라이언트를 작성하지 않고 리소스 목록과 조회 계획 코드를 확장했습니다.</p>
 
             <ImplDetail fold>
-              <li>조회 명세가 잘못되면 항목별 사유를 모델에 반환해 수정할 수 있게 했습니다.</li>
+              <li>API 규격에서 생성한 카탈로그, 실제 API로 확인한 메타데이터, 수동 보정값은 구분해 관리했습니다. 규격에 정의된 필드라도 조회 메타데이터에서 확인되지 않는 경우가 있어, 규격만으로 조회 가능 여부를 판단하지 않았습니다.</li>
               <li>모델에 전달하는 결과는 미리보기 50행과 열별 요약으로 제한했습니다. 미리보기만으로 전체 데이터를 단정하지 않도록 결과 범위도 함께 전달했습니다.</li>
               <li>전체 건수와 묶음별 개수는 미리보기에서 추론하지 않고 별도 집계 경로로 처리했습니다.</li>
             </ImplDetail>
@@ -253,7 +239,7 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
 
             <h6 className="pd-sub-h">맡은 부분과 검증</h6>
             <p className="pd-p">요청 묶음 보관, 공통 실행기, 백엔드의 선택 요청 전달과 Google Ads 연결을 맡았습니다.</p>
-            <p className="pd-p">보관한 요청이 실행되는지, 선택하지 않은 요청이 제외되는지, 런타임 보관본이 한 번만 소비되는지를 테스트했습니다. 개발 서버에서는 브라우저 자동화로 묶음 카드와 요청 선택, 결과 표시를 확인했습니다.</p>
+            <p className="pd-p">보관한 요청이 실행되는지, 선택하지 않은 요청이 제외되는지, 런타임 보관본이 한 번만 소비되는지를 테스트했습니다.</p>
 
             <ImplDetail fold>
               <li>실행 요청은 런타임 프로세스 메모리에 보관합니다. 재시작 등으로 보관본이 사라진 경우에는 실행하지 않고 만료를 안내합니다.</li>
@@ -268,8 +254,6 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
         <>
           <p className="pd-p">백엔드는 480초 뒤 타임아웃으로 응답하고 세션 잠금을 해제했지만, 에이전트 런타임은 최대 900초까지 실행돼 사용자가 오류를 받은 뒤에도 답변이 대화 이력에 저장됐습니다. 런타임 제한을 450초, 조회 도구의 실행 예산을 390초로 줄여 백엔드 타임아웃 전에 처리를 마치도록 조정하고, 각 구성 요소의 시간 제한 관계를 테스트로 확인하게 했습니다.</p>
           <ImplDetail fold>
-            <li>응답 반환에 30초, 모델 처리에 60초를 확보했으며, 모델 처리 시간은 실측값 47초를 참고했습니다.</li>
-            <li>이전 실행이 끝나기 전에 같은 세션의 새 요청이 들어올 수도 있었습니다. 테스트는 백엔드 설정값을 포함해 조회 도구, 런타임, 백엔드, SSE, 세션 잠금의 시간 제한 관계를 확인합니다.</li>
             <li>타임아웃 이후에도 실행 중인 Python 워커 스레드는 종료되지 않았습니다. 취소 플래그(<code>threading.Event</code>)를 추가하고 파일 등록 직전에 확인해, 시간 초과로 실패를 안내한 요청의 결과가 뒤늦게 등록되지 않도록 했습니다. 이미 시작된 쿼리와 S3 작업은 계속 실행됩니다.</li>
           </ImplDetail>
         </>
