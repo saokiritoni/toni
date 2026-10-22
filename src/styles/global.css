@@ -480,7 +480,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pd-sublist li{position:relative;padding-left:16px;font-size:15px;line-height:1.65;color:var(--text);margin-bottom:10px}
 .pd-sublist li::before{content:"";position:absolute;left:3px;top:10px;width:4px;height:4px;border-radius:50%;background:var(--accent)}
 .pd-sublist li b{color:var(--text);font-weight:600}
-.pd-sublist code,.pd-p code,.ba-col code,.flow-step code{font-family:var(--f-mono);font-size:.88em;background:var(--surface-300);padding:1px 5px;border-radius:var(--r-compact);color:var(--text)}
+.pd-sublist code,.pd-p code,.ba-col code,.flow-step code,.pd-steps code{font-family:var(--f-mono);font-size:.88em;background:var(--surface-300);padding:1px 5px;border-radius:var(--r-compact);color:var(--text)}
 /* 문제/해결: Part 안에서 상자를 한 겹 더 두지 않고 라벨 색으로만 구분한다.
    짧은 비교는 두 열, 긴 사례(.stack)는 위에서 아래로 한 열로 읽는다 */
 .pd-ba{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:32px;margin-top:4px}
@@ -511,6 +511,20 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .flow-step.miss{border-color:color-mix(in srgb,var(--accent) 45%,transparent);background:color-mix(in srgb,var(--accent) 7%,var(--bg))}
 .flow-step.key{border-color:color-mix(in srgb,var(--leaf) 50%,transparent);background:color-mix(in srgb,var(--leaf) 8%,var(--bg))}
 .flow-note{margin-top:10px;font-size:13.5px;line-height:1.6;color:var(--text-dim);word-break:keep-all}
+/* 성과 지표: 지표마다 측정 조건을 함께 적는다 */
+.pd-metrics{list-style:none;margin:0 0 22px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.pd-metric{display:flex;flex-direction:column;border-radius:var(--r-feat);padding:14px 16px;background:var(--surface-100);border:1px solid var(--border)}
+.pd-metric-k{font-size:13px;font-weight:600;color:var(--text-dim)}
+.pd-metric-v{margin:6px 0 8px;font-size:18px;line-height:1.35;color:var(--text);word-break:keep-all}
+.pd-metric-v s{font-size:14px;color:var(--text-dim)}
+.pd-metric-v em{font-style:normal;font-family:var(--f-display);font-weight:700;color:var(--leaf)}
+.pd-metric-c{font-size:12.5px;line-height:1.5;color:var(--text-dim);word-break:keep-all}
+/* 사례 안의 소제목(문제, 개선 과정, 검증)과 단계 목록 */
+.pd-sub-h{font-size:14px;font-weight:700;color:var(--text);margin:18px 0 8px}
+.pd-steps{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-direction:column;gap:14px}
+.pd-steps li{padding-left:14px;border-left:2px solid var(--border-med)}
+.pd-steps strong{display:block;font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
+.pd-steps p{font-size:15px;line-height:1.65;color:var(--text)}
 /* 구현 상세: 문제/해결 아래에 구분선 하나를 두고 바로 보여 준다 */
 .pd-impl{margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
 .pd-impl-label{display:block;font-size:13px;font-weight:600;color:var(--text-dim);margin-bottom:10px}
@@ -543,6 +557,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   .pd-ba{grid-template-columns:1fr;gap:18px}
   .pd-ba:not(.stack) .ba-col + .ba-col.after::before{display:none}
   .flow-steps{grid-template-columns:1fr;gap:18px}
+  .pd-metrics{grid-template-columns:1fr}
   .flow-step + .flow-step::before{content:"↓";left:50%;top:-18px;margin:0 0 0 -6px}
   .pm-head{padding:22px 72px 20px 22px}
   .pm-pop-enter.pm-pop-enter-active,.pm-pop-appear.pm-pop-appear-active{animation-name:pmSheetIn}

@@ -162,6 +162,57 @@ export default function AdOnChatDetail() {
                   <WorkParts
                     parts={[
                       {
+                        title: '채팅 진입과 입력 성능 개선',
+                        content: (
+                          <>
+                            <ul className="pd-metrics">
+                              <li className="pd-metric">
+                                <span className="pd-metric-k">최신 메시지 표시</span>
+                                <span className="pd-metric-v"><s>3.58초</s> → <em>0.20초</em></span>
+                                <span className="pd-metric-c">메시지가 200개 이상인 같은 채팅에서 브라우저 캐시를 끄고, 조회 요청부터 최신 메시지 첫 페인트까지 측정. 개선 후 값은 3회 측정의 중앙값</span>
+                              </li>
+                              <li className="pd-metric">
+                                <span className="pd-metric-k">초기 API 응답 크기</span>
+                                <span className="pd-metric-v"><s>332KB</s> → <em>44KB</em></span>
+                                <span className="pd-metric-c">같은 채팅에 처음 들어갈 때 받는 메시지 조회 응답</span>
+                              </li>
+                              <li className="pd-metric">
+                                <span className="pd-metric-k">타이핑 롱태스크</span>
+                                <span className="pd-metric-v"><s>26회</s> → <em>1회</em></span>
+                                <span className="pd-metric-c">이전 기록까지 모두 불러와 전체 메시지가 200개 이상인 상태에서, CPU 4배 제한을 적용하고 26글자 입력</span>
+                              </li>
+                            </ul>
+
+                            <h6 className="pd-sub-h">문제</h6>
+                            <p className="pd-p">메시지가 많이 쌓인 채팅에 들어가면 화면이 위에서부터 끊기며 내려간 뒤 최신 메시지가 보였습니다. 메시지가 200개 이상인 채팅에서 조회 요청부터 최신 메시지가 표시되기까지 3.58초가 걸린 반면 API 응답은 85ms여서, 응답 이후 브라우저의 렌더링 과정을 먼저 분석했습니다.</p>
+
+                            <h6 className="pd-sub-h">개선 과정</h6>
+                            <ol className="pd-steps">
+                              <li>
+                                <strong>1. 스크롤 중 반복 렌더링 제거</strong>
+                                <p>진입할 때 스크롤 애니메이션을 따라 현재 질문을 나타내는 상태가 바뀌면서, 200개가 넘는 메시지 전체가 약 20회 다시 렌더링되고 있었습니다. <code>MessageBubble</code>에 <code>React.memo</code>를 적용하고, <code>useLayoutEffect</code>에서 애니메이션 없이 최신 메시지로 이동하도록 바꿨습니다. 진입 중 말풍선의 불필요한 반복 렌더링은 약 20회에서 0회로 줄었고, 최신 메시지 표시 시간은 3.58초에서 0.65초로 단축됐습니다.</p>
+                              </li>
+                              <li>
+                                <strong>2. 초기 조회와 렌더링 범위 축소</strong>
+                                <p>반복 렌더링을 없앤 뒤에도 첫 렌더에 511ms가 걸렸습니다. 전체 메시지를 한 번에 불러오는 대신 최근 질문 20개와 그 답변을 먼저 받고, 위로 스크롤하면 이전 기록을 가져오는 커서 페이징을 적용했습니다. 질문과 답변이 페이지 사이에서 나뉘지 않도록 메시지 수가 아니라 질문 수를 기준으로 조회했습니다. 초기 응답 크기는 332KB에서 44KB로, 첫 렌더는 511ms에서 117ms로 줄었고, 최신 메시지 표시 시간은 0.20초가 됐습니다.</p>
+                              </li>
+                              <li>
+                                <strong>3. 타이핑 시 레이아웃 계산 범위 분리</strong>
+                                <p>이전 메시지를 모두 불러온 상태에서는 입력할 때마다 지연이 생겼습니다. 입력창이 자동으로 높이를 조절할 때마다 레이아웃을 다시 계산했고, 그 계산이 메시지 목록 전체까지 번지고 있었습니다. 목록 영역에 CSS <code>contain: strict</code>를 적용해 계산 범위를 분리했고, CPU 4배 제한에서 26글자를 입력할 때 생긴 롱태스크가 26회에서 1회로 줄었습니다.</p>
+                              </li>
+                            </ol>
+
+                            <h6 className="pd-sub-h">검증</h6>
+                            <p className="pd-p">Chrome Performance 기록과 Playwright로 진입, 타이핑, 스크롤을 측정했습니다. 진입 성능은 브라우저 캐시를 끄고 같은 채팅에서 측정했고, 2단계 개선 뒤의 최신 메시지 표시 시간은 3회 측정의 중앙값입니다. 배포한 뒤에도 같은 시나리오로 다시 확인했습니다.</p>
+
+                            <ImplDetail>
+                              <li>이전 메시지를 앞에 붙일 때 애플리케이션의 스크롤 보정과 Chrome의 스크롤 앵커링이 두 번 겹쳐 적용되는 문제도 발견했습니다. 보던 메시지가 실제로 움직인 만큼만 보정하도록 고쳤습니다.</li>
+                              <li>가상 스크롤도 검토했지만, 메시지 200개 이상을 모두 불러온 상태에서도 스크롤 중 롱태스크는 관찰되지 않았습니다. 그래서 남은 병목인 타이핑 시 레이아웃 계산을 줄이는 방식을 골랐습니다.</li>
+                            </ImplDetail>
+                          </>
+                        ),
+                      },
+                      {
                         title: '캐시와 데이터 갱신',
                         content: (
                           <>
