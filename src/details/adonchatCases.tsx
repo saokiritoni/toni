@@ -38,7 +38,7 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
         title: '감사로그 누락 원인 추적과 개선',
         content: (
           <>
-            <p className="pd-p">일부 회원 정보 변경에서 데이터는 저장됐지만 감사로그가 누락되는 문제를 해결했습니다.</p>
+            <p className="pd-p">운영자가 회원의 역할을 변경하는 경로에서 데이터는 저장됐지만 감사로그가 누락되는 문제를 해결했습니다.</p>
             <p className="pd-p">원인은 JPA의 변경 이벤트 생성 시점이었습니다. 감사 이벤트를 만드는 <code>@PreUpdate</code>는 엔티티 값을 변경할 때가 아니라 flush 시점에 실행됩니다. 일부 경로에서는 flush가 지연돼, Outbox 저장 처리가 변경 이벤트 생성보다 먼저 실행됐습니다.</p>
             <p className="pd-p">커밋 전에 flush를 먼저 실행하고, 생성된 이벤트를 같은 트랜잭션의 Outbox에 저장하도록 순서를 조정했습니다. 특정 서비스에만 flush를 추가하는 대신, 트랜잭션의 공통 처리 단계에서 순서를 제어했습니다.</p>
             <FlowDiagram
@@ -64,6 +64,7 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
                 },
               ]}
             />
+            <p className="pd-p">변경 뒤 추가 조회가 없는 경로를 재현하는 통합 테스트를 작성했습니다. 추가 조회가 있는 경로와 없는 경로, 실제 회원 역할 변경에서 Outbox 저장과 변경 전후 값을 확인했습니다. 테스트는 H2의 PostgreSQL 호환 모드에서 실행했습니다.</p>
           </>
         ),
       },
@@ -73,8 +74,8 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
         title: '운영자 강등 시 최소 인원 보장',
         body: (
           <>
-            <p className="pd-p">운영자 강등 요청을 순서대로 처리해 운영자가 최소 한 명 남도록 했습니다.</p>
-            <p className="pd-p">운영자 두 명의 강등 요청이 동시에 실행되면, 각 요청이 상대방을 남아 있는 운영자로 확인해 둘 다 강등될 수 있었습니다. 활성 운영자 행에 비관적 잠금(<code>PESSIMISTIC_WRITE</code>)을 건 뒤 남은 인원을 확인하도록 바꿨고, 동시 처리량은 줄어듭니다.</p>
+            <p className="pd-p">활성 운영자 행에 비관적 잠금(<code>PESSIMISTIC_WRITE</code>)을 적용하고, 잠금 획득 후 남은 운영자 수를 확인하도록 구현했습니다.</p>
+            <p className="pd-p">운영자 두 명의 강등 요청이 동시에 실행되면, 각 요청이 상대방을 남아 있는 운영자로 확인해 둘 다 강등될 수 있었습니다. 잠금을 기다리는 동안 다른 강등 요청은 멈추므로 동시 처리량은 줄어듭니다.</p>
             <p className="pd-p">교착 상태를 피하려고 여러 행의 잠금 순서를 ID 순으로 통일했습니다. 일괄 강등에서는 같은 작업의 강등 대상까지 빼고 남은 인원을 계산했습니다.</p>
           </>
         ),
@@ -83,8 +84,8 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
         title: '인증정보 중복 등록 방지',
         body: (
           <>
-            <p className="pd-p">동시 등록의 중복 여부는 DB 유니크 인덱스로 보장했습니다.</p>
-            <p className="pd-p">저장 전 중복 조회만으로는 동시에 들어온 두 요청이 모두 통과할 수 있었습니다. 사전 조회는 사용자에게 오류를 안내하는 데 쓰고, 최종 중복 방지는 DB에 맡겼습니다. soft delete로 지운 정보를 다시 등록할 수 있도록, 삭제되지 않은 행에만 적용되는 Partial Unique Index를 사용했습니다.</p>
+            <p className="pd-p">동시 등록에 대비해 DB 유니크 인덱스를 적용하고, 제약 위반을 중복 등록 오류로 처리했습니다.</p>
+            <p className="pd-p">저장 전 중복 조회만으로는 동시에 들어온 두 요청이 모두 통과할 수 있었습니다. 사전 조회는 사용자에게 오류를 안내하는 데 쓰고, 최종 중복 판정은 DB에 맡겼습니다. soft delete로 지운 정보를 다시 등록할 수 있도록, 삭제되지 않은 행에만 적용되는 Partial Unique Index를 사용했습니다.</p>
           </>
         ),
       },
