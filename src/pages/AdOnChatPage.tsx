@@ -1,7 +1,5 @@
-import { ArrowLeftOutlined } from '@ant-design/icons'
 import { Tag } from 'antd'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import ImplDetail from '../components/ImplDetail'
 import PixelArt from '../components/PixelArt'
 import { PROJECT_PIXELS } from '../data/pixels'
 import { FEATURED } from '../data/projects'
@@ -103,6 +101,12 @@ function useCurrentCase() {
 export default function AdOnChatPage({ onBack }: { onBack: () => void }) {
   const p = FEATURED
   const [current, jumpTo] = useCurrentCase()
+  const titleRef = useRef<HTMLHeadingElement>(null)
+
+  // 카드에서 옮겨 오면 초점이 사라진 카드에 남지 않도록 페이지 제목으로 옮긴다. 주소에 사례 해시가 있으면 그 사례가 초점을 받는다
+  useEffect(() => {
+    if (!window.location.hash) titleRef.current?.focus({ preventScroll: true })
+  }, [])
 
   useEffect(() => {
     const prev = document.title
@@ -115,24 +119,15 @@ export default function AdOnChatPage({ onBack }: { onBack: () => void }) {
   return (
     <main className="pp" id="top">
       <div className="container-inner">
-        <a
-          className="pp-back"
-          href="/#projects"
-          onClick={(e) => {
-            e.preventDefault()
-            onBack()
-          }}
-        >
-          <ArrowLeftOutlined /> 프로젝트 목록
-        </a>
-
         {/* 색 띠 배너 대신 페이지 글자로 머리를 세운다. 픽셀 아이콘의 흰 블록은 밝은 바탕에서 보이도록 CSS 에서 다시 칠한다 */}
         <header className="pp-intro">
           <div className="pp-hero">
             <PixelArt pattern={PROJECT_PIXELS[p.key]} cell={8} static className="pp-pixel" />
             <div>
               <span className="pp-org">{p.org}</span>
-              <h1 className="pp-title">{p.title}</h1>
+              <h1 className="pp-title" tabIndex={-1} ref={titleRef}>
+                {p.title}
+              </h1>
             </div>
           </div>
           <p className="pp-catch">{p.catch}</p>
@@ -191,12 +186,11 @@ export default function AdOnChatPage({ onBack }: { onBack: () => void }) {
                     {part.content}
                   </article>
                 ))}
-                {/* 보조 사례는 대표 사례보다 작은 제목과 한 문단으로 둔다 */}
+                {/* 보조 사례는 대표 사례보다 작은 제목과 짧은 문단으로 둔다 */}
                 {g.support?.map((c, i) => (
                   <article key={c.title} className="pp-support" id={supportId(g.key, i)} tabIndex={-1}>
                     <h3 className="pp-support-title">{c.title}</h3>
-                    <p className="pd-p">{c.body}</p>
-                    {c.detail && <ImplDetail fold>{c.detail}</ImplDetail>}
+                    {c.body}
                   </article>
                 ))}
                 {/* 짧은 보충은 목차에 올리지 않고, 본문 크기의 제목과 한 문단만 둔다 */}
@@ -208,6 +202,18 @@ export default function AdOnChatPage({ onBack }: { onBack: () => void }) {
                 ))}
               </section>
             ))}
+            <p className="pp-end">
+              <a
+                href="/#projects"
+                onClick={(e) => {
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+                  e.preventDefault()
+                  onBack()
+                }}
+              >
+                <span aria-hidden="true">←</span> 프로젝트 목록
+              </a>
+            </p>
           </div>
         </div>
       </div>

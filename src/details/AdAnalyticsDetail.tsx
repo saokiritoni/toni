@@ -14,7 +14,7 @@ export default function AdAnalyticsDetail() {
 
       <div className="pd-block">
         <h4>개요</h4>
-        <p className="pd-p">광고 성과를 보려면 매체마다 대시보드를 조작하고 엑셀로 다시 정리해야 하는 마케터의 반복 업무를 줄이기 위해, 자연어로 광고 성과를 조회하고 분석하는 AI 서비스를 2주 동안 설계하고 개발했습니다.</p>
+        <p className="pd-p">자연어로 광고 성과를 조회하고 분석하는 AI 서비스를 2주 동안 설계하고 개발했습니다. 매체마다 대시보드를 조작하고 엑셀로 다시 정리해야 하던 마케터의 반복 업무를 줄이기 위한 서비스입니다.</p>
       </div>
 
       <div className="pd-block">
@@ -42,7 +42,6 @@ export default function AdAnalyticsDetail() {
                 { title: 'Athena', sub: 'S3의 광고 데이터 조회' },
                 { title: 'SSE', sub: '조회 결과로 만든 답변을 스트리밍' },
               ],
-              note: 'Bedrock은 조회 결과를 보고 추가 조회가 필요하면 Athena를 다시 호출합니다.',
             },
           ]}
         />
