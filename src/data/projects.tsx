@@ -43,7 +43,7 @@ export const FEATURED: FeaturedProject = {
   overview: '광고 매체 계정을 연동해 대량 광고 작업을 처리하고, 자연어 대화로 광고 데이터를 분석하는 B2B 광고 운영 솔루션',
   points: [
     '긴 채팅의 최신 메시지 표시 시간을 3.58초에서 0.20초로 단축',
-    '동시 강등으로 운영자가 0명이 되는 문제와 감사로그 누락 문제 해결',
+    '운영자 최소 인원 보장과 감사로그 누락 개선',
     'Google Ads 조회 명세 검증과 승인 요청 실행 구조 구현',
   ],
 }
@@ -57,9 +57,9 @@ export const GRID_PROJECTS: GridProject[] = [
     role: 'Frontend, Backend',
     title: '[인턴 과제] 자연어 광고 분석 서비스',
     points: [
-      '자연어 질문으로 광고 데이터를 조회하고 분석하는 AI 서비스 개발',
       '데이터 수집부터 분석과 리포트까지 2주 만에 MVP로 완성',
       '쓰임새와 보관 기간에 따라 데이터 보관 정책을 나눠 구성',
+      '질문을 SQL로 바꿔 광고 데이터를 조회하는 흐름 구현',
     ],
     stack: ['EventBridge', 'Lambda', 'Athena', 'Bedrock', 'Redis'],
   },
