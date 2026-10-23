@@ -7,7 +7,7 @@ import { useThemeMode } from './ThemeContext'
 // antd 는 CSS 변수를 토큰 값으로 받지 못하는 곳(색 파생 계산)이 있어서 hex 로 적는다.
 const PALETTE = {
   light: { bg: '#ffffff', container: '#ffffff', elevated: '#ffffff', text: '#1d1d1f', border: '#e8e8ed', fill: '#f5f5f7', accent: '#c92a32', hover: '#a51f27' },
-  dark: { bg: '#000000', container: '#2c2c2e', elevated: '#000000', text: '#f5f5f7', border: 'rgba(255,255,255,0.1)', fill: '#1c1c1e', accent: '#ff4d4f', hover: '#ff8f8a' },
+  dark: { bg: '#0b0c10', container: '#25272d', elevated: '#0b0c10', text: '#f5f5f7', border: 'rgba(255,255,255,0.1)', fill: '#191b20', accent: '#ff4d4f', hover: '#ff8f8a' },
 } as const
 
 const FONT_BODY = "'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif"

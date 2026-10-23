@@ -19,7 +19,6 @@ export default function Experience() {
             items={EXPERIENCE.map((item) => ({
               key: item.period + item.role,
               className: item.period.includes('현재') ? 'is-now' : undefined,
-              color: 'var(--accent)',
               content: (
                 <div className="tl-item">
                   <div className="tl-period">{item.period}</div>

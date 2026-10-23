@@ -96,6 +96,21 @@ const BLOCKS: Block[] = (() => {
   return out
 })()
 
+/**
+ * 다크 모드에서만 보이는 픽셀 별. 사과가 차지하지 않는 무대 모서리와 무대 바깥 여백에 드문드문 둔다(위치는 무대 크기 기준 %).
+ * plus 는 십자 모양의 조금 큰 별이고, twinkle 인 별 두 개만 아주 느리게 밝기가 바뀐다
+ */
+const STARS: { x: number; y: number; plus?: boolean; twinkle?: boolean }[] = [
+  { x: 5, y: 4 },
+  { x: 21, y: 11, plus: true, twinkle: true },
+  { x: 37, y: 2 },
+  { x: 93, y: 5 },
+  { x: 97, y: 22 },
+  { x: -7, y: 42 },
+  { x: 4, y: 91 },
+  { x: 94, y: 93, plus: true, twinkle: true },
+]
+
 type Phase = 'clearing' | 'empty' | 'dropping' | 'settled'
 // 가장 늦게 떨어지는 조각의 지연에 그 조각이 떨어지는 시간을 더한 값
 const DROP_MS = Math.max(...BLOCKS.map((b) => b.delay + b.fall * ROW_MS))
@@ -174,6 +189,15 @@ export default function HeroStage() {
 
   return (
     <div className="hero-stage-wrap">
+      <span className="night-stars" aria-hidden="true">
+        {STARS.map((s, i) => (
+          <span
+            key={i}
+            className={`star${s.plus ? ' plus' : ''}${s.twinkle ? ' twinkle' : ''}`}
+            style={{ left: `${s.x}%`, top: `${s.y}%`, '--tw': `${i}s` } as CSSProperties}
+          />
+        ))}
+      </span>
       <div
         ref={stageRef}
         className={`hero-stage is-${phase}${canReplay ? ' can-replay' : ''}`}
@@ -195,6 +219,8 @@ export default function HeroStage() {
               {
                 gridRow: b.row + 1,
                 gridColumn: b.col + 1,
+                '--row': b.row,
+                '--col': b.col,
                 '--d': `${b.delay}ms`,
                 '--fr': b.fall,
                 '--fd': `${b.fall * ROW_MS}ms`,
