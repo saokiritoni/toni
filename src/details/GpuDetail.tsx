@@ -1,6 +1,5 @@
 import { ExportOutlined } from '@ant-design/icons'
 import { Tag, Typography } from 'antd'
-import ImplDetail from '../components/ImplDetail'
 import WorkParts from '../components/WorkParts'
 
 export default function GpuDetail() {
@@ -52,14 +51,9 @@ export default function GpuDetail() {
               title: 'Slack Rate Limit과 작업 분리',
               content: (
                 <>
-                  <div className="pd-ba">
-                    <div className="ba-col before"><span className="ba-label">Before</span><p>만료 계정과 컨테이너 정리와 Slack 알림이 같은 흐름에 있어, 알림이 몰려 Rate Limit(429)이 나면 알림 실패 때문에 정리 작업까지 멈췄습니다.</p></div>
-                    <div className="ba-col after"><span className="ba-label">After</span><p>자원 정리는 반드시 끝나야 하지만 알림은 늦게 보내도 되므로, Redis List 기반 Producer-Consumer로 두 작업의 실패 범위를 나눴습니다. 알림은 정리가 커밋된 뒤에만 큐에 넣도록 <code>AFTER_COMMIT</code> 이벤트를 써서, 롤백된 작업에 "정리됐습니다" 알림이 나가지 않게 했습니다.</p></div>
-                  </div>
-                  <ImplDetail>
-                    <li>Consumer는 <code>BRPOP</code>으로 메시지를 하나씩 꺼내 Slack이 허용하는 속도로 보냅니다.</li>
-                    <li>메모리 큐로 옮기면 서버가 재시작될 때 대기 중인 알림이 사라지므로, 메시지를 Redis에 두어 재시작에도 남게 했습니다.</li>
-                  </ImplDetail>
+                  <p className="pd-p">Slack 알림 실패가 자원 정리를 중단시키지 않도록 두 작업을 분리했습니다.</p>
+                  <p className="pd-p">기존에는 만료 계정과 컨테이너를 정리하는 중에 알림이 몰려 Slack Rate Limit(429)이 나면 정리 작업까지 멈췄습니다. 정리 작업은 알림을 Redis 큐에 넣고 계속 진행하며, 별도 Consumer가 알림을 보내도록 바꿨습니다.</p>
+                  <p className="pd-p">알림은 DB 변경이 커밋된 뒤에만 큐에 넣어(<code>AFTER_COMMIT</code>), 롤백된 작업의 완료 알림이 나가지 않게 했습니다.</p>
                   <Typography.Link className="pd-link" href="https://kiritoni.tistory.com/52" target="_blank" rel="noopener">관련 글: Slack Rate Limit을 Redis 메시지 큐로 해결하기 <ExportOutlined /></Typography.Link>
                 </>
               ),

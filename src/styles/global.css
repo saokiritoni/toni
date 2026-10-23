@@ -116,6 +116,15 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
   transition:background-color var(--m-standard) var(--ease),box-shadow var(--m-standard) var(--ease);
 }
 .header-row{display:flex;align-items:center;justify-content:space-between;height:64px}
+.header-left{display:flex;align-items:baseline;gap:20px;min-width:0}
+/* 상세 페이지 경로: 탐색 링크라서 배경 없이 글자만 둔다. 지금 있는 곳은 진한 글자, 돌아갈 곳은 옅은 링크다 */
+.crumb{display:flex;align-items:baseline;gap:8px;font-size:14px;white-space:nowrap}
+.crumb a{color:var(--text-dim);transition:color var(--m-fast) var(--ease)}
+.crumb a:hover{color:var(--hover)}
+.crumb a:active{color:var(--accent)}
+.crumb-sep{color:var(--border-med)}
+.crumb-here{color:var(--text);font-weight:600}
+.crumb .crumb-short{display:none}
 .wordmark{font-family:var(--f-display);font-weight:700;font-size:19px;letter-spacing:-.035em;color:var(--text)}
 /* 이름 끝의 온점 자리에 사이트 공통 픽셀 블록 하나를 둔다. 블록처럼 위·왼쪽은 밝게, 아래·오른쪽은 어둡게 깎고, 마우스를 올리면 한 번 튀어 오른다 */
 .wordmark{display:inline-flex;align-items:baseline}
@@ -558,16 +567,10 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 
 /* ============================= ADONCHAT PAGE ============================= */
 /* 상세 페이지: 왼쪽에 사례 목차를 고정하고 본문은 한 열로 읽는다 */
-.pp{padding:96px 0;min-height:100vh}
-/* "← 프로젝트 목록": 본문 위에 떠 있는 유리 알약 */
-.pp-back{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 16px;margin-bottom:22px;font-size:14px;font-weight:500;color:var(--text);
-  border-radius:var(--r-pill);background:var(--glass-bg);border:1px solid var(--glass-edge);
-  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
-  box-shadow:var(--glass-hi),0 0 0 .5px var(--glass-line),var(--glass-shadow);transition:background-color var(--m-fast) var(--ease),color var(--m-fast) var(--ease)}
-.pp-back:hover{color:var(--hover);background:var(--glass-bg-hover)}
+.pp{padding:112px 0 96px;min-height:100vh}
 /* 머리: 색 띠 없이 픽셀 아이콘, 개발한 곳, 제목, 부제, 기간과 역할, 소개를 글자 위계로만 나눈다 */
 .pp-intro{padding-bottom:40px;margin-bottom:48px;border-bottom:1px solid var(--border)}
-.pp-hero{display:flex;align-items:center;gap:22px;margin:10px 0 14px}
+.pp-hero{display:flex;align-items:center;gap:22px;margin:0 0 14px}
 .pp-hero .pk-W{background:var(--accent)}
 .pp-hero .pk-w{background:var(--border-strong)}
 .pp-org{display:block;margin-bottom:2px;font-size:14px;font-weight:600;color:var(--accent)}
@@ -617,6 +620,22 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 .pp-body .pd-impl{margin-top:20px}
 .pp-body .pd-metrics{margin-bottom:14px}
 .pp-body .pd-metric-notes{margin-bottom:8px}
+/* 상세 페이지 끝의 귀환 링크. 읽기를 마친 다음 행동만 조용히 둔다 */
+.pp-end{margin-top:80px;padding-top:28px;border-top:1px solid var(--border)}
+.pp-end a{font-size:15px;font-weight:600;color:var(--text);transition:color var(--m-fast) var(--ease)}
+.pp-end a:hover{color:var(--hover)}
+/* 카드에서 옮겨 온 초점은 읽는 위치만 알리므로 제목에 테두리를 그리지 않는다 */
+.pp-title:focus{outline:none}
+
+/* 화면 전환: AdOnChat 카드와 상세 페이지의 제목, 픽셀 아이콘만 이어진다. 두 화면은 동시에 존재하지 않으므로 이름이 겹치지 않는다 */
+.pcard-feat .feat-title,.pp-title{view-transition-name:aoc-title}
+.pcard-feat .thumb-pixel,.pp-pixel{view-transition-name:aoc-icon}
+.site-header{view-transition-name:site-header}
+::view-transition-group(aoc-title),::view-transition-group(aoc-icon){animation-duration:.34s;animation-timing-function:var(--ease)}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.18s}
+/* 상세 페이지에서 돌아온 첫 화면은 등장 효과 없이 바로 보인다 */
+.reveal-instant,.reveal-instant .pa-px{transition:none}
+
 /* ============================= RESPONSIVE ============================= */
 @media (max-width:900px){
   .hero .hero-grid{grid-template-columns:1fr;gap:44px}
@@ -638,6 +657,8 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
   .contact{padding:72px 0}
   .nav-anchor,.header-right .nav-ext{display:none}
   .nav-toggle{display:inline-flex}
+  .crumb .crumb-full{display:none}
+  .crumb .crumb-short{display:inline}
   .projects-grid{grid-template-columns:1fr}
   .footer-row{flex-direction:column;align-items:flex-start}
   /* modal → 풀스크린 시트 */
@@ -677,5 +698,6 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
   .pa-px{transform:none;opacity:1;animation:none !important}
   .exp-timeline .is-now .ant-timeline-item-icon::after{animation:none;opacity:0}
   .wordmark .dot{animation:none}
-  .site-header,.header-right .ant-btn,.pp-back,.project-modal .ant-modal-close{transition:none}
+  .site-header,.header-right .ant-btn,.project-modal .ant-modal-close{transition:none}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none}
 }
