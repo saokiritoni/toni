@@ -74,6 +74,7 @@ export default function Header({ page = false, onHome }: { page?: boolean; onHom
 
       <Drawer
         className="nav-drawer"
+        rootClassName="nav-drawer-root"
         placement="right"
         size={280}
         title="Soeun Lee."
