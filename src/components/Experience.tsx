@@ -5,7 +5,7 @@ import PixelArt from './PixelArt'
 
 export default function Experience() {
   return (
-    <section className="section section-alt section-panel" id="experience" aria-labelledby="exp-title">
+    <section className="section" id="experience" aria-labelledby="exp-title">
       <div className="container-inner">
         <div className="section-head" data-reveal>
           <PixelArt pattern={SECTION_PIXELS.experience} className="section-mark" />
@@ -19,7 +19,7 @@ export default function Experience() {
             items={EXPERIENCE.map((item) => ({
               key: item.period + item.role,
               className: item.period.includes('현재') ? 'is-now' : undefined,
-              color: 'var(--accent)',
+              color: 'var(--text)',
               content: (
                 <div className="tl-item">
                   <div className="tl-period">{item.period}</div>

@@ -92,12 +92,13 @@ AdOnChat 은 사례가 많아 모달이 아니라 `/projects/adonchat` 페이지
 - 색은 `global.css` 의 `:root` 토큰(`--bg`, `--surface-*`, `--text`, `--text-dim`, `--accent`, `--hover`, `--border*` 등)만 쓴다. 새 hex 를 쓰지 않는다. 테마마다 달라지는 반투명 색도 토큰으로 만든다.
 - 다크 모드는 `:root[data-theme="dark"]` 에서 토큰을 다시 정의한다. 새 색을 추가하면 두 테마 값을 모두 정한다.
 - antd 는 CSS 변수를 토큰으로 받지 못하는 곳이 있어서 `AntdTheme.tsx` 의 `PALETTE` 에 hex 로 같은 값을 적는다. `global.css` 토큰을 바꾸면 `PALETTE` 도 같이 바꾼다.
-- 바탕은 노란 기 없는 중립 회색이다(라이트 배경 #fafafa, 카드·헤더 #ffffff, 제목 `--text` #202124, 긴 본문 `--text-body` #3f434a, 보조 설명 `--text-dim` #686d75, 구분선 #e3e5e8). 아이보리 바탕과 종이 질감은 쓰지 않는다.
-- 포인트 색은 사과 팔레트다. 강조색 `--accent` 는 빨강(라이트 #c92a32, 다크 #ff4d4f), hover 는 `--hover`, 보조색 `--leaf` 는 초록(라이트 #287546)이고 성과 숫자와 현재 상태 표시에만 쓴다. 카드 커버 그라데이션은 테마와 상관없는 `--apple*`·`--leaf-*`·`--charcoal*` 토큰을 쓴다. 문제/해결 라벨에 색 배지를 쓰지 않는다. 반투명 강조색은 rgba 대신 `color-mix(in srgb,var(--accent) N%,transparent)` 로 만든다. 헤더 GitHub·히어로 "프로젝트 보기" 같은 주 버튼은 antd primary 의 주황이 아니라 어두운 색(`--text` 배경)으로 덮어쓴다.
+- 바탕은 한 가지 색이다(라이트 #ffffff, 다크 #0b0b0c). 헤더·카드·패널·모달도 같은 바탕을 쓰고, 섹션은 색 면이 아니라 넓은 여백과 1px 구분선(`--border`, 라이트 #ebebf0)으로 나눈다. 글자는 제목 `--text` #1d1d1f, 긴 본문 `--text-body` #424245, 보조 설명 `--text-dim` #6e6e73 이다. `--surface-300` 은 인라인 코드 같은 아주 작은 면에만 쓴다.
+- 그림자와 유리 효과(backdrop-filter)를 쓰지 않는다. 카드·태그·흐름도·Part 토글은 바탕 면 없이 1px 선이나 여백으로 구분한다. 모서리는 작게 둔다(`--r-compact` 4px, `--r` 6px, `--r-feat` 8px).
+- 포인트 색은 사과 팔레트다. 강조색 `--accent` 는 빨강(라이트 #c92a32, 다크 #ff4d4f), hover 는 `--hover`, 보조색 `--leaf` 는 초록(라이트 #287546)이고 성과 숫자와 현재 상태 표시에만 쓴다. 카드 커버는 테마와 상관없는 `--apple`·`--leaf-deep`·`--charcoal` 단색 면이다. 빨강은 링크·현재 위치·핵심 강조에만 쓰고, 라벨·연도·불릿·번호 같은 보조 표시는 `--text-dim` 으로 둔다. 문제/해결 라벨에 색 배지를 쓰지 않는다. 반투명 강조색은 rgba 대신 `color-mix(in srgb,var(--accent) N%,transparent)` 로 만든다. 헤더 GitHub·히어로 "프로젝트 보기" 같은 주 버튼은 면을 채우지 않고 테두리 한 줄로 덮어쓴다. 보조 버튼은 테두리 없는 글자 버튼이다.
 
 ### 글꼴
 
-- 제목: `--f-display`(Space Grotesk), 본문: `--f-body`(Pretendard), 코드·라벨: `--f-mono`(JetBrains Mono), 모달 부제: `--f-serif`(Fraunces), 히어로 이름 줄의 한자 이름: `--f-hanja`(Noto Serif KR, 세 글자만 받아 옴).
+- 제목과 본문 모두 Pretendard 다(`--f-display`, `--f-body`). 제목은 크기·굵기(700)·좁은 자간(-.03em ~ -.045em)으로만 본문과 구분한다. 모달 부제도 `--f-display` 를 500 굵기로 쓴다. 코드·라벨: `--f-mono`(JetBrains Mono), 히어로 이름 줄의 한자 이름: `--f-hanja`(Noto Serif KR, 세 글자만 받아 옴).
 - JetBrains Mono 에는 한글이 없다. 한글이 들어가는 라벨에 `--f-mono` 를 쓰지 않는다.
 
 ### antd 오버라이드

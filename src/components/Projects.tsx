@@ -1,7 +1,6 @@
 import { Card, Flex, Tag } from 'antd'
-import type { KeyboardEvent, PointerEvent } from 'react'
+import type { KeyboardEvent } from 'react'
 import { FEATURED, GRID_PROJECTS, type GridProject, type ProjectKey } from '../data/projects'
-import { useReducedMotion } from '../hooks/useReducedMotion'
 import { PROJECT_PIXELS, SECTION_PIXELS } from '../data/pixels'
 import PixelArt from './PixelArt'
 
@@ -24,38 +23,6 @@ function clickable(key: ProjectKey, onOpen: OpenHandler, opens: 'dialog' | 'page
       }
     },
   }
-}
-
-/** 카드 위 스포트라이트가 포인터를 따라가도록 좌표를 CSS 변수로 넘긴다. */
-function trackSpotlight(e: PointerEvent<HTMLElement>) {
-  const r = e.currentTarget.getBoundingClientRect()
-  e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`)
-  e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
-}
-
-/** 마우스 위치에 따라 카드를 살짝 기울인다. 터치 기기와 동작 줄이기 설정에서는 끈다. */
-function useTilt() {
-  const reduce = useReducedMotion()
-  const finePointer = typeof window !== 'undefined' && window.matchMedia('(hover:hover) and (pointer:fine)').matches
-  const enabled = !reduce && finePointer
-
-  const onPointerMove = (e: PointerEvent<HTMLElement>) => {
-    trackSpotlight(e)
-    const card = e.currentTarget
-    const r = card.getBoundingClientRect()
-    const px = (e.clientX - r.left) / r.width - 0.5
-    const py = (e.clientY - r.top) / r.height - 0.5
-    card.style.setProperty('--ry', `${(px * 3.4).toFixed(2)}deg`)
-    card.style.setProperty('--rx', `${(-py * 3.4).toFixed(2)}deg`)
-    card.classList.add('tilt')
-  }
-  const onPointerLeave = (e: PointerEvent<HTMLElement>) => {
-    const card = e.currentTarget
-    card.classList.remove('tilt')
-    card.style.setProperty('--rx', '0deg')
-    card.style.setProperty('--ry', '0deg')
-  }
-  return enabled ? { onPointerMove, onPointerLeave } : { onPointerMove: trackSpotlight }
 }
 
 /** 카드를 누르면 상세가 열린다는 표시. 카드 전체가 버튼이라 글자만 보여 준다 */
@@ -87,7 +54,6 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
       hoverable
       data-reveal
       styles={{ body: { padding: 0 } }}
-      onPointerMove={trackSpotlight}
       {...clickable(p.key, onOpen, 'page')}
     >
       <div className="feat-grid">
@@ -122,7 +88,6 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
 }
 
 function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: OpenHandler }) {
-  const tilt = useTilt()
   return (
     <Card
       className="card"
@@ -141,7 +106,6 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
         </div>
       }
       classNames={{ body: 'card-body' }}
-      {...tilt}
       {...clickable(p.key, onOpen)}
     >
       <span className="card-role">{p.role}</span>

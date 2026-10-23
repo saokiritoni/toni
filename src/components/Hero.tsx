@@ -6,7 +6,6 @@ import HeroStage from './HeroStage'
 export default function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
-      <div className="hero-ornament" aria-hidden="true" />
       <div className="container-inner hero-grid">
         <div className="hero-copy">
           <h1 className="hero-title" id="hero-title" data-reveal>
