@@ -42,9 +42,9 @@ export const FEATURED: FeaturedProject = {
   title: 'AdOnChat',
   overview: '광고 매체 계정을 연동해 대량 광고 작업을 처리하고, 자연어 대화로 광고 데이터를 분석하는 B2B 광고 운영 솔루션',
   points: [
-    '광고 계정 연동, 권한, 대량 작업, 감사로그 등 B2B 광고 운영 기능 개발',
+    '긴 채팅의 최신 메시지 표시 시간을 3.58초에서 0.20초로 단축',
     '동시 강등으로 운영자가 0명이 되는 문제와 감사로그 누락 문제 해결',
-    'AI 요청의 시간 제한을 조정하고, 시간 초과 후 결과가 등록되지 않도록 개선',
+    'Google Ads 조회 명세 검증과 승인 요청 실행 구조 구현',
   ],
 }
 
@@ -59,7 +59,7 @@ export const GRID_PROJECTS: GridProject[] = [
     points: [
       '자연어 질문으로 광고 데이터를 조회하고 분석하는 AI 서비스 개발',
       '데이터 수집부터 분석과 리포트까지 2주 만에 MVP로 완성',
-      '마케터의 업무 방식을 확인하고 PDF 리포트를 Excel 다운로드로 변경',
+      '쓰임새와 보관 기간에 따라 데이터 보관 정책을 나눠 구성',
     ],
     stack: ['EventBridge', 'Lambda', 'Athena', 'Bedrock', 'Redis'],
   },
@@ -86,8 +86,8 @@ export const GRID_PROJECTS: GridProject[] = [
     title: 'Farm System 동아리 홈페이지',
     points: [
       '디자이너와 개발자 약 20명의 팀을 이끌며 동아리 홈페이지 개발과 운영',
-      '주간회의에서 어려움을 공유하고 역할과 일정을 재조정',
-      '170명 이상이 사용하는 서비스를 운영하며 비정상 트래픽 차단과 RDS 계정 이전 처리',
+      '170명 이상의 회원이 실제로 사용하는 서비스 운영',
+      '운영 중 비정상 트래픽 차단과 암호화된 RDS의 계정 간 이전 처리',
     ],
     stack: ['Spring Boot', 'AWS WAF', 'RDS', 'Docker'],
   },

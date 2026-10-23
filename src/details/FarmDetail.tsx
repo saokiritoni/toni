@@ -49,17 +49,6 @@ export default function FarmDetail() {
                 </>
               ),
             },
-            {
-              title: '20명이 함께 개발하는 방식',
-              content: (
-                <>
-                  <div className="pd-ba stack">
-                    <div className="ba-col problem"><span className="ba-label">문제</span><p>팀원 약 20명은 학년, 개발 경험, 참여할 수 있는 시간이 모두 달랐습니다. 처음에는 업무를 비슷한 크기로 나누고 주간회의에서 진척을 확인하는 것이 공평한 협업이라고 생각했습니다. 하지만 일부에게 부담이 몰리면서 기여도에 대한 불만이 생겼고, 회의는 각자의 진행 상황만 보고하는 자리가 됐습니다.</p></div>
-                    <div className="ba-col after"><span className="ba-label">해결</span><p>주간회의를 진행 보고 대신 기술 관심사와 어려움을 공유하는 자리로 바꾸고, 여기서 나온 이야기를 바탕으로 역할과 일정을 다시 조정했습니다. 막힌 문제는 회의에서 함께 논의했습니다.</p></div>
-                  </div>
-                </>
-              ),
-            },
           ]}
         />
       </div>

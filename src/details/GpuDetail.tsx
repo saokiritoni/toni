@@ -40,7 +40,7 @@ export default function GpuDetail() {
               title: '서버 관리 방식의 단계적 자동화',
               content: (
                 <>
-                  <div className="pd-ba">
+                  <div className="pd-ba stages">
                     <div className="ba-col before"><span className="ba-label">Before</span><p>Google Sheet의 신청 정보를 보고 SSH로 서버에 접속해 컨테이너 생성과 권한 부여를 직접 수행했습니다. 실수를 막으려고 명령어를 여러 번 확인해야 했고, Sheet와 실제 서버 상태가 어긋나기도 했습니다.</p></div>
                     <div className="ba-col problem"><span className="ba-label">1단계 / Script</span><p>Docker 생성, 권한 부여 같은 반복 명령을 Script로 묶어 직접 입력을 줄였습니다. 다만 사람이 신청 정보를 보고 인자를 넘기는 이상, 잘못된 인자를 넘길 가능성은 그대로 남았습니다.</p></div>
                     <div className="ba-col after"><span className="ba-label">2단계 / Web UI</span><p>신청 정보를 입력으로 받아 Linux 계정 생성, UID/GID 발급, Kubernetes 자원 생성과 할당, 만료 자원 탐지와 회수까지 이어지게 했습니다. 신청 1건을 처리해 사용자에게 완료 안내를 보내기까지 약 30분 걸리던 시간이 5분 안으로 줄었습니다.</p></div>
