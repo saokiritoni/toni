@@ -1,68 +1,16 @@
-import { Card, Flex, Tag } from 'antd'
-import type { KeyboardEvent, PointerEvent } from 'react'
+import { Flex, Tag } from 'antd'
+import type { MouseEvent } from 'react'
 import { FEATURED, GRID_PROJECTS, type GridProject, type ProjectKey } from '../data/projects'
-import { useReducedMotion } from '../hooks/useReducedMotion'
 import { PROJECT_PIXELS, SECTION_PIXELS } from '../data/pixels'
 import PixelArt from './PixelArt'
 
 type OpenHandler = (key: ProjectKey) => void
 
-/**
- * 카드 전체를 버튼처럼 쓴다. <button> 안에는 제목·목록 같은 블록 요소를 넣을 수 없어서 role 을 준다.
- * 모달을 여는 카드는 button, 상세 페이지로 옮겨 가는 AdOnChat 카드는 link 다.
- */
-function clickable(key: ProjectKey, onOpen: OpenHandler, opens: 'dialog' | 'page' = 'dialog') {
-  return {
-    role: opens === 'page' ? 'link' : 'button',
-    tabIndex: 0,
-    'aria-haspopup': opens === 'dialog' ? ('dialog' as const) : undefined,
-    onClick: () => onOpen(key),
-    onKeyDown: (e: KeyboardEvent<HTMLElement>) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        onOpen(key)
-      }
-    },
-  }
-}
-
-/** 카드 위 스포트라이트가 포인터를 따라가도록 좌표를 CSS 변수로 넘긴다. */
-function trackSpotlight(e: PointerEvent<HTMLElement>) {
-  const r = e.currentTarget.getBoundingClientRect()
-  e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`)
-  e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
-}
-
-/** 마우스 위치에 따라 카드를 살짝 기울인다. 터치 기기와 동작 줄이기 설정에서는 끈다. */
-function useTilt() {
-  const reduce = useReducedMotion()
-  const finePointer = typeof window !== 'undefined' && window.matchMedia('(hover:hover) and (pointer:fine)').matches
-  const enabled = !reduce && finePointer
-
-  const onPointerMove = (e: PointerEvent<HTMLElement>) => {
-    trackSpotlight(e)
-    const card = e.currentTarget
-    const r = card.getBoundingClientRect()
-    const px = (e.clientX - r.left) / r.width - 0.5
-    const py = (e.clientY - r.top) / r.height - 0.5
-    card.style.setProperty('--ry', `${(px * 3.4).toFixed(2)}deg`)
-    card.style.setProperty('--rx', `${(-py * 3.4).toFixed(2)}deg`)
-    card.classList.add('tilt')
-  }
-  const onPointerLeave = (e: PointerEvent<HTMLElement>) => {
-    const card = e.currentTarget
-    card.classList.remove('tilt')
-    card.style.setProperty('--rx', '0deg')
-    card.style.setProperty('--ry', '0deg')
-  }
-  return enabled ? { onPointerMove, onPointerLeave } : { onPointerMove: trackSpotlight }
-}
-
-/** 카드를 누르면 상세가 열린다는 표시. 카드 전체가 버튼이라 글자만 보여 준다 */
+/** 카드를 누르면 상세가 열린다는 표시. 카드 전체가 눌리므로 글자만 보여 준다 */
 function MoreLabel() {
   return (
     <span className="card-more" aria-hidden="true">
-      자세히 보기 ↗
+      자세히 보기 <span className="card-more-arrow">→</span>
     </span>
   )
 }
@@ -79,71 +27,73 @@ function TechTags({ items, className }: { items: string[]; className?: string })
   )
 }
 
+/**
+ * AdOnChat 카드. 상세 페이지로 옮겨 가므로 제목을 실제 링크(<a href>)로 두고, 링크의 ::after 가 카드 전체를 덮어 어디를 눌러도 이동한다.
+ * 새 탭 열기(Ctrl, Cmd, Shift, 가운데 버튼)는 브라우저에 맡긴다.
+ */
 function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
   const p = FEATURED
+  const onClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+    e.preventDefault()
+    onOpen(p.key)
+  }
   return (
-    <Card
-      className="card-featured"
-      hoverable
-      data-reveal
-      styles={{ body: { padding: 0 } }}
-      onPointerMove={trackSpotlight}
-      {...clickable(p.key, onOpen, 'page')}
-    >
-      <div className="feat-grid">
-        <div className="feat-panel">
-          <div className="feat-heading thumb-head">
-            <div>
-              <span className="project-org">{p.org}</span>
-              <h3 className="feat-title">{p.title}</h3>
-            </div>
-            <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
+    <article className="pcard pcard-feat" data-reveal>
+      <div className="feat-panel">
+        <div className="feat-heading thumb-head">
+          <div>
+            <span className="project-org">{p.org}</span>
+            <h3 className="feat-title">
+              <a className="pcard-link" href="/projects/adonchat" onClick={onClick}>
+                {p.title}
+              </a>
+            </h3>
           </div>
-          <p className="feat-catch">{p.catch}</p>
-          <p className="feat-role">
-            {p.role}
-            <br />
-            {p.period}
-          </p>
-          <TechTags items={p.tech} className="feat-tech" />
+          <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
         </div>
-        <div className="feat-body">
-          <p className="feat-overview">{p.overview}</p>
-          <ol className="feat-points">
-            {p.points.map((pt, i) => (
-              <li key={i}>{pt}</li>
-            ))}
-          </ol>
-          <MoreLabel />
-        </div>
+        <p className="feat-catch">{p.catch}</p>
+        <p className="feat-role">
+          {p.role}
+          <br />
+          {p.period}
+        </p>
+        <TechTags items={p.tech} className="feat-tech" />
       </div>
-    </Card>
+      <div className="feat-body">
+        <p className="feat-overview">{p.overview}</p>
+        <ol className="feat-points">
+          {p.points.map((pt, i) => (
+            <li key={i}>{pt}</li>
+          ))}
+        </ol>
+        <MoreLabel />
+      </div>
+    </article>
   )
 }
 
+/**
+ * 상세 모달을 여는 카드. 제목을 <button> 으로 두고, 버튼의 ::after 가 카드 전체를 덮는다.
+ * 프로젝트 색은 위쪽 가는 띠와 픽셀 아이콘에만 쓰고, 면은 중립 회색으로 둔다.
+ */
 function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: OpenHandler }) {
-  const tilt = useTilt()
   return (
-    <Card
-      className="card"
-      hoverable
-      data-reveal
-      cover={
-        <div className={`card-thumb ${p.thumb.tone}`}>
-          <div className="thumb-head">
-            <div>
-              <span className="project-org">{p.org}</span>
-              <h3 className="thumb-title">{p.title}</h3>
-            </div>
-            <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
+    <article className={`pcard pcard-grid tone-${p.thumb.tone}`} data-reveal>
+      <div className="pcard-top">
+        <div className="thumb-head">
+          <div>
+            <span className="project-org">{p.org}</span>
+            <h3 className="thumb-title">
+              <button type="button" className="pcard-link" aria-haspopup="dialog" onClick={() => onOpen(p.key)}>
+                {p.title}
+              </button>
+            </h3>
           </div>
-          <TechTags items={p.stack} className="thumb-tech" />
+          <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
         </div>
-      }
-      classNames={{ body: 'card-body' }}
-      {...tilt}
-      {...clickable(p.key, onOpen)}
-    >
+        <TechTags items={p.stack} className="thumb-tech" />
+      </div>
       <span className="card-role">{p.role}</span>
       <ul className="card-points">
         {p.points.map((pt) => (
@@ -151,7 +101,7 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
         ))}
       </ul>
       <MoreLabel />
-    </Card>
+    </article>
   )
 }
 
@@ -160,7 +110,7 @@ export default function Projects({ onOpen }: { onOpen: OpenHandler }) {
     <section className="section" id="projects" aria-labelledby="projects-title">
       <div className="container-inner">
         <div className="section-head" data-reveal>
-          <PixelArt pattern={SECTION_PIXELS.projects} className="section-mark" />
+          <PixelArt pattern={SECTION_PIXELS.projects} cell={4} className="section-mark" />
           <h2 className="section-title" id="projects-title">
             Projects
           </h2>

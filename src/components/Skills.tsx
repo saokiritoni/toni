@@ -8,7 +8,7 @@ export default function Skills() {
     <section className="section" id="skills" aria-labelledby="skills-title">
       <div className="container-inner">
         <div className="section-head" data-reveal>
-          <PixelArt pattern={SECTION_PIXELS.skills} className="section-mark" />
+          <PixelArt pattern={SECTION_PIXELS.skills} cell={4} className="section-mark" />
           <h2 className="section-title" id="skills-title">
             Skills
           </h2>

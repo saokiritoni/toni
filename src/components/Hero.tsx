@@ -1,6 +1,6 @@
 import { ArrowDownOutlined, MailOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import { EMAIL, HERO_NAME, NAME_HANJA } from '../data/profile'
+import { EMAIL, NAME_EN, NAME_HANJA, NAME_KO } from '../data/profile'
 import HeroStage from './HeroStage'
 
 export default function Hero() {
@@ -17,8 +17,14 @@ export default function Hero() {
             만듭니다
           </h1>
           <p className="hero-name" data-reveal>
-            {HERO_NAME}
-            <span className="hero-hanja">{NAME_HANJA}</span>
+            <span className="hero-name-ko">{NAME_KO}</span>
+            <span className="hero-name-en">{NAME_EN}</span>
+            <span className="hero-hanja">
+              {NAME_HANJA}
+            </span>
+          </p>
+          <p className="hero-now" data-reveal>
+            NHN AD에서 광고 운영 솔루션과 AI Agent를 개발하고 있습니다.
           </p>
           <div className="hero-ctas" data-reveal>
             <Button className="hero-cta" type="primary" size="large" href="#projects" icon={<ArrowDownOutlined />} iconPlacement="end">

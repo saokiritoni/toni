@@ -8,7 +8,7 @@ export default function Experience() {
     <section className="section" id="experience" aria-labelledby="exp-title">
       <div className="container-inner">
         <div className="section-head" data-reveal>
-          <PixelArt pattern={SECTION_PIXELS.experience} className="section-mark" />
+          <PixelArt pattern={SECTION_PIXELS.experience} cell={4} className="section-mark" />
           <h2 className="section-title" id="exp-title">
             Experience
           </h2>

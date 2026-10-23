@@ -29,7 +29,7 @@ export default function Credentials() {
     <section className="section" id="credentials" aria-labelledby="cred-title">
       <div className="container-inner">
         <div className="section-head" data-reveal>
-          <PixelArt pattern={SECTION_PIXELS.credentials} className="section-mark" />
+          <PixelArt pattern={SECTION_PIXELS.credentials} cell={4} className="section-mark" />
           <h2 className="section-title" id="cred-title">
             Awards &amp; Licenses
           </h2>

@@ -4,7 +4,9 @@ export const EMAIL = 'leesoeun2746@naver.com'
 export const GITHUB_URL = 'https://github.com/saokiritoni'
 export const BLOG_URL = 'https://kiritoni.tistory.com/'
 
-export const HERO_NAME = '이소은 Soeun Lee'
+// 히어로 이름 줄. 한글 이름을 가장 크게, 영문 이름과 한자 이름을 차례로 작게 둔다
+export const NAME_KO = '이소은'
+export const NAME_EN = 'Soeun Lee'
 // 히어로 이름 줄 옆 한자 이름. index.html 의 Noto Serif KR 은 이 세 글자만 받아 오므로, 바꾸면 그 링크의 text= 도 바꾼다
 export const NAME_HANJA = '李炤垠'
 

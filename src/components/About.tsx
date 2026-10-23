@@ -21,7 +21,7 @@ export default function About() {
     <section className="section" id="about" aria-labelledby="about-title">
       <div className="container-inner">
         <div className="section-head" data-reveal>
-          <PixelArt pattern={SECTION_PIXELS.about} className="section-mark" />
+          <PixelArt pattern={SECTION_PIXELS.about} cell={4} className="section-mark" />
           <h2 className="section-title" id="about-title">
             About
           </h2>
