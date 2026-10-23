@@ -35,36 +35,37 @@ export const ADONCHAT_GROUPS: CaseGroup[] = [
     tech: ['Kotlin', 'Spring Boot', 'JPA', 'PostgreSQL', 'DynamoDB', 'AWS'],
     parts: [
       {
-        title: '감사로그 누락 원인 추적과 개선',
+        title: '업무 변경과 감사 이력을 연결하는 공통 구조 설계',
         content: (
           <>
-            <p className="pd-p">운영자가 회원의 역할을 변경하는 경로에서 데이터는 저장됐지만 감사로그가 누락되는 문제를 해결했습니다.</p>
-            <p className="pd-p">원인은 JPA의 변경 이벤트 생성 시점이었습니다. 감사 이벤트를 만드는 <code>@PreUpdate</code>는 엔티티 값을 변경할 때가 아니라 flush 시점에 실행됩니다. 일부 경로에서는 flush가 지연돼, Outbox 저장 처리가 변경 이벤트 생성보다 먼저 실행됐습니다.</p>
-            <p className="pd-p">커밋 전에 flush를 먼저 실행하고, 생성된 이벤트를 같은 트랜잭션의 Outbox에 저장하도록 순서를 조정했습니다. 특정 서비스에만 flush를 추가하는 대신, 트랜잭션의 공통 처리 단계에서 순서를 제어했습니다.</p>
+            <p className="pd-p">여러 엔티티의 변경 이력을 공통으로 기록하기 위해 <code>BaseEntity</code> 기반의 감사로그 구조를 설계했습니다. 서비스마다 기록 코드를 추가하면 중복이 생기고 새로운 변경 경로에서 기록을 빠뜨릴 수 있어, 변경 감지를 공통화했습니다.</p>
+            <p className="pd-p"><strong>업무 변경과 감사 이력의 후속 처리를 분리하되, 처리할 이벤트는 DB에 남기도록 설계했습니다.</strong> 업무 변경이 커밋된 뒤에만 감사 이벤트를 처리하면, 후속 처리에 실패했을 때 이벤트가 남지 않아 이력이 누락될 수 있습니다. 반대로 감사 이력 저장까지 같은 트랜잭션에 넣으면, 감사 처리 실패로 업무 변경도 롤백됩니다.</p>
+            <p className="pd-p">업무 변경과 Outbox 이벤트 저장만 같은 트랜잭션으로 묶고, 감사 이력 테이블 반영은 커밋 이후 별도 스케줄러가 맡도록 구성했습니다. <strong>업무 변경이 커밋될 때 이벤트도 함께 저장하고, 이후 감사 이력 반영에 실패하면 재처리할 수 있도록 했습니다.</strong></p>
             <FlowDiagram
-              label="커밋 전 단계의 실행 순서를 바꾸기 전과 후"
+              label="같은 트랜잭션에서 처리하는 범위와 커밋 이후 따로 처리하는 범위"
               lanes={[
                 {
-                  label: 'Before',
+                  label: '같은 트랜잭션',
                   steps: [
-                    { actor: '업무 서비스', title: '업무 엔티티 변경', sub: '뒤에 쿼리가 없어 flush가 미뤄짐' },
-                    { actor: '이벤트 리스너', title: 'BEFORE_COMMIT에서 Outbox 저장', sub: '아직 이벤트가 없어 저장할 것이 없음' },
-                    { actor: 'JPA', title: '커밋 시점 flush', sub: <><code>@PreUpdate</code>가 이제야 이벤트를 만듦</>, tone: 'miss' },
-                    { actor: '트랜잭션', title: '커밋', sub: '감사로그 없이 업무 변경만 저장', tone: 'miss' },
+                    { actor: '업무 서비스', title: '업무 데이터 변경' },
+                    { actor: '트랜잭션 동기화', title: 'Outbox 이벤트 저장', tone: 'key' },
+                    { actor: '트랜잭션', title: '커밋', sub: 'Outbox 저장에 실패하면 업무 변경도 롤백' },
                   ],
                 },
                 {
-                  label: 'After',
+                  label: '커밋 이후 별도 처리',
                   steps: [
-                    { actor: '업무 서비스', title: '업무 엔티티 변경' },
-                    { actor: '트랜잭션 동기화', title: 'beforeCommit에서 flush', sub: <><code>@PreUpdate</code>가 이벤트를 만듦</>, tone: 'key' },
-                    { actor: '트랜잭션 동기화', title: 'Outbox 저장', sub: '모인 이벤트를 같은 트랜잭션에서 저장' },
-                    { actor: '트랜잭션', title: '커밋', sub: '업무 변경과 Outbox를 함께 커밋', tone: 'key' },
+                    { actor: '스케줄러', title: 'Outbox 조회' },
+                    { actor: '스케줄러', title: '감사 이력 반영', sub: '실패해도 커밋된 업무 변경은 유지' },
                   ],
+                  loop: { from: 1, to: 0, label: '실패하면 Outbox 이벤트로 재처리' },
                 },
               ]}
             />
-            <p className="pd-p">변경 뒤 추가 조회가 없는 경로를 재현하는 통합 테스트를 작성했습니다. 추가 조회가 있는 경로와 없는 경로, 실제 회원 역할 변경에서 Outbox 저장과 변경 전후 값을 확인했습니다. 테스트는 H2의 PostgreSQL 호환 모드에서 실행했습니다.</p>
+            <ImplDetail fold label="처리 순서 보완과 검증">
+              <li>운영자가 회원의 역할을 변경하는 경로에서 감사 이벤트가 누락되는 문제를 발견했습니다. JPA의 <code>@PreUpdate</code>는 엔티티 값을 변경할 때가 아니라 flush 시점에 실행되는데, 일부 경로에서는 Outbox 저장 처리가 이벤트 생성보다 먼저 실행됐습니다. 커밋 전에 flush를 실행한 뒤 수집된 이벤트를 Outbox에 저장하도록 순서를 조정했습니다.</li>
+              <li>변경 뒤 추가 조회가 없는 경로를 재현하는 통합 테스트를 작성했습니다. 추가 조회가 있는 경로와 없는 경로, 실제 회원 역할 변경에서 Outbox 저장과 변경 전후 값을 확인했습니다. 테스트는 H2의 PostgreSQL 호환 모드에서 실행했습니다.</li>
+            </ImplDetail>
           </>
         ),
       },
