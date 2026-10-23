@@ -1,6 +1,6 @@
 // 사이트 곳곳에 쓰는 픽셀 그림. 한 글자가 블록 하나이고, '.' 은 빈칸이다.
 // 글자마다 색이 정해져 있다 (global.css 의 .pk-*):
-// R 사과 빨강, D 사과 그늘, H 하이라이트, L 잎, G 짙은 잎, S 꼭지, K 글자색, d 흐린 글자색, Y 금색, W 흰색, w 반투명 흰색
+// R 사과 빨강, D 사과 그늘, H 하이라이트, L 잎, G 짙은 잎, S 꼭지, K 글자색, d 흐린 글자색, Y 금색, W 흰색, w 반투명 흰색, M 달빛
 export type PixelPattern = readonly string[]
 
 export const APPLE: PixelPattern = [
@@ -16,6 +16,9 @@ export const APPLE: PixelPattern = [
   '..RRRRRDD..',
   '...RD.DD...',
 ]
+
+// 다크 모드에서 첫 화면 사과의 오른쪽 위 빈 모서리에 뜨는 초승달. 사과보다 훨씬 작게 둔다
+export const MOON: PixelPattern = ['..MMMM.', '.MMM...', 'MMM....', 'MMM....', 'MMM....', '.MMM...', '..MMMM.']
 
 // 섹션 제목 옆 아이콘
 export const SECTION_PIXELS = {

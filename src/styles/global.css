@@ -7,7 +7,7 @@
   --surface-100:#ffffff; --surface-300:#f5f5f7; --surface-400:#f5f5f7; --surface-500:#e8e8ed;
   /* 제목은 --text, 긴 본문은 조금 옅은 --text-body, 측정 조건과 날짜는 --text-dim */
   --text:#1d1d1f; --text-body:#424245; --text-dim:#6e6e73;
-  --star:transparent; --star-dim:transparent; --moon:#ffffff;
+  --star:transparent; --star-dim:transparent; --moon:#ffffff; --night-sky:transparent;
   /* 차콜: AdOnChat 패널과 GPU 카드 커버. 테마와 상관없이 같은 면에 쓴다 */
   --charcoal:#27282b; --charcoal-2:#3b3d42;
   /* 사과 팔레트: 껍질 빨강 두 단계와 잎 초록 두 단계. 카드 커버처럼 테마와 상관없이 같은 면에 쓴다 */
@@ -66,7 +66,7 @@
   --glass-shadow:rgba(0,0,0,.45) 0 6px 20px, rgba(0,0,0,.3) 0 1px 3px;
   --glass-solid:#191b20; --glass-solid-bar:#14161b;
   /* 밤의 사과 정원: 별빛과 사과 윗부분의 달빛. 라이트 모드에서는 쓰지 않는다 */
-  --star:rgba(232,236,245,.7); --star-dim:rgba(232,236,245,.28); --moon:#e3e9f6;
+  --star:rgba(236,240,250,.85); --star-dim:rgba(236,240,250,.34); --moon:#e3e9f6; --night-sky:#121a30;
   --overlay:rgba(0,0,0,.5); --overlay-solid:rgba(0,0,0,.82); --sheet-mask:rgba(0,0,0,.4);
   --btn-dark-hover:#d2d2d7;
   color-scheme:dark;
@@ -222,8 +222,9 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 /* ::before 는 커서가 다가오면 밝아지는 막, ::after 는 조각이 자리에 박히거나 줄이 지워질 때 번쩍이는 막이다 */
 .px-in::before,.px-in::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:white;opacity:0}
 .px-in::before{opacity:calc(var(--lift,0) * .35);transition:opacity .3s var(--ease)}
-/* 밤: 같은 사과에 왼쪽 위에서 달빛이 든다. 왼쪽 위 블록일수록 옅은 달빛 막이 조금 더 밝다 */
-:root[data-theme="dark"] .px-in::before{background:var(--moon);opacity:calc(var(--lift,0) * .35 + max(0, (3.6 - var(--row,9) - var(--col,9) * .25) * .09))}
+/* 밤: 같은 사과에 오른쪽 위 초승달 쪽에서 차가운 달빛이 든다. 오른쪽 위 블록일수록 달빛 막이 밝고, 아래쪽 줄은 조금 어둡다 */
+:root[data-theme="dark"] .px-in::before{background:var(--moon);opacity:calc(var(--lift,0) * .35 + min(.32, max(0, (4.2 - var(--row,9) - (10 - var(--col,0)) * .3) * .11)))}
+:root[data-theme="dark"] .px-in{filter:brightness(calc(1 - max(0, var(--row,0) - 5) * .055))}
 
 /* 빈 판: 블록은 무대 위 가장자리 밖(잘린 곳)에서 자기 조각이 떨어지기를 기다린다 */
 .hero-stage.is-empty .px{transform:translateX(calc(var(--dx) * var(--pitch)))}
@@ -259,6 +260,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .pk-Y{background:var(--gold)}
 .pk-W{background:rgba(255,255,255,.92)}
 .pk-w{background:rgba(255,255,255,.42)}
+.pk-M{background:var(--moon)}
 /* [data-reveal] 조상이 드러나면 흩어진 블록이 제자리로 모인다 */
 .pixel-art{display:inline-grid;grid-template-columns:repeat(var(--cols),var(--cell));grid-auto-rows:var(--cell);gap:1px;flex:none;vertical-align:middle}
 .pa-px{border-radius:1px;transform:translate(var(--sx),var(--sy)) scale(.3);opacity:0;
@@ -400,10 +402,20 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 /* 밤의 별: 다크 모드에서만 보인다. 테마를 바꾸면 바탕이 먼저 어두워지고 별이 조금 늦게 나타난다(전체 0.4초).
    테마 전환 중에는 transition 이 색 속성으로 덮이므로, 별은 다크가 될 때 한 번 실행되는 animation 으로 나타낸다 */
 .night-stars{position:absolute;inset:0;pointer-events:none;opacity:0}
-:root[data-theme="dark"] .night-stars{opacity:1;animation:nightIn .4s var(--ease) both}
-@keyframes nightIn{0%,35%{opacity:0}100%{opacity:1}}
+:root[data-theme="dark"] .night-stars{opacity:1;animation:nightIn .55s var(--ease) both}
+@keyframes nightIn{0%,45%{opacity:0}100%{opacity:1}}
+/* 첫 화면 하늘: 위쪽이 분명한 남색이고, 오른쪽 위에 넓고 희미한 달빛이 번진다. 바탕이 어두워지는 동안 함께 나타나고, 달과 별은 그 뒤에 나온다 */
+.hero-sky{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse 55% 60% at 86% 0%,color-mix(in srgb,var(--moon) 9%,transparent),transparent 70%),linear-gradient(180deg,var(--night-sky),var(--bg) 92%)}
+:root[data-theme="dark"] .hero-sky{opacity:1;animation:skyIn .35s var(--ease) both}
+@keyframes skyIn{from{opacity:0}to{opacity:1}}
+:root[data-theme="dark"] .hero-ornament{opacity:.35}
+/* 초승달: 사과 그림의 비어 있는 오른쪽 위 모서리에 둔다 */
+.night-moon{position:absolute;left:86%;top:1%;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--moon) 35%,transparent))}
 .star{position:absolute;width:3px;height:3px;background:var(--star)}
 .star.plus{box-shadow:3px 0 0 var(--star-dim),-3px 0 0 var(--star-dim),0 3px 0 var(--star-dim),0 -3px 0 var(--star-dim)}
+/* 큰 별: 팔이 두 칸인 십자. 작은 점 사이에서 별 모양이 읽히는 기준이 된다 */
+.star.big{box-shadow:3px 0 0 var(--star),-3px 0 0 var(--star),0 3px 0 var(--star),0 -3px 0 var(--star),6px 0 0 var(--star-dim),-6px 0 0 var(--star-dim),0 6px 0 var(--star-dim),0 -6px 0 var(--star-dim)}
 /* 별 두 개만 아주 느리게 밝기가 바뀐다 */
 :root[data-theme="dark"] .star.twinkle{animation:twinkle 7s ease-in-out var(--tw,0s) infinite}
 @keyframes twinkle{0%,100%{opacity:1}50%{opacity:.35}}
@@ -664,6 +676,8 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 /* ============================= RESPONSIVE ============================= */
 @media (max-width:900px){
   .hero .hero-grid{grid-template-columns:1fr;gap:44px}
+  /* 글자와 사과가 세로로 쌓이면 하늘의 별이 글자 뒤에 놓이므로 숨기고, 사과 곁의 별만 남긴다 */
+  .hero-sky .star{display:none}
   .hero-stage-wrap{justify-self:center;max-width:320px}
   .about-cols{grid-template-columns:1fr;gap:32px}
   .pcard-feat{grid-template-columns:1fr}
@@ -725,5 +739,5 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
   .wordmark .dot{animation:none}
   .site-header,.header-right .ant-btn,.project-modal .ant-modal-close{transition:none}
   ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none}
-  :root[data-theme="dark"] .night-stars,:root[data-theme="dark"] .star.twinkle{animation:none}
+  :root[data-theme="dark"] .night-stars,:root[data-theme="dark"] .star.twinkle,:root[data-theme="dark"] .hero-sky{animation:none}
 }

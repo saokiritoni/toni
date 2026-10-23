@@ -1,8 +1,9 @@
 import { ReloadOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { APPLE } from '../data/pixels'
+import { APPLE, MOON } from '../data/pixels'
 import { prefersReducedMotion } from '../hooks/useReducedMotion'
+import PixelArt from './PixelArt'
 
 const N = APPLE.length
 
@@ -97,17 +98,16 @@ const BLOCKS: Block[] = (() => {
 })()
 
 /**
- * 다크 모드에서만 보이는 픽셀 별. 사과가 차지하지 않는 무대 모서리와 무대 바깥 여백에 드문드문 둔다(위치는 무대 크기 기준 %).
- * plus 는 십자 모양의 조금 큰 별이고, twinkle 인 별 두 개만 아주 느리게 밝기가 바뀐다
+ * 다크 모드에서만 보이는 픽셀 별. 사과가 차지하지 않는 무대 모서리와 무대 바깥 여백에 둔다(위치는 무대 크기 기준 %).
+ * 오른쪽 위 빈 모서리는 초승달 자리라 비운다. big 은 형태가 읽히는 큰 십자 별, plus 는 작은 십자 별이고,
+ * twinkle 인 별 두 개만 아주 느리게 밝기가 바뀐다
  */
-const STARS: { x: number; y: number; plus?: boolean; twinkle?: boolean }[] = [
+const STARS: { x: number; y: number; big?: boolean; plus?: boolean; twinkle?: boolean }[] = [
   { x: 5, y: 4 },
-  { x: 21, y: 11, plus: true, twinkle: true },
+  { x: 21, y: 9, big: true, twinkle: true },
   { x: 37, y: 2 },
-  { x: 93, y: 5 },
-  { x: 97, y: 22 },
   { x: -7, y: 42 },
-  { x: 4, y: 91 },
+  { x: 4, y: 91, plus: true },
   { x: 94, y: 93, plus: true, twinkle: true },
 ]
 
@@ -193,10 +193,11 @@ export default function HeroStage() {
         {STARS.map((s, i) => (
           <span
             key={i}
-            className={`star${s.plus ? ' plus' : ''}${s.twinkle ? ' twinkle' : ''}`}
+            className={`star${s.big ? ' big' : ''}${s.plus ? ' plus' : ''}${s.twinkle ? ' twinkle' : ''}`}
             style={{ left: `${s.x}%`, top: `${s.y}%`, '--tw': `${i}s` } as CSSProperties}
           />
         ))}
+        <PixelArt pattern={MOON} cell={4} static className="night-moon" />
       </span>
       <div
         ref={stageRef}
