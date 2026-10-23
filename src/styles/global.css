@@ -7,6 +7,7 @@
   --surface-100:#ffffff; --surface-300:#f5f5f7; --surface-400:#f5f5f7; --surface-500:#e8e8ed;
   /* 제목은 --text, 긴 본문은 조금 옅은 --text-body, 측정 조건과 날짜는 --text-dim */
   --text:#1d1d1f; --text-body:#424245; --text-dim:#6e6e73;
+  --star:transparent; --star-dim:transparent; --moon:#ffffff;
   /* 차콜: AdOnChat 패널과 GPU 카드 커버. 테마와 상관없이 같은 면에 쓴다 */
   --charcoal:#27282b; --charcoal-2:#3b3d42;
   /* 사과 팔레트: 껍질 빨강 두 단계와 잎 초록 두 단계. 카드 커버처럼 테마와 상관없이 같은 면에 쓴다 */
@@ -49,21 +50,23 @@
 
 /* ============================= DARK THEME =============================
    html[data-theme] 값은 index.html 의 인라인 스크립트가 첫 렌더 전에 정한다 (저장값 → OS 설정 순).
-   검정 바탕과 아주 어두운 회색 바탕을 번갈아 두고, 깊은 빨강·초록은 어두운 면에서 대비가 낮아 accent·hover·leaf 를 밝게 올렸다 */
+   남색이 아주 살짝 섞인 차콜 바탕 두 단계를 번갈아 두고, 깊은 빨강·초록은 어두운 면에서 대비가 낮아 accent·hover·leaf 를 밝게 올렸다 */
 :root[data-theme="dark"]{
-  --bg:#000000; --bg-alt:#161617;
-  --surface-100:#2c2c2e; --surface-300:#1c1c1e; --surface-400:#1c1c1e; --surface-500:#3a3a3c;
+  --bg:#0b0c10; --bg-alt:#14161b;
+  --surface-100:#25272d; --surface-300:#191b20; --surface-400:#191b20; --surface-500:#33363d;
   --text:#f5f5f7; --text-body:#d2d2d7; --text-dim:#a1a1a6;
   --accent:#ff4d4f; --hover:#ff8f8a; --leaf:#86c25f; --stem:#9a7148;
   --border:rgba(255,255,255,.1); --border-med:rgba(255,255,255,.2); --border-strong:rgba(245,245,247,.55);
   --sh-focus:rgba(0,0,0,.45) 0 4px 14px;
   --sh-elev:rgba(0,0,0,.6) 0 24px 60px, rgba(0,0,0,.4) 0 8px 20px;
   --sh-lift:rgba(0,0,0,.55) 0 18px 40px, rgba(0,0,0,.35) 0 4px 12px;
-  --glass-bg:rgba(44,44,46,.55); --glass-bg-hover:rgba(58,58,60,.75); --glass-bg-bar:rgba(22,22,23,.78);
+  --glass-bg:rgba(37,39,45,.55); --glass-bg-hover:rgba(51,54,61,.75); --glass-bg-bar:rgba(20,22,27,.78);
   --glass-edge:rgba(255,255,255,.14); --glass-line:rgba(0,0,0,.5);
   --glass-hi:inset 0 1px 0 rgba(255,255,255,.14), inset 0 -1px 0 rgba(255,255,255,.04);
   --glass-shadow:rgba(0,0,0,.45) 0 6px 20px, rgba(0,0,0,.3) 0 1px 3px;
-  --glass-solid:#1c1c1e; --glass-solid-bar:#161617;
+  --glass-solid:#191b20; --glass-solid-bar:#14161b;
+  /* 밤의 사과 정원: 별빛과 사과 윗부분의 달빛. 라이트 모드에서는 쓰지 않는다 */
+  --star:rgba(232,236,245,.7); --star-dim:rgba(232,236,245,.28); --moon:#e3e9f6;
   --overlay:rgba(0,0,0,.5); --overlay-solid:rgba(0,0,0,.82); --sheet-mask:rgba(0,0,0,.4);
   --btn-dark-hover:#d2d2d7;
   color-scheme:dark;
@@ -200,7 +203,7 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 .hero-ctas .hero-cta.ant-btn-default:hover{color:var(--hover);background:var(--surface-500);border-color:transparent}
 /* 블록 무대: 테트리스처럼 조각이 위에서 한 칸씩 떨어져 아래부터 쌓이고, 11×11 격자(구조)를 채워 픽셀 사과가 된다.
    블록은 transform·opacity 만 움직이고, 커서 반응은 HeroStage 가 --lift 로 넘긴다 */
-.hero-stage-wrap{width:100%;max-width:400px;justify-self:end;container-type:inline-size}
+.hero-stage-wrap{position:relative;width:100%;max-width:400px;justify-self:end;container-type:inline-size}
 /* 조각은 무대 위 가장자리 밖에서 출발하므로, 무대 밖은 잘라 우물 안으로 들어오는 것처럼 보이게 한다.
    --pitch 는 한 칸과 칸 사이 틈(3px)을 더한 거리로, 블록을 몇 칸 옮길지 곱해 쓴다 */
 .hero-stage{position:relative;display:grid;grid-template-columns:repeat(11,1fr);grid-template-rows:repeat(11,1fr);gap:3px;aspect-ratio:1;touch-action:pan-y;
@@ -219,6 +222,8 @@ html.js-ready [data-reveal]{animation:none}                    /* JS 살아있�
 /* ::before 는 커서가 다가오면 밝아지는 막, ::after 는 조각이 자리에 박히거나 줄이 지워질 때 번쩍이는 막이다 */
 .px-in::before,.px-in::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:white;opacity:0}
 .px-in::before{opacity:calc(var(--lift,0) * .35);transition:opacity .3s var(--ease)}
+/* 밤: 같은 사과에 왼쪽 위에서 달빛이 든다. 왼쪽 위 블록일수록 옅은 달빛 막이 조금 더 밝다 */
+:root[data-theme="dark"] .px-in::before{background:var(--moon);opacity:calc(var(--lift,0) * .35 + max(0, (3.6 - var(--row,9) - var(--col,9) * .25) * .09))}
 
 /* 빈 판: 블록은 무대 위 가장자리 밖(잘린 곳)에서 자기 조각이 떨어지기를 기다린다 */
 .hero-stage.is-empty .px{transform:translateX(calc(var(--dx) * var(--pitch)))}
@@ -282,7 +287,7 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 
 /* ============================= SKILLS ============================= */
 /* 분류마다 한 줄. 분류 이름(왼쪽)과 기술 이름(오른쪽)만 둔다 */
-.skills-rows{margin:0;max-width:760px}
+.skills-rows{margin:0}
 .skills-row{display:grid;grid-template-columns:220px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--border)}
 .skills-row:first-child{border-top:1px solid var(--border)}
 .skills-row dt{font-family:var(--f-mono);font-size:12px;line-height:24px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em}
@@ -346,7 +351,9 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 /* ============================= EXPERIENCE ============================= */
 /* antd Timeline: 점은 accent 테두리의 네모 블록, 지금 하는 일은 잎 초록으로 채우고 바깥 고리가 퍼진다 */
 /* 네모를 날짜 줄(line-height 20px)의 가운데에 맞춘다: (20 - 12) / 2 = 4px */
-.exp-timeline .ant-timeline-item-icon{width:12px;height:12px;margin-top:4px;border-radius:2px;border:2px solid var(--accent);background:var(--bg)}
+.exp-timeline .ant-timeline-item-icon{width:12px;height:12px;margin-top:4px;border-radius:2px;border:2px solid var(--border-strong);background:var(--bg)}
+/* 지난 이력의 점은 중립색으로 둔다. antd 의 점 색 규칙(.ant-steps.ant-steps-dot …)보다 앞서도록 클래스 셋으로 맞춘다 */
+.exp-timeline .ant-timeline-item .ant-timeline-item-icon{border-color:var(--border-strong)}
 .exp-timeline .is-now .ant-timeline-item-icon{position:relative;background:var(--leaf);border-color:var(--leaf)}
 /* antd Steps 가 아이콘 ::after 에 32px 크기를 주므로, auto 로 되돌려야 inset 대로 네모를 가운데에 두고 감싼다 */
 .exp-timeline .is-now .ant-timeline-item-icon::after{content:"";position:absolute;inset:-5px;width:auto;height:auto;border-radius:3px;border:2px solid var(--leaf);
@@ -355,7 +362,9 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 .exp-timeline .ant-timeline-item-content{padding-bottom:22px}
 .tl-period{font-family:var(--f-mono);font-size:12px;line-height:20px;color:var(--text-dim)}
 /* 활동명과 역할을 다른 줄에 두고, 역할은 한 단계 작고 흐린 글씨로 구분한다 */
-.tl-company{font-family:var(--f-display);font-size:19px;font-weight:700;letter-spacing:-.025em;line-height:1.35;margin-top:4px;color:var(--accent);word-break:keep-all}
+.tl-company{font-family:var(--f-display);font-size:19px;font-weight:700;letter-spacing:-.025em;line-height:1.35;margin-top:4px;color:var(--text);word-break:keep-all}
+/* 빨강은 지금 하는 일 하나에만 쓴다 */
+.exp-timeline .is-now .tl-company{color:var(--accent)}
 .tl-role{font-size:15px;line-height:1.5;margin-top:2px;color:var(--text-dim);word-break:keep-all}
 
 /* ============================= CREDENTIALS (awards + licenses) ============================= */
@@ -366,7 +375,7 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 /* 연도(12px)와 이름(14.5px)은 글자 크기가 달라서, 위쪽이 아니라 글자 기준선에 맞춰야 한 줄로 읽힌다 */
 .cred-list li{display:flex;align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14.5px}
 .cred-list li:last-child{border-bottom:none}
-.cred-list .yr{font-family:var(--f-mono);font-size:12px;color:var(--accent);flex:0 0 42px}
+.cred-list .yr{font-family:var(--f-mono);font-size:12px;color:var(--text-dim);flex:0 0 42px}
 .cred-list .name strong{font-weight:600}
 
 /* ============================= CONTACT + FOOTER ============================= */
@@ -382,6 +391,22 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 .footer-meta{margin-top:8px}
 .footer-mail{transition:color var(--m-fast) var(--ease)}
 .footer-mail:hover{color:var(--hover)}
+.footer-mark{position:relative;display:inline-flex}
+/* 외부 링크는 배경 없는 글자와 ↗ 로 둔다 */
+.footer-links{display:flex;gap:22px;font-size:14px;font-weight:500}
+.footer-links a{color:var(--text-dim);transition:color var(--m-fast) var(--ease)}
+.footer-links a:hover{color:var(--hover)}
+
+/* 밤의 별: 다크 모드에서만 보인다. 테마를 바꾸면 바탕이 먼저 어두워지고 별이 조금 늦게 나타난다(전체 0.4초).
+   테마 전환 중에는 transition 이 색 속성으로 덮이므로, 별은 다크가 될 때 한 번 실행되는 animation 으로 나타낸다 */
+.night-stars{position:absolute;inset:0;pointer-events:none;opacity:0}
+:root[data-theme="dark"] .night-stars{opacity:1;animation:nightIn .4s var(--ease) both}
+@keyframes nightIn{0%,35%{opacity:0}100%{opacity:1}}
+.star{position:absolute;width:3px;height:3px;background:var(--star)}
+.star.plus{box-shadow:3px 0 0 var(--star-dim),-3px 0 0 var(--star-dim),0 3px 0 var(--star-dim),0 -3px 0 var(--star-dim)}
+/* 별 두 개만 아주 느리게 밝기가 바뀐다 */
+:root[data-theme="dark"] .star.twinkle{animation:twinkle 7s ease-in-out var(--tw,0s) infinite}
+@keyframes twinkle{0%,100%{opacity:1}50%{opacity:.35}}
 
 /* ============================= MODAL MOTION ============================= */
 /* antd Modal 의 transitionName="pm-pop". antd 가 붙이는 -enter·-appear·-leave 클래스에 맞춰 튀어나오듯 열고 가라앉듯 닫는다 */
@@ -700,4 +725,5 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
   .wordmark .dot{animation:none}
   .site-header,.header-right .ant-btn,.project-modal .ant-modal-close{transition:none}
   ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none}
+  :root[data-theme="dark"] .night-stars,:root[data-theme="dark"] .star.twinkle{animation:none}
 }
