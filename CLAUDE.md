@@ -92,12 +92,17 @@ AdOnChat 은 사례가 많아 모달이 아니라 `/projects/adonchat` 페이지
 - 색은 `global.css` 의 `:root` 토큰(`--bg`, `--surface-*`, `--text`, `--text-dim`, `--accent`, `--hover`, `--border*` 등)만 쓴다. 새 hex 를 쓰지 않는다. 테마마다 달라지는 반투명 색도 토큰으로 만든다.
 - 다크 모드는 `:root[data-theme="dark"]` 에서 토큰을 다시 정의한다. 새 색을 추가하면 두 테마 값을 모두 정한다.
 - antd 는 CSS 변수를 토큰으로 받지 못하는 곳이 있어서 `AntdTheme.tsx` 의 `PALETTE` 에 hex 로 같은 값을 적는다. `global.css` 토큰을 바꾸면 `PALETTE` 도 같이 바꾼다.
-- 바탕은 노란 기 없는 중립 회색이다(라이트 배경 #fafafa, 카드·헤더 #ffffff, 제목 `--text` #202124, 긴 본문 `--text-body` #3f434a, 보조 설명 `--text-dim` #686d75, 구분선 #e3e5e8). 아이보리 바탕과 종이 질감은 쓰지 않는다.
-- 포인트 색은 사과 팔레트다. 강조색 `--accent` 는 빨강(라이트 #c92a32, 다크 #ff4d4f), hover 는 `--hover`, 보조색 `--leaf` 는 초록(라이트 #287546)이고 성과 숫자와 현재 상태 표시에만 쓴다. 카드 커버 그라데이션은 테마와 상관없는 `--apple*`·`--leaf-*`·`--charcoal*` 토큰을 쓴다. 문제/해결 라벨에 색 배지를 쓰지 않는다. 반투명 강조색은 rgba 대신 `color-mix(in srgb,var(--accent) N%,transparent)` 로 만든다. 헤더 GitHub·히어로 "프로젝트 보기" 같은 주 버튼은 antd primary 의 주황이 아니라 어두운 색(`--text` 배경)으로 덮어쓴다.
+- 바탕은 애플식으로 흰색(`--bg` #ffffff)과 아주 옅은 회색(`--bg-alt` #f5f5f7)을 섹션마다 번갈아 둔다(`main > section:nth-of-type(even)`). 다크는 #000000 과 #161617 이다. 제목 `--text` #1d1d1f, 긴 본문 `--text-body` #424245, 보조 설명 `--text-dim` #6e6e73. 아이보리 바탕과 종이 질감은 쓰지 않는다.
+- 카드와 패널은 테두리 없이 바탕 면 차이로 구분하고 모서리는 `--r-feat`(18px), 모달은 `--r-modal`(22px), 버튼은 알약 모양(`--r-pill`)이다. 쉬는 카드에는 그림자를 두지 않고 hover 때만 `--sh-lift` 를 준다.
+- 유리 효과(`--glass-*` 토큰: 반투명 바탕, `backdrop-filter: blur() saturate()`, 얇은 밝은 테두리, 위쪽 inset 하이라이트)는 화면 위에 떠 있는 요소에만 쓴다: 스크롤한 뒤의 헤더, 헤더의 GitHub·테마·메뉴 버튼, 모바일 메뉴 시트, AdOnChat 상세 페이지의 "← 프로젝트 목록"과 데스크톱 목차, 상세 모달의 닫기 버튼과 뒤 배경. 본문·카드·흐름도·성과 지표 줄은 유리로 만들지 않는다. 넓은 면에 backdrop-filter 를 겹치지 않고, SVG 굴절 필터는 Chrome 에서만 동작하므로 쓰지 않는다.
+- 헤더 유리는 지나가는 본문 글자가 읽히지 않도록 흐림(`--glass-blur-bar`, 28px)과 불투명도(`--glass-bg-bar`, 80%)를 높게 둔다. 낮추면 예전처럼 글자가 로고 뒤로 비친다.
+- `prefers-reduced-transparency: reduce` 에서는 `global.css` 맨 위 가드가 유리 토큰을 불투명 면(`--glass-solid*`)으로 바꾸고 흐림을 끈다. 새 유리 요소는 이 토큰만 써서 가드를 자동으로 따르게 한다.
+- 유리가 비칠 색으로 히어로 뒤에만 옅은 빨강·초록 번짐(`.hero-ornament`)을 깐다. 본문 섹션에는 깔지 않는다.
+- 포인트 색은 사과 팔레트다. 강조색 `--accent` 는 빨강(라이트 #c92a32, 다크 #ff4d4f), hover 는 `--hover`, 보조색 `--leaf` 는 초록(라이트 #287546)이고 성과 숫자와 현재 상태 표시에만 쓴다. 카드 커버 그라데이션은 테마와 상관없는 `--apple*`·`--leaf-*`·`--charcoal*` 토큰을 쓴다. 문제/해결 라벨에 색 배지를 쓰지 않는다. 반투명 강조색은 rgba 대신 `color-mix(in srgb,var(--accent) N%,transparent)` 로 만든다. 히어로 "프로젝트 보기"·메뉴 시트의 GitHub 같은 주 버튼은 antd primary 색이 아니라 어두운 색(`--text` 배경)으로 덮어쓴다. 헤더의 GitHub 는 떠 있는 버튼이라 유리 알약으로 둔다.
 
 ### 글꼴
 
-- 제목: `--f-display`(Space Grotesk), 본문: `--f-body`(Pretendard), 코드·라벨: `--f-mono`(JetBrains Mono), 모달 부제: `--f-serif`(Fraunces), 히어로 이름 줄의 한자 이름: `--f-hanja`(Noto Serif KR, 세 글자만 받아 옴).
+- 제목: `--f-display`(Pretendard, 굵게 700, 자간을 좁게 -0.035em 안팎), 본문: `--f-body`(Pretendard), 코드·라벨: `--f-mono`(JetBrains Mono), 모달 부제: `--f-serif`(Fraunces), 히어로 이름 줄의 한자 이름: `--f-hanja`(Noto Serif KR, 세 글자만 받아 옴).
 - JetBrains Mono 에는 한글이 없다. 한글이 들어가는 라벨에 `--f-mono` 를 쓰지 않는다.
 
 ### antd 오버라이드

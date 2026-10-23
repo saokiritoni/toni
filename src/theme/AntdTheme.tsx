@@ -6,12 +6,12 @@ import { useThemeMode } from './ThemeContext'
 // global.css 의 :root / [data-theme="dark"] 토큰과 같은 값을 antd 토큰으로 옮긴다.
 // antd 는 CSS 변수를 토큰 값으로 받지 못하는 곳(색 파생 계산)이 있어서 hex 로 적는다.
 const PALETTE = {
-  light: { bg: '#fafafa', container: '#ffffff', elevated: '#fafafa', text: '#202124', border: '#e3e5e8', fill: '#f1f2f4', accent: '#c92a32', hover: '#a51f27' },
-  dark: { bg: '#141517', container: '#1b1c1f', elevated: '#141517', text: '#e8eaed', border: 'rgba(232,234,237,0.1)', fill: '#232428', accent: '#ff4d4f', hover: '#ff8f8a' },
+  light: { bg: '#ffffff', container: '#ffffff', elevated: '#ffffff', text: '#1d1d1f', border: '#e8e8ed', fill: '#f5f5f7', accent: '#c92a32', hover: '#a51f27' },
+  dark: { bg: '#000000', container: '#2c2c2e', elevated: '#000000', text: '#f5f5f7', border: 'rgba(255,255,255,0.1)', fill: '#1c1c1e', accent: '#ff4d4f', hover: '#ff8f8a' },
 } as const
 
-const FONT_BODY = "'Pretendard','Space Grotesk',system-ui,sans-serif"
-const FONT_DISPLAY = "'Space Grotesk','Pretendard',system-ui,sans-serif"
+const FONT_BODY = "'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif"
+const FONT_DISPLAY = FONT_BODY
 const FONT_MONO = "'JetBrains Mono',ui-monospace,'SF Mono',monospace"
 
 export default function AntdTheme({ children }: { children: ReactNode }) {
@@ -35,9 +35,9 @@ export default function AntdTheme({ children }: { children: ReactNode }) {
           colorBorder: p.border,
           colorBorderSecondary: p.border,
           colorFillSecondary: p.fill,
-          borderRadius: 8,
-          borderRadiusLG: 10,
-          borderRadiusSM: 4,
+          borderRadius: 12,
+          borderRadiusLG: 18,
+          borderRadiusSM: 6,
           fontFamily: FONT_BODY,
           fontFamilyCode: FONT_MONO,
           motionEaseInOut: 'cubic-bezier(.4,0,.2,1)',
