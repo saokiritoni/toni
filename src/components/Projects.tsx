@@ -53,11 +53,7 @@ function FeaturedCard({ onOpen }: { onOpen: OpenHandler }) {
           <PixelArt pattern={PROJECT_PIXELS[p.key]} className="thumb-pixel" />
         </div>
         <p className="feat-catch">{p.catch}</p>
-        <p className="feat-role">
-          {p.role}
-          <br />
-          {p.period}
-        </p>
+        <p className="feat-period">{p.period}</p>
         <TechTags items={p.tech} className="feat-tech" />
       </div>
       <div className="feat-body">
@@ -94,7 +90,6 @@ function ProjectCard({ project: p, onOpen }: { project: GridProject; onOpen: Ope
         </div>
         <TechTags items={p.stack} className="thumb-tech" />
       </div>
-      <span className="card-role">{p.role}</span>
       <ul className="card-points">
         {p.points.map((pt) => (
           <li key={pt}>{pt}</li>

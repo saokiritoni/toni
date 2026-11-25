@@ -25,7 +25,6 @@ export type FeaturedProject = ProjectBase & {
 export type GridProject = ProjectBase & {
   /** 카드 윗부분의 색 영역 배경. 이 영역에 개발한 곳·제목·기술 스택(stack)을 보여 준다 */
   thumb: { tone: 'g1' | 'g2' | 'g3' }
-  role: string
   title: string
   points: string[]
   stack: string[]
@@ -43,7 +42,7 @@ export const FEATURED: FeaturedProject = {
   overview: '광고 매체 계정을 연동해 대량 광고 작업을 처리하고, 자연어 대화로 광고 데이터를 분석하는 B2B 광고 운영 솔루션',
   points: [
     '긴 채팅의 최신 메시지 표시 시간을 3.58초에서 0.20초로 단축',
-    '공통 감사로그 구조 설계와 운영자 최소 인원 보장',
+    '공통 감사 이력 구조 설계와 운영자 최소 인원 보장',
     'Google Ads 조회 명세 검증과 승인 요청 실행 구조 구현',
   ],
 }
@@ -54,7 +53,6 @@ export const GRID_PROJECTS: GridProject[] = [
     modalTitle: 'AI 기반 광고 분석 서비스 / NHN AD 인턴 과제',
     org: 'NHN AD',
     thumb: { tone: 'g1' },
-    role: 'Frontend, Backend',
     title: '[인턴 과제] 자연어 광고 분석 서비스',
     points: [
       '데이터 수집부터 분석과 리포트까지 2주 만에 MVP로 완성',
@@ -68,7 +66,6 @@ export const GRID_PROJECTS: GridProject[] = [
     modalTitle: 'GPU 서버 관리 자동화 시스템',
     org: '동국대학교 GPU 서버실',
     thumb: { tone: 'g2' },
-    role: 'Backend',
     title: '서버 관리 자동화 시스템',
     points: [
       'Google Sheet와 SSH로 처리하던 GPU 서버 관리 업무를 Web UI로 자동화',
@@ -82,7 +79,6 @@ export const GRID_PROJECTS: GridProject[] = [
     modalTitle: 'Farm System 동아리 홈페이지',
     org: '동국대학교 Farm System',
     thumb: { tone: 'g3' },
-    role: 'Leader / Backend',
     title: 'Farm System 동아리 홈페이지',
     points: [
       '디자이너와 개발자 약 20명의 팀을 이끌며 동아리 홈페이지 개발과 운영',

@@ -8,7 +8,7 @@ export default function FarmDetail() {
       <div className="pd-meta">
         <Tag variant="filled">2025.01 – 2026.02 (1년)</Tag>
         <Tag variant="filled">동아리</Tag>
-        <Tag variant="filled">Leader / Backend</Tag>
+        <Tag variant="filled">Leader / Backend, Infra</Tag>
       </div>
       <p className="pd-catch">동아리 공식 홈페이지와 회원 커뮤니티</p>
 

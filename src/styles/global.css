@@ -316,17 +316,16 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 :root[data-theme="dark"] .tone-g2{--tone:var(--text-body)}
 .pcard-grid .pk-W{background:var(--tone)}
 .pcard-grid .pk-w{background:color-mix(in srgb,var(--tone) 40%,transparent)}
-/* 제목과 기술 태그는 붙여 두고, 카드마다 제목 줄 수가 달라도 역할, 설명, "자세히 보기"가 같은 높이에 오도록 행을 그리드와 나눠 쓴다 */
+/* 제목과 기술 태그는 붙여 두고, 카드마다 제목 줄 수가 달라도 설명과 "자세히 보기"가 같은 높이에 오도록 행을 그리드와 나눠 쓴다 */
 .pcard-top{display:flex;flex-direction:column;gap:12px}
 .thumb-tech{align-items:flex-start}
 @supports (grid-template-rows:subgrid){
-  .pcard-grid{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:14px}
+  .pcard-grid{display:grid;grid-row:span 3;grid-template-rows:subgrid;row-gap:14px}
 }
 /* 픽셀 아이콘은 제목 줄 오른쪽에 둔다. 문서 흐름 안에 있어서 제목이 길면 아이콘 옆에서 줄바꿈된다 */
 .thumb-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
 .thumb-pixel{margin-top:4px}
 .thumb-title{font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:-.03em;line-height:1.3;word-break:keep-all;color:var(--text)}
-.card-role{font-size:13px;font-weight:600;color:var(--text-dim)}
 .card-points{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--text-body);line-height:1.6}
 .card-points li{position:relative;padding-left:13px;word-break:keep-all}
 .card-points li::before{content:"";position:absolute;left:2px;top:.7em;width:4px;height:4px;border-radius:1px;background:var(--text-dim)}
@@ -345,7 +344,7 @@ main > section:nth-of-type(even){background:var(--bg-alt)}
 .feat-heading{margin-top:auto}
 .feat-panel .feat-title{font-family:var(--f-display);font-size:32px;font-weight:700;letter-spacing:-.04em;line-height:1.15;color:#fff}
 .feat-catch{font-family:var(--f-display);font-size:16px;font-weight:500;letter-spacing:-.01em;line-height:1.45;color:rgba(255,255,255,.82);margin-top:-8px;word-break:keep-all}
-.feat-role{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6}
+.feat-period{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6}
 .feat-tech .tech-tag.ant-tag{font-size:10.5px;color:rgba(255,255,255,.75);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
 .feat-body{padding:32px;display:flex;flex-direction:column}
 .feat-overview{color:var(--text);font-size:15px;line-height:1.62;margin:0;word-break:keep-all}
