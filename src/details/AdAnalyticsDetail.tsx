@@ -8,7 +8,7 @@ export default function AdAnalyticsDetail() {
       <div className="pd-meta">
         <Tag variant="filled">2026.02 – 2026.03 (2주)</Tag>
         <Tag variant="filled">NHN AD</Tag>
-        <Tag variant="filled">Frontend, Backend</Tag>
+        <Tag variant="filled">Frontend, Backend, Infra</Tag>
       </div>
       <p className="pd-catch">자연어 질문으로 광고 성과를 조회하는 AI 분석 서비스</p>
 

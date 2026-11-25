@@ -28,7 +28,7 @@ export default function GpuDetail() {
 
       <div className="pd-block">
         <h4>Tech</h4>
-        <div className="pd-tech"><Tag variant="filled">Spring Boot</Tag><Tag variant="filled">MySQL</Tag><Tag variant="filled">Redis</Tag><Tag variant="filled">Kubernetes (on-premise)</Tag><Tag variant="filled">Helm</Tag><Tag variant="filled">GitHub Actions</Tag><Tag variant="filled">Docker</Tag></div>
+        <div className="pd-tech"><Tag variant="filled">Spring Boot</Tag><Tag variant="filled">MySQL</Tag><Tag variant="filled">Redis</Tag><Tag variant="filled">Helm</Tag><Tag variant="filled">GitHub Actions</Tag><Tag variant="filled">Docker</Tag></div>
       </div>
 
       <div className="pd-block">
